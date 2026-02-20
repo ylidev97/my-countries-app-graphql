@@ -8,7 +8,10 @@ class GetCountriesUseCase(
 ) {
 
     suspend fun invoke(): Result<List<Country>> {
-        return repository.getCountries()
+        return repository.getCountries().map {
+            // Sort countries by name
+            it.sortedBy { country -> country.name }
+        }
     }
 
 }
