@@ -1,0 +1,18 @@
+package com.lidev.mycountriesapp.domain.model
+
+data class CountryDetail(
+    val code: String,
+    val name: String,
+    val emoji: String, //Flag of the country
+    val currency: String?,
+    val languages: List<Language>,
+    val phone: String, //International phone code
+)
+
+data class Language(
+    val code: String,
+    val name: String,
+    val native: String,
+    val isMainLanguage: Boolean
+)
+
