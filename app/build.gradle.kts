@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.apollo)
 }
 
 android {
@@ -55,4 +56,18 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    //Network graphql
+    implementation(libs.apollo.runtime)
+}
+
+apollo {
+    service("services") {
+        srcDir("src/main/graphql/countriestrevorblades")
+        packageName.set("com.lidev.mycountriesapp.countriestrevorblades")
+        introspection {
+            endpointUrl.set("https://countries.trevorblades.com/graphql")
+            schemaFile.set(file("src/main/graphql/countriestrevorblades/schema.graphqls"))
+        }
+    }
 }
