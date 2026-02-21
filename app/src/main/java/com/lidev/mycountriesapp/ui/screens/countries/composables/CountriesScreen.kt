@@ -1,19 +1,28 @@
 package com.lidev.mycountriesapp.ui.screens.countries.composables
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,16 +31,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.lidev.mycountriesapp.R
 import com.lidev.mycountriesapp.domain.model.CountryDetail
 import com.lidev.mycountriesapp.ui.components.LikeAnimation
 import com.lidev.mycountriesapp.ui.components.LoadingDialog
+import com.lidev.mycountriesapp.ui.components.ScrollBubble
 import com.lidev.mycountriesapp.ui.screens.countries.CountriesScreenViewModel
 import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountryDetailSheet
 import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountryItem
-import com.lidev.mycountriesapp.ui.screens.model.CountryUi
+import com.lidev.mycountriesapp.ui.screens.countries.model.CountryUi
 import com.lidev.mycountriesapp.ui.theme.MyCountriesAppTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -52,7 +65,9 @@ internal fun CountriesScreen() {
         },
         isLoading = state.value.isLoading,
         onItemClick = viewModel::selectCountry,
-        onFavoriteClick = viewModel::toggleFavorite
+        onFavoriteClick = viewModel::toggleFavorite,
+        onSearchQueryChange = viewModel::onSearchQueryChange,
+        searchQuery = state.value.searchQuery
     )
 }
 
@@ -65,9 +80,23 @@ private fun Content(
     onDismissSheet: () -> Unit = {},
     onItemClick: (String) -> Unit,
     onFavoriteClick: (String) -> Unit,
+    searchQuery: String,
+    onSearchQueryChange: (String) -> Unit
 ) {
 
     var showLikeAnimation by remember { mutableStateOf(false) }
+    var showSearchBar by remember { mutableStateOf(false) }
+    val lazyListState = rememberLazyListState()
+    val filteredCountries = remember(countries, searchQuery) {
+        if (searchQuery.isBlank()) {
+            countries
+        } else {
+            countries.filter {
+                it.name.contains(searchQuery, ignoreCase = true)
+            }.sortedBy { it.name }.toPersistentList()
+        }
+    }
+
 
     LaunchedEffect(showLikeAnimation) {
         if (showLikeAnimation) {
@@ -81,20 +110,76 @@ private fun Content(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Text("Countries")
+                    Crossfade(
+                        targetState = showSearchBar,
+                        label = "Search bar crossfade"
+                    ) { isSearchVisible ->
+                        if (isSearchVisible) {
+                            TextField(
+                                value = searchQuery,
+                                onValueChange = onSearchQueryChange,
+                                modifier = Modifier.fillMaxWidth(),
+                                singleLine = true,
+                                placeholder = { Text("Search countries...") },
+                                leadingIcon = {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.ic_search),
+                                        contentDescription = "Search icon"
+                                    )
+                                },
+                                trailingIcon = {
+                                    IconButton(onClick = {
+                                        if (searchQuery.isNotEmpty()) {
+                                            onSearchQueryChange("")
+                                        } else {
+                                            showSearchBar = false
+                                        }
+                                    }) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.ic_close),
+                                            contentDescription = "Close search"
+                                        )
+                                    }
+                                },
+                                colors = TextFieldDefaults.colors(
+                                    focusedContainerColor = Color.Transparent,
+                                    unfocusedContainerColor = Color.Transparent,
+                                    disabledContainerColor = Color.Transparent,
+                                    focusedIndicatorColor = Color.Transparent,
+                                    unfocusedIndicatorColor = Color.Transparent,
+                                )
+                            )
+                        } else {
+                            Text(text = "Countries")
+                        }
+                    }
                 },
+                actions = {
+                    if (!showSearchBar) {
+                        IconButton(onClick = { showSearchBar = true }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_search),
+                                contentDescription = "Search"
+                            )
+                        }
+                    }
+                }
             )
         }
     ) { innerPadding ->
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                state = rememberLazyListState(),
-                contentPadding = innerPadding,
+                state = lazyListState,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(countries, key = { it.code }) { countryItem ->
+                items(filteredCountries, key = { it.code }) { countryItem ->
                     CountryItem(
                         isFavorite = countryItem.isFavorite,
                         emoji = countryItem.emoji,
@@ -108,7 +193,21 @@ private fun Content(
                         }
                     )
                 }
+                item {
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
             }
+
+            if(!showSearchBar){
+                ScrollBubble(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(end = 8.dp, top = 32.dp),
+                    lazyListState = lazyListState,
+                    firstLetters = filteredCountries.map { it.name.first() }.toPersistentList()
+                )
+            }
+
 
             AnimatedVisibility(
                 modifier = Modifier.align(Alignment.Center),
@@ -150,11 +249,25 @@ private fun ContentPreview() {
                     name = "Canada",
                     emoji = "🇨🇦",
                     isFavorite = true
+                ),
+                CountryUi(
+                    code = "FR",
+                    name = "France",
+                    emoji = "🇫🇷",
+                    isFavorite = false
+                ),
+                CountryUi(
+                    code = "DE",
+                    name = "Germany",
+                    emoji = "🇩🇪",
+                    isFavorite = false
                 )
             ),
             isLoading = false,
             onItemClick = {},
-            onFavoriteClick = {}
+            onFavoriteClick = {},
+            searchQuery = "",
+            onSearchQueryChange = {}
         )
     }
 }
