@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lidev.mycountriesapp.domain.usecases.GetCountriesUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetCountryByCodeUseCase
-import com.lidev.mycountriesapp.ui.screens.model.CountriesScreenState
-import com.lidev.mycountriesapp.ui.screens.model.toUi
+import com.lidev.mycountriesapp.ui.screens.countries.model.CountriesScreenState
+import com.lidev.mycountriesapp.ui.screens.countries.model.toUi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -39,6 +39,10 @@ class CountriesScreenViewModel(
             )
         }
 
+    }
+
+    fun onSearchQueryChange(query: String) {
+        _state.update { it.copy(searchQuery = query) }
     }
 
     fun selectCountry(code: String?) {

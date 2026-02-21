@@ -1,4 +1,4 @@
-package com.lidev.mycountriesapp.ui.screens.model
+package com.lidev.mycountriesapp.ui.screens.countries.model
 
 import com.lidev.mycountriesapp.domain.model.CountryDetail
 
@@ -7,5 +7,6 @@ data class CountriesScreenState(
     val countries: List<CountryUi> = emptyList(),
     val error: String? = null,
     val favoriteCountryCodes: List<String> = emptyList(),
-    val selectedCountry: CountryDetail? = null
+    val selectedCountry: CountryDetail? = null,
+    val searchQuery: String = ""
 )
