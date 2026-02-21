@@ -15,6 +15,7 @@ class MyCountriesApp : Application() {
             androidLogger()
             androidContext(this@MyCountriesApp)
             modules(
+                appModule,
                 dataModule
             )
         }

@@ -63,6 +63,8 @@ dependencies {
 
     //Network graphql
     implementation(libs.apollo.runtime)
+    implementation(libs.apollo.cache)
+
     implementation(libs.coroutines)
     implementation(libs.io.coil.kt)
     implementation(libs.io.coil.kt.network)
