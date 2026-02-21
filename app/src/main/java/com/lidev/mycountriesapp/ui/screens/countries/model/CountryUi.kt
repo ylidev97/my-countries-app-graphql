@@ -1,4 +1,4 @@
-package com.lidev.mycountriesapp.ui.screens.model
+package com.lidev.mycountriesapp.ui.screens.countries.model
 
 import com.lidev.mycountriesapp.domain.model.Country
 

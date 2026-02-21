@@ -6,4 +6,7 @@
     <string name="language_native">%s (Native)</string>
     <string name="phone">Phone</string>
     <string name="continent">Continent</string>
+    <string name="capital">Capital</string>
+    <string name="favorite">Favorite</string>
+
 </resources>

@@ -23,6 +23,7 @@ internal fun GetCountryByCodeQuery.Country.toDomain(): CountryDetail {
         currency = currency,
         languages = languages.map { it.toDomain() },
         phone = phone,
+        capital = capital.orEmpty(),
         continent = continent.name
     )
 

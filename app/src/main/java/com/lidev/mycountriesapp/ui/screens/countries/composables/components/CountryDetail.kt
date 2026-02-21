@@ -35,14 +35,16 @@ fun CountryDetailSheet(
     onDismiss: () -> Unit
 ) {
     countryDetail?.let {
-        ModalBottomSheet(onDismissRequest = onDismiss,
+        ModalBottomSheet(
+            onDismissRequest = onDismiss,
             sheetGesturesEnabled = false,
-            ) {
+        ) {
             CountryDetail(
                 countryName = countryDetail.name,
                 isFavorite = countryDetail.isFavorite,
                 onFavoriteToggle = onFavoriteToggle,
                 emoji = countryDetail.emoji,
+                capital = countryDetail.capital,
                 phoneCode = countryDetail.phone,
                 continent = countryDetail.continent,
                 languages = countryDetail.languages.map {
@@ -61,6 +63,7 @@ internal fun CountryDetail(
     emoji: String = "🇨🇺",
     phoneCode: String = "53",
     continent: String = "North America",
+    capital: String = "",
     languages: ImmutableList<String> = persistentListOf(),
     isFavorite: Boolean = false,
     onFavoriteToggle: (Boolean) -> Unit = {}
@@ -97,14 +100,22 @@ internal fun CountryDetail(
         HorizontalDivider(modifier = Modifier.padding(top = 4.dp, bottom = 8.dp))
 
         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            DetailRow(
-                title = stringResource(id = R.string.phone),
-                value = "+($phoneCode)"
-            )
 
             DetailRow(
                 title = stringResource(id = R.string.continent),
                 value = continent
+            )
+
+            if (capital.isNotBlank()) {
+                DetailRow(
+                    title = stringResource(id = R.string.capital),
+                    value = capital
+                )
+            }
+
+            DetailRow(
+                title = stringResource(id = R.string.phone),
+                value = "+($phoneCode)"
             )
 
             if (languages.isNotEmpty()) {
