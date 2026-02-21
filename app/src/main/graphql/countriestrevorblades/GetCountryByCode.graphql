@@ -10,5 +10,9 @@ query GetCountryByCode($code: ID!) {
             native
         }
         phone
+        continent {
+            code
+            name
+        }
     }
 }
