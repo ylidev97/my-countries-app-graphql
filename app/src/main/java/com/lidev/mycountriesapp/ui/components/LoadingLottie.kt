@@ -13,7 +13,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.lidev.mycountriesapp.R
 
 @Composable
-fun LoadingLottie() {
+internal fun LoadingLottie() {
 
     val composition by rememberLottieComposition(
         LottieCompositionSpec.RawRes(R.raw.loading)

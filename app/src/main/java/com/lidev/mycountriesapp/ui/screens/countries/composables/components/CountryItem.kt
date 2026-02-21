@@ -43,38 +43,46 @@ internal fun CountryItem(
         ) {
             Text(emoji, fontSize = 40.sp)
             Spacer(modifier = Modifier.width(12.dp))
-            Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.Start
-                ) {
-                    Text(
-                        name, style = MaterialTheme.typography.headlineMedium,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-                Spacer(modifier = Modifier.width(8.dp)) // Add some space between text and favorite button
-                Box(contentAlignment = Alignment.CenterEnd) {
-                    FavoriteToggle(
-                        isFavorite = isFavorite,
-                        onToggle = onFavoriteClick
-                    )
-                }
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    name, style = MaterialTheme.typography.headlineMedium,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            Box(contentAlignment = Alignment.CenterEnd) {
+                FavoriteToggle(
+                    isFavorite = isFavorite,
+                    onToggle = onFavoriteClick
+                )
             }
         }
     }
-
 }
 
 @Composable
 @Preview
 private fun CountryItemPreview() {
-    CountryItem(
-        emoji = "\uD83C\uDDE6\uD83C\uDDE9",
-        name = "name",
-        onItemClick = {},
-        onFavoriteClick = {}
-    )
+    Column(
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        CountryItem(
+            emoji = "\uD83C\uDDE6\uD83C\uDDE9",
+            name = "name",
+            onItemClick = {},
+            onFavoriteClick = {}
+        )
+        CountryItem(
+            emoji = "\uD83C\uDDE6\uD83C\uDDE9",
+            name = "Lorem impsum large text when the test is large",
+            onItemClick = {},
+            onFavoriteClick = {}
+        )
+    }
+
 }

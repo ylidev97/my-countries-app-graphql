@@ -6,9 +6,12 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.lidev.mycountriesapp.ui.theme.MyCountriesAppTheme
+
 
 @Composable
-fun LoadingDialog() {
+internal fun LoadingDialog() {
     AlertDialog(
         onDismissRequest = {},
         title = {
@@ -18,4 +21,12 @@ fun LoadingDialog() {
         },
         confirmButton = { },
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun LoadingDialogPreview() {
+    MyCountriesAppTheme {
+        LoadingDialog()
+    }
 }
