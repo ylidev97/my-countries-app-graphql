@@ -70,6 +70,10 @@ dependencies {
     implementation(libs.io.coil.kt)
     implementation(libs.io.coil.kt.network)
     implementation(libs.kotlinx.collections.immutable)
+    implementation(libs.com.airbnb.lottie.compose)
+    implementation(libs.androidx.compose.material.icons.extended)
+
+
 
     //Koin
     implementation(libs.koin.core)

@@ -64,6 +64,8 @@ io-coil-kt = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = 
 io-coil-kt-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil"}
 ##inmutable list
 kotlinx-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version = "0.4.0" }
+com-airbnb-lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version = "6.7.1" }
+androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 
 ##Testing
 junit = { group = "junit", name = "junit", version.ref = "junit" }
