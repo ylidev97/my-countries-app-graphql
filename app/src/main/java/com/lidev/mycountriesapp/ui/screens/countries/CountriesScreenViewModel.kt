@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.lidev.mycountriesapp.domain.usecases.GetCountriesUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetCountryByCodeUseCase
 import com.lidev.mycountriesapp.ui.screens.model.CountriesScreenState
+import com.lidev.mycountriesapp.ui.screens.model.toUi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -31,20 +32,41 @@ class CountriesScreenViewModel(
 
     private suspend fun getCountries() {
         val countriesResult = getCountriesUseCase.invoke()
-        _state.update {
-            it.copy(
-                countries = countriesResult.getOrNull() ?: emptyList(),
+        _state.update { screenState ->
+            screenState.copy(
+                countries = countriesResult.getOrNull()?.map { it.toUi() } ?: emptyList(),
                 isLoading = false
             )
         }
 
     }
 
-    fun selectCountry(code: String) {
-
+    fun selectCountry(code: String?) {
+        viewModelScope.launch {
+            if (code == null) {
+                _state.update {
+                    it.copy(
+                        selectedCountry = null
+                    )
+                }
+            } else {
+                _state.update {
+                    it.copy(
+                        isLoading = true
+                    )
+                }
+                val countryDetailResult = getCountryByCodeUseCase.invoke(code)
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        selectedCountry = countryDetailResult.getOrNull()
+                    )
+                }
+            }
+        }
     }
 
-    fun toggleFavorite(isFavorite: Boolean, code: String) {
+    fun toggleFavorite(code: String) {
         viewModelScope.launch {
             val favoriteCode = _state.value.favoriteCountryCodes
             val favoriteCodeTemp = mutableSetOf<String>()
@@ -56,9 +78,13 @@ class CountriesScreenViewModel(
                 favoriteCodeTemp.add(code)
             }
 
-            _state.update {
-                it.copy(
-                    favoriteCountryCodes = favoriteCodeTemp.toList()
+            _state.update { currentState ->
+                currentState.copy(
+                    favoriteCountryCodes = favoriteCodeTemp.toList(),
+                    countries = currentState.countries.map {
+                        it.copy(isFavorite = it.code in favoriteCodeTemp)
+                    },
+                    selectedCountry = currentState.selectedCountry?.copy(isFavorite = code in favoriteCodeTemp)
                 )
             }
         }

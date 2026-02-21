@@ -15,10 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.lidev.mycountriesapp.domain.model.Country
+import com.lidev.mycountriesapp.domain.model.CountryDetail
 import com.lidev.mycountriesapp.ui.components.LoadingDialog
 import com.lidev.mycountriesapp.ui.screens.countries.CountriesScreenViewModel
+import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountryDetailSheet
 import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountryItem
+import com.lidev.mycountriesapp.ui.screens.model.CountryUi
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -31,7 +33,10 @@ internal fun CountriesScreen() {
 
     Content(
         countries = state.value.countries.toPersistentList(),
-        favoriteCountryCodes = state.value.favoriteCountryCodes.toPersistentList(),
+        countryDetail = state.value.selectedCountry,
+        onDismissSheet = {
+            viewModel.selectCountry(null)
+        },
         isLoading = state.value.isLoading,
         onItemClick = viewModel::selectCountry,
         onFavoriteClick = viewModel::toggleFavorite
@@ -41,13 +46,13 @@ internal fun CountriesScreen() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun Content(
-    countries: ImmutableList<Country> = persistentListOf(),
-    favoriteCountryCodes: ImmutableList<String> = persistentListOf(),
+    countries: ImmutableList<CountryUi> = persistentListOf(),
     isLoading: Boolean,
+    countryDetail: CountryDetail? = null,
+    onDismissSheet: () -> Unit = {},
     onItemClick: (String) -> Unit,
-    onFavoriteClick: (Boolean, String) -> Unit,
+    onFavoriteClick: (String) -> Unit,
 ) {
-
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -68,23 +73,29 @@ private fun Content(
         ) {
             items(countries, key = { it.code }) { countryItem ->
                 CountryItem(
-                    isFavorite = favoriteCountryCodes.contains(countryItem.code),
+                    isFavorite = countryItem.isFavorite,
                     emoji = countryItem.emoji,
                     name = countryItem.name,
                     onItemClick = {
                         onItemClick(countryItem.code)
                     },
                     onFavoriteClick = {
-                        onFavoriteClick(it, countryItem.code)
+                        onFavoriteClick(countryItem.code)
                     }
                 )
             }
         }
     }
 
-    if (isLoading) {
-        LoadingDialog()
-    }
+    LoadingDialog(isLoading)
+
+    CountryDetailSheet(
+        countryDetail = countryDetail,
+        onDismiss = onDismissSheet,
+        onFavoriteToggle = {
+            onFavoriteClick(countryDetail?.code.orEmpty())
+        }
+    )
 }
 
 
