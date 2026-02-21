@@ -6,13 +6,14 @@ data class CountryDetail(
     val emoji: String, //Flag of the country
     val currency: String?,
     val languages: List<Language>,
-    val phone: String, //International phone code
+    val phone: String, //International phone code,
+    val continent: String,
+    val isFavorite: Boolean = false
 )
 
 data class Language(
     val code: String,
     val name: String,
     val native: String,
-    val isMainLanguage: Boolean
 )
 

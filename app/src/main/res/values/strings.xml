@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MyCountriesApp</string>
+    <string name="country_name">Country Name</string>
+    <string name="languages">Languages</string>
+    <string name="currency">Currency</string>
+    <string name="language_native">%s (Native)</string>
+    <string name="phone">Phone</string>
+    <string name="continent">Continent</string>
 </resources>

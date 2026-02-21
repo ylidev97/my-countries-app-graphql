@@ -11,22 +11,29 @@ import com.lidev.mycountriesapp.ui.theme.MyCountriesAppTheme
 
 
 @Composable
-internal fun LoadingDialog() {
-    AlertDialog(
-        onDismissRequest = {},
-        title = {
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                LoadingLottie()
-            }
-        },
-        confirmButton = { },
-    )
+internal fun LoadingDialog(
+    isLoading: Boolean
+) {
+    if (isLoading) {
+        AlertDialog(
+            onDismissRequest = {},
+            title = {
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    LoadingLottie()
+                }
+            },
+            confirmButton = { },
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun LoadingDialogPreview() {
     MyCountriesAppTheme {
-        LoadingDialog()
+        LoadingDialog(isLoading = true)
     }
 }

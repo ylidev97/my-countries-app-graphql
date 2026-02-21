@@ -22,7 +22,8 @@ internal fun GetCountryByCodeQuery.Country.toDomain(): CountryDetail {
         emoji = emoji,
         currency = currency,
         languages = languages.map { it.toDomain() },
-        phone = phone
+        phone = phone,
+        continent = continent.name
     )
 
 }
@@ -32,6 +33,5 @@ internal fun GetCountryByCodeQuery.Language.toDomain(): Language {
         code = code,
         name = name,
         native = native,
-        isMainLanguage = true
     )
 }
