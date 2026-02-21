@@ -42,7 +42,11 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
+
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
@@ -59,6 +63,17 @@ dependencies {
 
     //Network graphql
     implementation(libs.apollo.runtime)
+    implementation(libs.coroutines)
+    implementation(libs.io.coil.kt)
+    implementation(libs.io.coil.kt.network)
+    implementation(libs.kotlinx.collections.immutable)
+
+    //Koin
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.androidx.navigation)
+    implementation(libs.koin.test.implementation)
 }
 
 apollo {
