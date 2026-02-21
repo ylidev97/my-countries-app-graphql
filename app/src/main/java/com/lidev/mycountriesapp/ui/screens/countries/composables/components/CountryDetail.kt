@@ -35,7 +35,9 @@ fun CountryDetailSheet(
     onDismiss: () -> Unit
 ) {
     countryDetail?.let {
-        ModalBottomSheet(onDismissRequest = onDismiss) {
+        ModalBottomSheet(onDismissRequest = onDismiss,
+            sheetGesturesEnabled = false,
+            ) {
             CountryDetail(
                 countryName = countryDetail.name,
                 isFavorite = countryDetail.isFavorite,
@@ -85,7 +87,9 @@ internal fun CountryDetail(
                 Text(
                     text = countryName,
                     style = MaterialTheme.typography.headlineLarge,
-                    modifier = Modifier.basicMarquee()
+                    modifier = Modifier.basicMarquee(
+                        iterations = 20
+                    )
                 )
             }
         }

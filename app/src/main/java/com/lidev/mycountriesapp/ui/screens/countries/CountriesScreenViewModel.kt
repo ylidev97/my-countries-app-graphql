@@ -59,7 +59,9 @@ class CountriesScreenViewModel(
                 _state.update {
                     it.copy(
                         isLoading = false,
-                        selectedCountry = countryDetailResult.getOrNull()
+                        selectedCountry = countryDetailResult.getOrNull()?.copy(
+                            isFavorite = _state.value.favoriteCountryCodes.contains(code)
+                        )
                     )
                 }
             }
