@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.apollo)
+    alias(libs.plugins.kotzilla)
 }
 
 android {
@@ -76,6 +77,7 @@ dependencies {
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.androidx.navigation)
     implementation(libs.koin.test.implementation)
+    implementation(libs.kotzilla.sdk)
 }
 
 apollo {
@@ -88,3 +90,4 @@ apollo {
         }
     }
 }
+kotzilla { autoAddDependencies = false }
