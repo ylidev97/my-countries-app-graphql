@@ -8,5 +8,11 @@
     <string name="continent">Continent</string>
     <string name="capital">Capital</string>
     <string name="favorite">Favorite</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="close">Close</string>
+    <string name="search">Search</string>
+    <string name="search_countries">Search countries…</string>
+    <string name="countries">Countries</string>
+
 
 </resources>

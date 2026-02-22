@@ -1,12 +1,12 @@
 package com.lidev.mycountriesapp.ui.components
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.AlertDialog
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.lidev.mycountriesapp.ui.theme.MyCountriesAppTheme
 
 
@@ -15,18 +15,21 @@ internal fun LoadingDialog(
     isLoading: Boolean
 ) {
     if (isLoading) {
-        AlertDialog(
+        Dialog(
             onDismissRequest = {},
-            title = {
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    LoadingLottie()
-                }
-            },
-            confirmButton = { },
-        )
+            properties = DialogProperties(
+                dismissOnBackPress = false,
+                dismissOnClickOutside = false,
+                usePlatformDefaultWidth = false
+            )
+        ) {
+            Card(
+                modifier = Modifier
+                    .wrapContentSize()
+            ) {
+                LoadingLottie()
+            }
+        }
     }
 }
 
