@@ -1,5 +1,6 @@
 package com.lidev.mycountriesapp.ui.components
 
+import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -17,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lidev.mycountriesapp.ui.theme.MyCountriesAppTheme
@@ -77,7 +77,7 @@ private fun Bubble(
         Text(
             text = letter,
             style = MaterialTheme.typography.headlineMedium,
-            color = Color.Black
+            color = MaterialTheme.colorScheme.inverseOnSurface
         )
     }
 }
@@ -97,6 +97,7 @@ private fun ScrollBubblePreview() {
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
 @Composable
 private fun BubblePreview() {
     MyCountriesAppTheme {

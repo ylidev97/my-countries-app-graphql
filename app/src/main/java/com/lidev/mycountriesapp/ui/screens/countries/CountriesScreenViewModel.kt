@@ -6,18 +6,23 @@ import com.lidev.mycountriesapp.domain.usecases.GetCountriesUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetCountryByCodeUseCase
 import com.lidev.mycountriesapp.ui.screens.countries.model.CountriesScreenState
 import com.lidev.mycountriesapp.ui.screens.countries.model.toUi
+import com.lidev.mycountriesapp.util.NetworkMonitor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CountriesScreenViewModel(
     private val getCountriesUseCase: GetCountriesUseCase,
-    private val getCountryByCodeUseCase: GetCountryByCodeUseCase
+    private val getCountryByCodeUseCase: GetCountryByCodeUseCase,
+    private val networkMonitor: NetworkMonitor
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CountriesScreenState())
     val state = _state.asStateFlow()
+
 
     init {
         viewModelScope.launch {
@@ -28,6 +33,12 @@ class CountriesScreenViewModel(
             }
             getCountries()
         }
+
+        networkMonitor.isOnline
+            .onEach { isOnline ->
+                _state.update { it.copy(isOnline = isOnline) }
+            }
+            .launchIn(viewModelScope)
     }
 
     private suspend fun getCountries() {
@@ -63,7 +74,7 @@ class CountriesScreenViewModel(
                 _state.update {
                     it.copy(
                         isLoading = false,
-                        selectedCountry = countryDetailResult.getOrNull()?.copy(
+                        selectedCountry = countryDetailResult.getOrNull()?.toUi(
                             isFavorite = _state.value.favoriteCountryCodes.contains(code)
                         )
                     )

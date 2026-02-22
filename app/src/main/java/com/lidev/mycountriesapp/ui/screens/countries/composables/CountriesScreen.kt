@@ -1,7 +1,6 @@
 package com.lidev.mycountriesapp.ui.screens.countries.composables
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
@@ -12,17 +11,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -31,19 +25,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.lidev.mycountriesapp.R
-import com.lidev.mycountriesapp.domain.model.CountryDetail
 import com.lidev.mycountriesapp.ui.components.LikeAnimation
 import com.lidev.mycountriesapp.ui.components.LoadingDialog
+import com.lidev.mycountriesapp.ui.components.NoInternetLottie
 import com.lidev.mycountriesapp.ui.components.ScrollBubble
 import com.lidev.mycountriesapp.ui.screens.countries.CountriesScreenViewModel
+import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountriesTopAppBar
 import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountryDetailSheet
 import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountryItem
+import com.lidev.mycountriesapp.ui.screens.countries.model.CountryDetailUi
 import com.lidev.mycountriesapp.ui.screens.countries.model.CountryUi
 import com.lidev.mycountriesapp.ui.theme.MyCountriesAppTheme
 import kotlinx.collections.immutable.ImmutableList
@@ -60,6 +53,7 @@ internal fun CountriesScreen() {
     Content(
         countries = state.value.countries.toPersistentList(),
         countryDetail = state.value.selectedCountry,
+        isOnline = state.value.isOnline,
         onDismissSheet = {
             viewModel.selectCountry(null)
         },
@@ -76,7 +70,8 @@ internal fun CountriesScreen() {
 private fun Content(
     countries: ImmutableList<CountryUi> = persistentListOf(),
     isLoading: Boolean,
-    countryDetail: CountryDetail? = null,
+    isOnline: Boolean,
+    countryDetail: CountryDetailUi? = null,
     onDismissSheet: () -> Unit = {},
     onItemClick: (String) -> Unit,
     onFavoriteClick: (String) -> Unit,
@@ -108,62 +103,12 @@ private fun Content(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Crossfade(
-                        targetState = showSearchBar,
-                        label = "Search bar crossfade"
-                    ) { isSearchVisible ->
-                        if (isSearchVisible) {
-                            TextField(
-                                value = searchQuery,
-                                onValueChange = onSearchQueryChange,
-                                modifier = Modifier.fillMaxWidth(),
-                                singleLine = true,
-                                placeholder = { Text("Search countries...") },
-                                leadingIcon = {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.ic_search),
-                                        contentDescription = "Search icon"
-                                    )
-                                },
-                                trailingIcon = {
-                                    IconButton(onClick = {
-                                        if (searchQuery.isNotEmpty()) {
-                                            onSearchQueryChange("")
-                                        } else {
-                                            showSearchBar = false
-                                        }
-                                    }) {
-                                        Icon(
-                                            painter = painterResource(id = R.drawable.ic_close),
-                                            contentDescription = "Close search"
-                                        )
-                                    }
-                                },
-                                colors = TextFieldDefaults.colors(
-                                    focusedContainerColor = Color.Transparent,
-                                    unfocusedContainerColor = Color.Transparent,
-                                    disabledContainerColor = Color.Transparent,
-                                    focusedIndicatorColor = Color.Transparent,
-                                    unfocusedIndicatorColor = Color.Transparent,
-                                )
-                            )
-                        } else {
-                            Text(text = "Countries")
-                        }
-                    }
-                },
-                actions = {
-                    if (!showSearchBar) {
-                        IconButton(onClick = { showSearchBar = true }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_search),
-                                contentDescription = "Search"
-                            )
-                        }
-                    }
-                }
+            CountriesTopAppBar(
+                showSearchBar = showSearchBar,
+                onSearchBarToggle = { showSearchBar = it },
+                searchQuery = searchQuery,
+                onSearchQueryChange = onSearchQueryChange,
+                isOnline = isOnline
             )
         }
     ) { innerPadding ->
@@ -173,32 +118,47 @@ private fun Content(
                 .padding(innerPadding)
         ) {
 
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                state = lazyListState,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(filteredCountries, key = { it.code }) { countryItem ->
-                    CountryItem(
-                        isFavorite = countryItem.isFavorite,
-                        emoji = countryItem.emoji,
-                        name = countryItem.name,
-                        onItemClick = {
-                            onItemClick(countryItem.code)
-                        },
-                        onFavoriteClick = {
-                            showLikeAnimation = !countryItem.isFavorite
-                            onFavoriteClick(countryItem.code)
-                        }
+            if (!isOnline) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            top = 64.dp
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    NoInternetLottie(
+                        modifier = Modifier.size(360.dp)
                     )
                 }
-                item {
-                    Spacer(modifier = Modifier.height(24.dp))
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    state = lazyListState,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(filteredCountries, key = { it.code }) { countryItem ->
+                        CountryItem(
+                            isFavorite = countryItem.isFavorite,
+                            emoji = countryItem.emoji,
+                            name = countryItem.name,
+                            onItemClick = {
+                                onItemClick(countryItem.code)
+                            },
+                            onFavoriteClick = {
+                                showLikeAnimation = !countryItem.isFavorite
+                                onFavoriteClick(countryItem.code)
+                            }
+                        )
+                    }
+                    item {
+                        Spacer(modifier = Modifier.height(24.dp))
+                    }
                 }
             }
 
-            if(!showSearchBar){
+            if (!showSearchBar && isOnline) {
                 ScrollBubble(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
@@ -267,7 +227,8 @@ private fun ContentPreview() {
             onItemClick = {},
             onFavoriteClick = {},
             searchQuery = "",
-            onSearchQueryChange = {}
+            onSearchQueryChange = {},
+            isOnline = false
         )
     }
 }
