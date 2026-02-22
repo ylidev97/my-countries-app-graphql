@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<journey name="Countries Journey">
+    <description></description>
+    <actions xml:space="preserve">
+        <action>Cuando se cargen todos los paises haz scroll hacia abajo 2 veces</action>
+        <action>Luego sube hasta el principio</action>
+        <action>Haz click en cualquier pais</action>
+        <action>Cierra el detalle del pais seleccionado</action>
+        <action>Entra al buscador y busca Cuba</action>
+        </actions>
+</journey>

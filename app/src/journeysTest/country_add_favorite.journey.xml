@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<journey name="Country Add favorite">
+    <description></description>
+    <actions xml:space="preserve">
+        <action>Cuando se carguen los paises haz scroll hacia abajo 3 veces</action>
+        <action>Agrega un pais a los favoritos</action>
+        <action>Y Luego quitale el favorito</action>
+    </actions>
+</journey>
