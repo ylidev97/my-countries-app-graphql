@@ -7,7 +7,7 @@ class GetCountryByCodeUseCase(
     private val repository: CountryRepository
 ) {
 
-    suspend fun invoke(code: String): Result<CountryDetail?> =
+    suspend operator fun invoke(code: String): Result<CountryDetail?> =
         repository.getCountryByCode(code)
 
 }

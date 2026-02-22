@@ -49,14 +49,13 @@ class CountriesScreenViewModel(
                 isLoading = true
             )
         }
-        val countriesResult = getCountriesUseCase.invoke()
+        val countriesResult = getCountriesUseCase()
         _state.update { screenState ->
             screenState.copy(
                 countries = countriesResult.getOrNull()?.map { it.toUi() } ?: emptyList(),
                 isLoading = false
             )
         }
-
     }
 
     fun onSearchQueryChange(query: String) {
@@ -66,49 +65,66 @@ class CountriesScreenViewModel(
     fun selectCountry(code: String?) {
         viewModelScope.launch {
             if (code == null) {
-                _state.update {
-                    it.copy(
-                        selectedCountry = null
-                    )
-                }
-            } else {
-                _state.update {
-                    it.copy(
-                        isLoading = true
-                    )
-                }
-                val countryDetailResult = getCountryByCodeUseCase.invoke(code)
-                _state.update {
-                    it.copy(
-                        isLoading = false,
-                        selectedCountry = countryDetailResult.getOrNull()?.toUi(
-                            isFavorite = _state.value.favoriteCountryCodes.contains(code)
-                        )
-                    )
-                }
+                _state.update { it.copy(selectedCountry = null) }
+                return@launch
             }
+
+            _state.update { it.copy(isLoading = true, error = null) } // Clear previous errors
+
+            getCountryByCodeUseCase(code)
+                .onSuccess { countryDetail ->
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            selectedCountry = countryDetail?.toUi(
+                                isFavorite = it.favoriteCountryCodes.contains(code)
+                            )
+                        )
+                    }
+                }
+                .onFailure { _ ->
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            error = "Failed to load country details." // Or use throwable.message
+                        )
+                    }
+                }
         }
     }
 
+
     fun toggleFavorite(code: String) {
         viewModelScope.launch {
-            val favoriteCode = _state.value.favoriteCountryCodes
-            val favoriteCodeTemp = mutableSetOf<String>()
-            favoriteCodeTemp.addAll(favoriteCode.toSet())
 
-            if (favoriteCodeTemp.contains(code)) {
-                favoriteCodeTemp.remove(code)
+            val currentFavorites = _state.value.favoriteCountryCodes.toMutableSet()
+            val isCurrentlyFavorite = currentFavorites.contains(code)
+
+            if (isCurrentlyFavorite) {
+                currentFavorites.remove(code)
             } else {
-                favoriteCodeTemp.add(code)
+                currentFavorites.add(code)
             }
+
 
             _state.update { currentState ->
                 currentState.copy(
-                    favoriteCountryCodes = favoriteCodeTemp.toList(),
-                    countries = currentState.countries.map {
-                        it.copy(isFavorite = it.code in favoriteCodeTemp)
+                    favoriteCountryCodes = currentFavorites.toList(),
+                    countries = currentState.countries.map { country ->
+                        // Avoid re-copying if the favorite status hasn't changed
+                        if (country.code == code) {
+                            country.copy(isFavorite = !isCurrentlyFavorite)
+                        } else {
+                            country
+                        }
                     },
-                    selectedCountry = currentState.selectedCountry?.copy(isFavorite = code in favoriteCodeTemp)
+                    selectedCountry = currentState.selectedCountry?.let { selected ->
+                        if (selected.code == code) {
+                            selected.copy(isFavorite = !isCurrentlyFavorite)
+                        } else {
+                            selected
+                        }
+                    }
                 )
             }
         }

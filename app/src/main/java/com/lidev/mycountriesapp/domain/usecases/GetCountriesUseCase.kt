@@ -7,7 +7,7 @@ class GetCountriesUseCase(
     private val repository: CountryRepository
 ) {
 
-    suspend fun invoke(): Result<List<Country>> {
+    suspend operator fun invoke(): Result<List<Country>> {
         return repository.getCountries().map {
             // Sort countries by name
             it.sortedBy { country -> country.name }
