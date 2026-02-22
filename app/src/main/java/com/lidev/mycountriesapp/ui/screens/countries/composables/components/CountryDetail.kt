@@ -21,16 +21,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lidev.mycountriesapp.R
-import com.lidev.mycountriesapp.domain.model.CountryDetail
 import com.lidev.mycountriesapp.ui.components.FavoriteToggle
+import com.lidev.mycountriesapp.ui.screens.countries.model.CountryDetailUi
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CountryDetailSheet(
-    countryDetail: CountryDetail? = null,
+    countryDetail: CountryDetailUi? = null,
     onFavoriteToggle: (Boolean) -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -47,9 +46,7 @@ fun CountryDetailSheet(
                 capital = countryDetail.capital,
                 phoneCode = countryDetail.phone,
                 continent = countryDetail.continent,
-                languages = countryDetail.languages.map {
-                    it.name
-                }.toPersistentList()
+                languages = countryDetail.languages
             )
         }
     }

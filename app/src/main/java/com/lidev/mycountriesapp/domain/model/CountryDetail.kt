@@ -9,7 +9,6 @@ data class CountryDetail(
     val phone: String, //International phone code,
     val continent: String,
     val capital: String,
-    val isFavorite: Boolean = false,
 )
 
 data class Language(
