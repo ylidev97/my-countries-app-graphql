@@ -7,6 +7,7 @@ import com.lidev.mycountriesapp.domain.usecases.GetCountryByCodeUseCase
 import com.lidev.mycountriesapp.ui.screens.countries.model.CountriesScreenState
 import com.lidev.mycountriesapp.ui.screens.countries.model.toUi
 import com.lidev.mycountriesapp.util.NetworkMonitor
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -17,7 +18,7 @@ import kotlinx.coroutines.launch
 class CountriesScreenViewModel(
     private val getCountriesUseCase: GetCountriesUseCase,
     private val getCountryByCodeUseCase: GetCountryByCodeUseCase,
-    private val networkMonitor: NetworkMonitor
+    networkMonitor: NetworkMonitor
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CountriesScreenState())
@@ -25,23 +26,29 @@ class CountriesScreenViewModel(
 
 
     init {
-        viewModelScope.launch {
-            _state.update {
-                it.copy(
-                    isLoading = true
-                )
-            }
-            getCountries()
-        }
-
         networkMonitor.isOnline
             .onEach { isOnline ->
-                _state.update { it.copy(isOnline = isOnline) }
+                _state.update {
+                    it.copy(
+                        isOnline = isOnline,
+                        countries = if (!isOnline) persistentListOf() else it.countries,
+                        selectedCountry = if (!isOnline) null else it.selectedCountry
+                    )
+                }
+                if (isOnline) {
+                    getCountries()
+                }
             }
             .launchIn(viewModelScope)
     }
 
+
     private suspend fun getCountries() {
+        _state.update {
+            it.copy(
+                isLoading = true
+            )
+        }
         val countriesResult = getCountriesUseCase.invoke()
         _state.update { screenState ->
             screenState.copy(
