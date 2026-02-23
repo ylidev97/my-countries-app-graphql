@@ -24,6 +24,21 @@ android {
     }
 
     buildTypes {
+        debug {
+            isMinifyEnabled = false
+            isDebuggable = true
+            applicationIdSuffix = ".debug"
+
+            // Append "-debug" to the versionName (e.g., "1.0-debug")
+            versionNameSuffix = "-debug"
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+
+        }
+
+
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -115,3 +130,15 @@ apollo {
     }
 }
 kotzilla { autoAddDependencies = false }
+
+androidComponents {
+    onVariants { variant ->
+        variant.outputs.forEach { output ->
+            val versionName = output.versionName.get()
+            val outputImpl = output as? com.android.build.api.variant.impl.VariantOutputImpl
+            outputImpl?.outputFileName?.set(
+                "com-lidev-mycountriesapp-v${versionName}-${variant.buildType}.apk"
+            )
+        }
+    }
+}
