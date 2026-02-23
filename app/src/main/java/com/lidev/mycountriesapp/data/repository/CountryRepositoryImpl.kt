@@ -7,7 +7,7 @@ import com.lidev.mycountriesapp.domain.repository.CountryRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class CountryRepositoryImpl(
+internal class CountryRepositoryImpl(
     private val apolloCountryClient: ApolloCountryClient
 ) : CountryRepository {
 
