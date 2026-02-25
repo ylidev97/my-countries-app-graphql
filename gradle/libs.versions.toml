@@ -18,9 +18,9 @@ corutines-ktx = "1.10.2"
 koin = "4.1.1"
 coil = "3.3.0"
 kotzilla = "2.0.6"
-junitPlatformLauncher = "1.13.4"
-junitPlatformEngine = "1.13.4"
-journeysJunitEngine = "0.2.1"
+junitPlatformLauncher = "6.0.3"
+junitPlatformEngine = "6.0.3"
+journeysJunitEngine = "0.2.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
