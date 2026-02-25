@@ -50,18 +50,19 @@ koin-androidx-navigation = { module = "io.insert-koin:koin-androidx-navigation",
 koin-test-implementation = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 kotzilla-sdk = { group = "io.kotzilla", name = "kotzilla-sdk-compose", version.ref = "kotzilla" }
 
-
-
 ##Compose - Ui
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-compose-material-windows-size = { group = "androidx.compose.material3", name = "material3-window-size-class" , version = "1.4.0" }
+androidx-windows-windows = { group ="androidx.window", name = "window", version = "1.5.1"}
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+
 ##coil
 io-coil-kt = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil"}
 io-coil-kt-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil"}
