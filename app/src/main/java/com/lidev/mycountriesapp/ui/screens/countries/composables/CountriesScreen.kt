@@ -4,14 +4,9 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -32,7 +27,7 @@ import com.lidev.mycountriesapp.ui.components.ScrollBubble
 import com.lidev.mycountriesapp.ui.screens.countries.CountriesScreenViewModel
 import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountriesTopAppBar
 import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountryDetailSheet
-import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountryItem
+import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountryList
 import com.lidev.mycountriesapp.ui.screens.countries.composables.components.NoInternetComp
 import com.lidev.mycountriesapp.ui.screens.countries.model.CountryDetailUi
 import com.lidev.mycountriesapp.ui.screens.countries.model.CountryUi
@@ -125,35 +120,16 @@ private fun Content(
                     onRetry = onRetry,
                 )
             } else {
-                LazyColumn(
+                CountryList(
                     modifier = Modifier.fillMaxSize(),
-                    state = lazyListState,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.small),
-                ) {
-                    items(filteredCountries, key = { it.code }) { countryItem ->
-                        CountryItem(
-                            isFavorite = countryItem.isFavorite,
-                            emoji = countryItem.emoji,
-                            name = countryItem.name,
-                            onItemClick = {
-                                onItemClick(countryItem.code)
-                            },
-                            onFavoriteClick = {
-                                showLikeAnimation = !countryItem.isFavorite
-                                onFavoriteClick(countryItem.code)
-                            },
-                        )
-                    }
-                    item {
-                        Spacer(
-                            modifier =
-                                Modifier.height(
-                                    MaterialTheme.dimens.large,
-                                ),
-                        )
-                    }
-                }
+                    lazyListState = lazyListState,
+                    filteredCountries = filteredCountries,
+                    onItemClick = onItemClick,
+                    onFavoriteClick = {
+                        showLikeAnimation = !it.isFavorite
+                        onFavoriteClick(it.code)
+                    },
+                )
             }
 
             if (!showSearchBar && isOnline) {
@@ -230,7 +206,7 @@ private fun ContentPreview() {
             onFavoriteClick = {},
             searchQuery = "",
             onSearchQueryChange = {},
-            isOnline = false,
+            isOnline = true,
             onRetry = {},
         )
     }

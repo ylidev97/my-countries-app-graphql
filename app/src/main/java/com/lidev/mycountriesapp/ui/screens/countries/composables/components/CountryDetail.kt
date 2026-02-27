@@ -28,7 +28,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CountryDetailSheet(
+internal fun CountryDetailSheet(
     countryDetail: CountryDetailUi? = null,
     onFavoriteToggle: (Boolean) -> Unit,
     onDismiss: () -> Unit
@@ -54,7 +54,7 @@ fun CountryDetailSheet(
 }
 
 @Composable
-internal fun CountryDetail(
+private fun CountryDetail(
     modifier: Modifier = Modifier,
     countryName: String = "Cuba",
     emoji: String = "🇨🇺",
