@@ -39,6 +39,7 @@ private val LightColorScheme =
  * Extension property to access dimensions easily
  * @see Dimensions
  * */
+@Suppress("UnusedReceiverParameter")
 val MaterialTheme.dimens: Dimensions
     @Composable
     @ReadOnlyComposable
@@ -48,6 +49,7 @@ val MaterialTheme.dimens: Dimensions
  * Extension property to access to localColor easily
  * @see MyCountriesAppColors
  * */
+@Suppress("UnusedReceiverParameter", "unused")
 val MaterialTheme.localColors: MyCountriesAppColors
     @Composable
     @ReadOnlyComposable

@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 
@@ -66,6 +68,7 @@ android {
                     create("default") {
                     }
                 }
+                @Suppress("UnstableApiUsage")
                 useJunitEngine {
                     inputs += listOf(com.android.build.api.dsl.AgpTestSuiteInputParameters.TESTED_APKS)
                     includeEngines += listOf("journeys-test-engine")
