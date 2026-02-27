@@ -7,21 +7,41 @@ config:
   validation: true
   warningsAsErrors: false
 
-
 processors:
   # Enables or disables all code processors.
   active: true
+  exclude:
+    - 'DetektProgressListener'
+      # - 'KtFileCountProcessor'
+      # - 'PackageCountProcessor'
+      # - 'ClassCountProcessor'
+      # - 'FunctionCountProcessor'
+      # - 'PropertyCountProcessor'
+      # - 'ProjectComplexityProcessor'
+      # - 'ProjectCognitiveComplexityProcessor'
+      # - 'ProjectLLOCProcessor'
+      # - 'ProjectCLOCProcessor'
+      # - 'ProjectLOCProcessor'
+      # - 'ProjectSLOCProcessor'
+      # - 'LicenseHeaderLoaderExtension'
+
+output-reports:
+  active: true
+  exclude:
+  #  - 'HtmlOutputReport'
+  #  - 'XmlOutputReport'
+  #  - 'sarif'
+  #  - 'MdOutputReport'
 
 console-reports:
   # Enables or disables reports printed directly to the console.
   active: true
-
-#output-reporters:
-#  HTML:
-#    # Enables or disables the generation of an HTML report.
-#    active: true
-#    # The destination path for the generated HTML report.
-#    output: "build/reports/detekt/detekt.html"
+  #  - 'ProjectStatisticsReport'
+  #  - 'ComplexityReport'
+  #  - 'NotificationReport'
+  #  - 'FindingsReport'
+  #  - 'FileBasedFindingsReport'
+  #  - 'LiteFindingsReport'
 
 naming:
   # Enforces that @Composable functions start with an uppercase letter (PascalCase).
@@ -42,7 +62,19 @@ complexity:
   LongMethod:
     threshold: 100
     ignoreAnnotated: [ 'Composable', 'Preview' ]
-
+  # Reports nested code blocks that are too deep.
+  NestedBlockDepth:
+    threshold: 4
+  # Measures the complexity of a method using Cyclomatic Complexity.
+  # Renamed from ComplexMethod to CyclomaticComplexMethod in recent versions.
+  CyclomaticComplexMethod:
+    active: true
+    threshold: 15
+  # Reports files with too many functions.
+  TooManyFunctions:
+    thresholdInFiles: 40
+    thresholdInClasses: 30
+    thresholdInInterfaces: 20
 
 style:
   # The maximum allowed length for a single line of code.
@@ -65,30 +97,53 @@ style:
   UnusedPrivateMember:
     active: true
     ignoreAnnotated: [ 'Composable', 'Preview' ]
+  # Discourages wildcard imports like import.a.b.*
+  WildcardImport:
+    active: true
+  # Enforces standard order of modifiers. Essential for Compose Modifiers.
+  ModifierOrder:
+    active: true
+
+performance:
+  # Reports use of the spread operator (*args) which can be expensive.
+  SpreadOperator:
+    active: true
 
 potential-bugs:
-  #  # Reports unused imports.
-  #  UnusedImport:
-  #    active: true
   # Reports invalid ranges.
   InvalidRange:
+    active: true
+  # Reports usage of referential equality (===) where structural equality (==) is likely intended.
+  AvoidReferentialEquality:
+    active: true
+
+empty-blocks:
+  # Reports empty catch blocks.
+  EmptyCatchBlock:
+    active: true
+  # Reports empty function bodies.
+  EmptyFunctionBlock:
+    active: true
+    ignoreAnnotated: [ 'Composable' ] # Some Composables are intentionally empty for slot APIs.
+  # Reports empty if blocks.
+  EmptyIfBlock:
     active: true
 
 comments:
   # Requires all public classes to have KDoc documentation.
   UndocumentedPublicClass:
     active: false
-
-    # Exclude files in specific packages (e.g., your data models or DTOs)
-    excludes: [ '**/model/**',
-                '**/dto/**',
-                '**/entity/**',
-                '**/*Activity.kt',
-                '**/*ViewModel.kt', # ViewModel
+    excludes: [
+      '**/model/**',
+      '**/dto/**',
+      '**/entity/**',
+      '**/*Activity.kt',
+      '**/*ViewModel.kt',
+      '**/*Screen.kt'
     ]
     ignoreAnnotated:
       - 'Composable'
       - 'Preview'
-      - 'Stable' # Common for data classes in Compose
-      - 'Immutable' # Common for data classes in Compose
-      - 'AndroidEntryPoint' # For Activities/Fragments using Hilt
+      - 'Stable'
+      - 'Immutable'
+      - 'AndroidEntryPoint'

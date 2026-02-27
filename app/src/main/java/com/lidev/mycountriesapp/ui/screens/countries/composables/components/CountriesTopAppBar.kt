@@ -28,7 +28,7 @@ import com.lidev.mycountriesapp.ui.theme.MyCountriesAppTheme
 @Composable
 internal fun CountriesTopAppBar(
     showSearchBar: Boolean,
-    isOnline: Boolean=true,
+    isOnline: Boolean = true,
     onSearchBarToggle: (Boolean) -> Unit,
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
@@ -38,26 +38,26 @@ internal fun CountriesTopAppBar(
         label = "TopAppBar animation",
         transitionSpec = {
             if (targetState) {
-                (slideInHorizontally { width -> width } + fadeIn()).togetherWith(
-                    slideOutHorizontally { width -> -width } + fadeOut())
+                (slideInHorizontally { width -> width } + fadeIn())
+                    .togetherWith(slideOutHorizontally { width -> -width } + fadeOut())
             } else {
-                (slideInHorizontally { width -> -width } + fadeIn()).togetherWith(
-                    slideOutHorizontally { width -> width } + fadeOut())
+                (slideInHorizontally { width -> -width } + fadeIn())
+                    .togetherWith(slideOutHorizontally { width -> width } + fadeOut())
             }.using(
-                SizeTransform(clip = false)
+                SizeTransform(clip = false),
             )
-        }
+        },
     ) { isSearchVisible ->
         if (isSearchVisible) {
             SearchTopAppBar(
                 searchQuery = searchQuery,
                 onSearchQueryChange = onSearchQueryChange,
-                onCloseSearch = { onSearchBarToggle(false) }
+                onCloseSearch = { onSearchBarToggle(false) },
             )
         } else {
             RegularTopAppBar(
                 onOpenSearch = { onSearchBarToggle(true) },
-                searchIconEnable = isOnline
+                searchIconEnable = isOnline,
             )
         }
     }
@@ -67,7 +67,7 @@ internal fun CountriesTopAppBar(
 @Composable
 private fun RegularTopAppBar(
     searchIconEnable: Boolean,
-    onOpenSearch: () -> Unit
+    onOpenSearch: () -> Unit,
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = stringResource(R.string.countries)) },
@@ -75,7 +75,7 @@ private fun RegularTopAppBar(
             IconButton(onClick = onOpenSearch, enabled = searchIconEnable) {
                 SearchIcon()
             }
-        }
+        },
     )
 }
 
@@ -83,7 +83,7 @@ private fun RegularTopAppBar(
 private fun SearchIcon() {
     Icon(
         painter = painterResource(id = R.drawable.ic_search),
-        contentDescription = "Search"
+        contentDescription = "Search",
     )
 }
 
@@ -92,7 +92,7 @@ private fun SearchIcon() {
 private fun SearchTopAppBar(
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
-    onCloseSearch: () -> Unit
+    onCloseSearch: () -> Unit,
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -115,22 +115,22 @@ private fun SearchTopAppBar(
                     }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_close),
-                            contentDescription = stringResource(R.string.close)
+                            contentDescription = stringResource(R.string.close),
                         )
                     }
                 },
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    disabledContainerColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                )
+                colors =
+                    TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        disabledContainerColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                    ),
             )
-        }
+        },
     )
 }
-
 
 @Preview
 @Composable
@@ -140,7 +140,7 @@ private fun CountriesTopAppBarPreview() {
             showSearchBar = false,
             onSearchBarToggle = {},
             searchQuery = "",
-            onSearchQueryChange = {}
+            onSearchQueryChange = {},
         )
     }
 }
@@ -153,7 +153,7 @@ private fun CountriesTopAppBarSearchPreview() {
             showSearchBar = true,
             onSearchBarToggle = {},
             searchQuery = "test",
-            onSearchQueryChange = {}
+            onSearchQueryChange = {},
         )
     }
 }
