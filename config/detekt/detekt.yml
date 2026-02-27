@@ -23,11 +23,12 @@ processors:
       # - 'ProjectCLOCProcessor'
       # - 'ProjectLOCProcessor'
       # - 'ProjectSLOCProcessor'
-      # - 'LicenseHeaderLoaderExtension'
+    # - 'LicenseHeaderLoaderExtension'
 
 output-reports:
   active: true
   exclude:
+    [ ]
   #  - 'HtmlOutputReport'
   #  - 'XmlOutputReport'
   #  - 'sarif'
