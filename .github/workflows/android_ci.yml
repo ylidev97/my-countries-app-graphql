@@ -24,6 +24,16 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Run Detekt
+        run: ./gradlew detekt
+
+      - name: Upload Detekt report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: detekt-report
+          path: app/build/reports/detekt/detekt.html
+
       - name: Run unit tests
         run: ./gradlew testDebugUnitTest
 
@@ -31,6 +41,7 @@ jobs:
         run: ./gradlew lintDebug
 
       - name: Upload lint report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: lint-report
@@ -43,7 +54,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: app/build/outputs/apk/debug/*.apk
 
       - name: Upload test reports
         if: always()
