@@ -8,30 +8,34 @@ import android.net.NetworkRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class NetworkMonitor(context: Context) {
-
+class NetworkMonitor(
+    context: Context,
+) {
     private val connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     private val _isOnline = MutableStateFlow(false)
     val isOnline = _isOnline.asStateFlow()
 
-    private val networkCallback = object : ConnectivityManager.NetworkCallback() {
-        override fun onAvailable(network: Network) {
-            super.onAvailable(network)
-            _isOnline.value = true
-        }
+    private val networkCallback =
+        object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                super.onAvailable(network)
+                _isOnline.value = true
+            }
 
-        override fun onLost(network: Network) {
-            super.onLost(network)
-            _isOnline.value = false
+            override fun onLost(network: Network) {
+                super.onLost(network)
+                _isOnline.value = false
+            }
         }
-    }
 
     init {
-        val networkRequest = NetworkRequest.Builder()
-            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-            .build()
+        val networkRequest =
+            NetworkRequest
+                .Builder()
+                .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                .build()
         connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
 
         // Initial check
@@ -41,7 +45,7 @@ class NetworkMonitor(context: Context) {
             capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
     }
 
-    fun unregister() {
-        connectivityManager.unregisterNetworkCallback(networkCallback)
-    }
+//    fun unregister() {
+//        connectivityManager.unregisterNetworkCallback(networkCallback)
+//    }
 }
