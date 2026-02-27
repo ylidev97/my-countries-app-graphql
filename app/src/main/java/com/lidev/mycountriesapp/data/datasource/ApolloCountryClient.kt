@@ -28,7 +28,8 @@ class ApolloCountryClient(
                 .query(GetCountryByCodeQuery(code))
                 .execute()
                 .dataAssertNoErrors
-                .country?.toDomain()
+                .country
+                ?.toDomain()
         }
     }
 }

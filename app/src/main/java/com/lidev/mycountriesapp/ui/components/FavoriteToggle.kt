@@ -27,11 +27,11 @@ internal fun FavoriteToggle(
     LaunchedEffect(isFavorite) {
         scale.animateTo(
             targetValue = if (isFavorite) 2f else 1.0f,
-            animationSpec = tween(durationMillis = 200)
+            animationSpec = tween(durationMillis = 200),
         )
         scale.animateTo(
             targetValue = 1.0f,
-            animationSpec = tween(durationMillis = 200)
+            animationSpec = tween(durationMillis = 200),
         )
     }
 
@@ -45,7 +45,7 @@ internal fun FavoriteToggle(
             modifier = Modifier.graphicsLayer {
                 scaleX = scale.value
                 scaleY = scale.value
-            }
+            },
         )
     }
 }

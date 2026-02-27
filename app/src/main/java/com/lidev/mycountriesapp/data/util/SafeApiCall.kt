@@ -7,12 +7,11 @@ import kotlinx.coroutines.withContext
 
 internal suspend inline fun <T> safeApiCall(
     crossinline block: suspend () -> T
-): Result<T> {
-    return withContext(Dispatchers.IO) {
+): Result<T> =
+    withContext(Dispatchers.IO) {
         runCatching { block() }
             .recoverCatching { exception ->
                 throw exception.toNetworkError()
             }
     }
-}
 

@@ -6,8 +6,6 @@ import com.lidev.mycountriesapp.domain.repository.CountryRepository
 class GetCountryByCodeUseCase(
     private val repository: CountryRepository
 ) {
-
-    suspend operator fun invoke(code: String): Result<CountryDetail?> =
-        repository.getCountryByCode(code)
+    suspend operator fun invoke(code: String): Result<CountryDetail?> = repository.getCountryByCode(code)
 
 }
