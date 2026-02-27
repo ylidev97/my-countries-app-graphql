@@ -21,6 +21,7 @@ kotzilla = "2.0.6"
 junitPlatformLauncher = "6.0.3"
 junitPlatformEngine = "6.0.3"
 journeysJunitEngine = "0.2.2"
+detekt = "1.23.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -86,4 +87,4 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
 room = { id = "androidx.room", version.ref = "room-version" }
 kotzilla = { id = "io.kotzilla.kotzilla-plugin", version.ref = "kotzilla" }
-
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

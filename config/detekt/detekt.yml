@@ -1,0 +1,94 @@
+build:
+  # The maximum number of issues allowed before the build fails.
+  maxIssues: 10
+
+config:
+  # Whether detest should validate its own configuration file.
+  validation: true
+  warningsAsErrors: false
+
+
+processors:
+  # Enables or disables all code processors.
+  active: true
+
+console-reports:
+  # Enables or disables reports printed directly to the console.
+  active: true
+
+#output-reporters:
+#  HTML:
+#    # Enables or disables the generation of an HTML report.
+#    active: true
+#    # The destination path for the generated HTML report.
+#    output: "build/reports/detekt/detekt.html"
+
+naming:
+  # Enforces that @Composable functions start with an uppercase letter (PascalCase).
+  FunctionNaming:
+    active: true
+    functionPattern: '[a-z][a-zA-Z0-0]*|[A-Z][a-zA-Z0-0]*'
+    excludeClassPattern: '.*'
+    ignoreAnnotated: [ 'Composable','Preview' ]
+
+complexity:
+  # Reports functions with a long parameter list.
+  LongParameterList:
+    ignoreAnnotated: [ 'Composable','Preview' ]
+  # Reports classes with too many lines of code.
+  LargeClass:
+    threshold: 600
+  # Reports functions with too many lines of code.
+  LongMethod:
+    threshold: 100
+    ignoreAnnotated: [ 'Composable', 'Preview' ]
+
+
+style:
+  # The maximum allowed length for a single line of code.
+  MaxLineLength:
+    maxLineLength: 120
+    excludePackageStatements: true
+    excludeImportStatements: true
+  # Reports the use of magic numbers.
+  MagicNumber:
+    ignoreNumbers:
+      - '-1'
+      - '0'
+      - '1'
+      - '2'
+      - '100'
+  # Limits the number of return statements in a function.
+  ReturnCount:
+    max: 3
+  # Reports unused private classes, functions, and properties.
+  UnusedPrivateMember:
+    active: true
+    ignoreAnnotated: [ 'Composable', 'Preview' ]
+
+potential-bugs:
+  #  # Reports unused imports.
+  #  UnusedImport:
+  #    active: true
+  # Reports invalid ranges.
+  InvalidRange:
+    active: true
+
+comments:
+  # Requires all public classes to have KDoc documentation.
+  UndocumentedPublicClass:
+    active: false
+
+    # Exclude files in specific packages (e.g., your data models or DTOs)
+    excludes: [ '**/model/**',
+                '**/dto/**',
+                '**/entity/**',
+                '**/*Activity.kt',
+                '**/*ViewModel.kt', # ViewModel
+    ]
+    ignoreAnnotated:
+      - 'Composable'
+      - 'Preview'
+      - 'Stable' # Common for data classes in Compose
+      - 'Immutable' # Common for data classes in Compose
+      - 'AndroidEntryPoint' # For Activities/Fragments using Hilt

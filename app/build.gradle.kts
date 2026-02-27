@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.apollo)
     alias(libs.plugins.kotzilla)
+    alias(libs.plugins.detekt)
 }
 
 android {
@@ -137,8 +138,20 @@ androidComponents {
             val versionName = output.versionName.get()
             val outputImpl = output as? com.android.build.api.variant.impl.VariantOutputImpl
             outputImpl?.outputFileName?.set(
-                "com-lidev-mycountriesapp-v${versionName}-${variant.buildType}.apk"
+                "com-lidev-mycountriesapp-v$versionName-${variant.buildType}.apk"
             )
         }
+    }
+}
+
+detekt {
+    toolVersion = libs.versions.detekt.get()
+    buildUponDefaultConfig = true
+    allRules = false
+    config.setFrom(files("${project.rootDir}/config/detekt/detekt.yml"))
+    reports {
+        html.required.set(true)
+        xml.required.set(true)
+        txt.required.set(false)
     }
 }
