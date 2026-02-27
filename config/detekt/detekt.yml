@@ -1,0 +1,150 @@
+build:
+  # The maximum number of issues allowed before the build fails.
+  maxIssues: 10
+
+config:
+  # Whether detest should validate its own configuration file.
+  validation: true
+  warningsAsErrors: false
+
+processors:
+  # Enables or disables all code processors.
+  active: true
+  exclude:
+    - 'DetektProgressListener'
+      # - 'KtFileCountProcessor'
+      # - 'PackageCountProcessor'
+      # - 'ClassCountProcessor'
+      # - 'FunctionCountProcessor'
+      # - 'PropertyCountProcessor'
+      # - 'ProjectComplexityProcessor'
+      # - 'ProjectCognitiveComplexityProcessor'
+      # - 'ProjectLLOCProcessor'
+      # - 'ProjectCLOCProcessor'
+      # - 'ProjectLOCProcessor'
+      # - 'ProjectSLOCProcessor'
+    # - 'LicenseHeaderLoaderExtension'
+
+output-reports:
+  active: true
+  exclude:
+    [ ]
+  #  - 'HtmlOutputReport'
+  #  - 'XmlOutputReport'
+  #  - 'sarif'
+  #  - 'MdOutputReport'
+
+console-reports:
+  # Enables or disables reports printed directly to the console.
+  active: true
+  #  - 'ProjectStatisticsReport'
+  #  - 'ComplexityReport'
+  #  - 'NotificationReport'
+  #  - 'FindingsReport'
+  #  - 'FileBasedFindingsReport'
+  #  - 'LiteFindingsReport'
+
+naming:
+  # Enforces that @Composable functions start with an uppercase letter (PascalCase).
+  FunctionNaming:
+    active: true
+    functionPattern: '[a-z][a-zA-Z0-0]*|[A-Z][a-zA-Z0-0]*'
+    excludeClassPattern: '.*'
+    ignoreAnnotated: [ 'Composable','Preview' ]
+
+complexity:
+  # Reports functions with a long parameter list.
+  LongParameterList:
+    ignoreAnnotated: [ 'Composable','Preview' ]
+  # Reports classes with too many lines of code.
+  LargeClass:
+    threshold: 600
+  # Reports functions with too many lines of code.
+  LongMethod:
+    threshold: 100
+    ignoreAnnotated: [ 'Composable', 'Preview' ]
+  # Reports nested code blocks that are too deep.
+  NestedBlockDepth:
+    threshold: 4
+  # Measures the complexity of a method using Cyclomatic Complexity.
+  # Renamed from ComplexMethod to CyclomaticComplexMethod in recent versions.
+  CyclomaticComplexMethod:
+    active: true
+    threshold: 15
+  # Reports files with too many functions.
+  TooManyFunctions:
+    thresholdInFiles: 40
+    thresholdInClasses: 30
+    thresholdInInterfaces: 20
+
+style:
+  # The maximum allowed length for a single line of code.
+  MaxLineLength:
+    maxLineLength: 120
+    excludePackageStatements: true
+    excludeImportStatements: true
+  # Reports the use of magic numbers.
+  MagicNumber:
+    ignoreNumbers:
+      - '-1'
+      - '0'
+      - '1'
+      - '2'
+      - '100'
+  # Limits the number of return statements in a function.
+  ReturnCount:
+    max: 3
+  # Reports unused private classes, functions, and properties.
+  UnusedPrivateMember:
+    active: true
+    ignoreAnnotated: [ 'Composable', 'Preview' ]
+  # Discourages wildcard imports like import.a.b.*
+  WildcardImport:
+    active: true
+  # Enforces standard order of modifiers. Essential for Compose Modifiers.
+  ModifierOrder:
+    active: true
+
+performance:
+  # Reports use of the spread operator (*args) which can be expensive.
+  SpreadOperator:
+    active: true
+
+potential-bugs:
+  # Reports invalid ranges.
+  InvalidRange:
+    active: true
+  # Reports usage of referential equality (===) where structural equality (==) is likely intended.
+  AvoidReferentialEquality:
+    active: true
+
+empty-blocks:
+  # Reports empty catch blocks.
+  EmptyCatchBlock:
+    active: true
+  # Reports empty function bodies.
+  EmptyFunctionBlock:
+    active: true
+    ignoreAnnotated: [ 'Composable' ] # Some Composables are intentionally empty for slot APIs.
+  # Reports empty if blocks.
+  EmptyIfBlock:
+    active: true
+
+comments:
+  # Requires all public classes to have KDoc documentation.
+  UndocumentedPublicClass:
+    active: false
+    excludes: [
+      '**/model/**',
+      '**/dto/**',
+      '**/entity/**',
+      '**/*Activity.kt',
+      '**/*ViewModel.kt',
+      '**/*Screen.kt'
+    ]
+    ignoreAnnotated:
+      - 'Composable'
+      - 'Preview'
+      - 'Stable'
+      - 'Immutable'
+      - 'AndroidEntryPoint'

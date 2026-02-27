@@ -18,9 +18,10 @@ corutines-ktx = "1.10.2"
 koin = "4.1.1"
 coil = "3.3.0"
 kotzilla = "2.0.6"
-junitPlatformLauncher = "1.13.4"
-junitPlatformEngine = "1.13.4"
-journeysJunitEngine = "0.2.1"
+junitPlatformLauncher = "6.0.3"
+junitPlatformEngine = "6.0.3"
+journeysJunitEngine = "0.2.2"
+detekt = "1.23.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,12 +34,22 @@ apollo-cache = { group = "com.apollographql.apollo", name = "apollo-normalized-c
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
 
-##Rom/Store
+##UnusedVersionCatalogEntry depedencies (This is temporal)
+#noinspection UnusedVersionCatalogEntry Temporal
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room-version" }
+#noinspection UnusedVersionCatalogEntry Temporal
 datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastore" }
+#noinspection UnusedVersionCatalogEntry Temporal
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+#noinspection UnusedVersionCatalogEntry Temporal
 androidx-room-runtime-database = { group = "androidx.room", name = "room-runtime", version.ref = "room-version" }
+#noinspection UnusedVersionCatalogEntry Temporal
 androidx-room-compiler-database = { group = "androidx.room", name = "room-compiler", version.ref = "room-version" }
+#noinspection UnusedVersionCatalogEntry Temporal
+androidx-compose-material-windows-size = { group = "androidx.compose.material3", name = "material3-window-size-class", version = "1.4.0" }
+#noinspection UnusedVersionCatalogEntry Temporal
+androidx-windows-windows = { group = "androidx.window", name = "window", version = "1.5.1" }
+
 
 coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "corutines-ktx" }
 
@@ -50,8 +61,6 @@ koin-androidx-navigation = { module = "io.insert-koin:koin-androidx-navigation",
 koin-test-implementation = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 kotzilla-sdk = { group = "io.kotzilla", name = "kotzilla-sdk-compose", version.ref = "kotzilla" }
 
-
-
 ##Compose - Ui
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
@@ -62,9 +71,10 @@ androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+
 ##coil
-io-coil-kt = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil"}
-io-coil-kt-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil"}
+io-coil-kt = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
+io-coil-kt-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 ##inmutable list
 kotlinx-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version = "0.4.0" }
 com-airbnb-lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version = "6.7.1" }
@@ -83,6 +93,8 @@ journeys-junit-engine = { group = "com.android.tools.journeys", name = "journeys
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
-room = { id = "androidx.room", version.ref = "room-version" }
 kotzilla = { id = "io.kotzilla.kotzilla-plugin", version.ref = "kotzilla" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
+#noinspection UnusedVersionCatalogEntry Temporal
+room = { id = "androidx.room", version.ref = "room-version" }

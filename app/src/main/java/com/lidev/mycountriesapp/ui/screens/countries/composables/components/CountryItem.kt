@@ -16,10 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lidev.mycountriesapp.ui.components.FavoriteToggle
-
+import com.lidev.mycountriesapp.ui.theme.dimens
 
 @Composable
 internal fun CountryItem(
@@ -27,38 +26,44 @@ internal fun CountryItem(
     emoji: String,
     name: String,
     onItemClick: () -> Unit,
-    onFavoriteClick: (Boolean) -> Unit
+    onFavoriteClick: (Boolean) -> Unit,
 ) {
-
     OutlinedCard(
         modifier = Modifier.fillMaxWidth(),
-        onClick = onItemClick
+        onClick = onItemClick,
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(all = MaterialTheme.dimens.small),
             horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(emoji, fontSize = 40.sp)
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(
+                modifier =
+                    Modifier.width(
+                        MaterialTheme.dimens.mediumSmall,
+                    ),
+            )
             Column(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.Start
+                horizontalAlignment = Alignment.Start,
             ) {
                 Text(
-                    name, style = MaterialTheme.typography.headlineMedium,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    name,
+                    style = MaterialTheme.typography.headlineMedium,
+                    maxLines = CountryItemDefault.MAX_LINES_NAME,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(MaterialTheme.dimens.small))
             Box(contentAlignment = Alignment.CenterEnd) {
                 FavoriteToggle(
                     isFavorite = isFavorite,
-                    onToggle = onFavoriteClick
+                    onToggle = onFavoriteClick,
                 )
             }
         }
@@ -69,20 +74,23 @@ internal fun CountryItem(
 @Preview
 private fun CountryItemPreview() {
     Column(
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.medium),
     ) {
         CountryItem(
             emoji = "\uD83C\uDDE6\uD83C\uDDE9",
             name = "name",
             onItemClick = {},
-            onFavoriteClick = {}
+            onFavoriteClick = {},
         )
         CountryItem(
             emoji = "\uD83C\uDDE6\uD83C\uDDE9",
             name = "Lorem impsum large text when the test is large",
             onItemClick = {},
-            onFavoriteClick = {}
+            onFavoriteClick = {},
         )
     }
+}
 
+private object CountryItemDefault {
+    const val MAX_LINES_NAME = 2
 }

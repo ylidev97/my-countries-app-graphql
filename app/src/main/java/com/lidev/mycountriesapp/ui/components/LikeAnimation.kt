@@ -17,6 +17,6 @@ fun LikeAnimation(modifier: Modifier = Modifier) {
     LottieAnimation(
         composition = composition,
         progress = { progress },
-        modifier = modifier
+        modifier = modifier,
     )
 }

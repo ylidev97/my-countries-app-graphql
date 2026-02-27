@@ -10,12 +10,10 @@ import kotlinx.coroutines.withContext
 internal class CountryRepositoryImpl(
     private val apolloCountryClient: ApolloCountryClient
 ) : CountryRepository {
-
     override suspend fun getCountries(): Result<List<Country>> =
         withContext(Dispatchers.IO) {
             apolloCountryClient.getCountries()
         }
-
 
     override suspend fun getCountryByCode(code: String): Result<CountryDetail?> =
         withContext(Dispatchers.IO) {

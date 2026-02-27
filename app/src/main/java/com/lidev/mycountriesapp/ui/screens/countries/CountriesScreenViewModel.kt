@@ -18,12 +18,10 @@ import kotlinx.coroutines.launch
 class CountriesScreenViewModel(
     private val getCountriesUseCase: GetCountriesUseCase,
     private val getCountryByCodeUseCase: GetCountryByCodeUseCase,
-    networkMonitor: NetworkMonitor
+    networkMonitor: NetworkMonitor,
 ) : ViewModel() {
-
     private val _state = MutableStateFlow(CountriesScreenState())
     val state = _state.asStateFlow()
-
 
     init {
         networkMonitor.isOnline
@@ -32,29 +30,33 @@ class CountriesScreenViewModel(
                     it.copy(
                         isOnline = isOnline,
                         countries = if (!isOnline) persistentListOf() else it.countries,
-                        selectedCountry = if (!isOnline) null else it.selectedCountry
+                        selectedCountry = if (!isOnline) null else it.selectedCountry,
                     )
                 }
                 if (isOnline) {
                     getCountries()
                 }
-            }
-            .launchIn(viewModelScope)
+            }.launchIn(viewModelScope)
     }
-
 
     private suspend fun getCountries() {
         _state.update {
             it.copy(
-                isLoading = true
+                isLoading = true,
             )
         }
         val countriesResult = getCountriesUseCase()
         _state.update { screenState ->
             screenState.copy(
                 countries = countriesResult.getOrNull()?.map { it.toUi() } ?: emptyList(),
-                isLoading = false
+                isLoading = false,
             )
+        }
+    }
+
+    fun onRetry() {
+        viewModelScope.launch {
+            getCountries()
         }
     }
 
@@ -76,27 +78,25 @@ class CountriesScreenViewModel(
                     _state.update {
                         it.copy(
                             isLoading = false,
-                            selectedCountry = countryDetail?.toUi(
-                                isFavorite = it.favoriteCountryCodes.contains(code)
-                            )
+                            selectedCountry =
+                                countryDetail?.toUi(
+                                    isFavorite = it.favoriteCountryCodes.contains(code),
+                                ),
                         )
                     }
-                }
-                .onFailure { _ ->
+                }.onFailure { _ ->
                     _state.update {
                         it.copy(
                             isLoading = false,
-                            error = "Failed to load country details." // Or use throwable.message
+                            error = "Failed to load country details.", // Or use throwable.message
                         )
                     }
                 }
         }
     }
 
-
     fun toggleFavorite(code: String) {
         viewModelScope.launch {
-
             val currentFavorites = _state.value.favoriteCountryCodes.toMutableSet()
             val isCurrentlyFavorite = currentFavorites.contains(code)
 
@@ -106,29 +106,28 @@ class CountriesScreenViewModel(
                 currentFavorites.add(code)
             }
 
-
             _state.update { currentState ->
                 currentState.copy(
                     favoriteCountryCodes = currentFavorites.toList(),
-                    countries = currentState.countries.map { country ->
-                        // Avoid re-copying if the favorite status hasn't changed
-                        if (country.code == code) {
-                            country.copy(isFavorite = !isCurrentlyFavorite)
-                        } else {
-                            country
-                        }
-                    },
-                    selectedCountry = currentState.selectedCountry?.let { selected ->
-                        if (selected.code == code) {
-                            selected.copy(isFavorite = !isCurrentlyFavorite)
-                        } else {
-                            selected
-                        }
-                    }
+                    countries =
+                        currentState.countries.map { country ->
+                            // Avoid re-copying if the favorite status hasn't changed
+                            if (country.code == code) {
+                                country.copy(isFavorite = !isCurrentlyFavorite)
+                            } else {
+                                country
+                            }
+                        },
+                    selectedCountry =
+                        currentState.selectedCountry?.let { selected ->
+                            if (selected.code == code) {
+                                selected.copy(isFavorite = !isCurrentlyFavorite)
+                            } else {
+                                selected
+                            }
+                        },
                 )
             }
         }
     }
-
-
 }

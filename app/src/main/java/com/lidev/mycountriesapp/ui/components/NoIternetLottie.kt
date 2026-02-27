@@ -11,11 +11,9 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.lidev.mycountriesapp.R
 
 @Composable
-fun NoInternetLottie(
-    modifier: Modifier = Modifier
-) {
+fun NoInternetLottie(modifier: Modifier = Modifier) {
     val composition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(R.raw.no_internet)
+        LottieCompositionSpec.RawRes(R.raw.no_internet),
     )
 
     val progress by animateLottieCompositionAsState(
@@ -23,12 +21,11 @@ fun NoInternetLottie(
         composition,
         // Iterates Forever
         iterations = LottieConstants.IterateForever,
-
-        )
+    )
 
     LottieAnimation(
         composition = composition,
         progress = { progress },
-        modifier = modifier
+        modifier = modifier,
     )
 }

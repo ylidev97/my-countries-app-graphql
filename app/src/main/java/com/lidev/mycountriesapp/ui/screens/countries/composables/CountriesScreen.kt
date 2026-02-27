@@ -8,14 +8,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,19 +25,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lidev.mycountriesapp.ui.components.LikeAnimation
 import com.lidev.mycountriesapp.ui.components.LoadingDialog
-import com.lidev.mycountriesapp.ui.components.NoInternetLottie
 import com.lidev.mycountriesapp.ui.components.ScrollBubble
 import com.lidev.mycountriesapp.ui.screens.countries.CountriesScreenViewModel
 import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountriesTopAppBar
 import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountryDetailSheet
 import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountryItem
+import com.lidev.mycountriesapp.ui.screens.countries.composables.components.NoInternetComp
 import com.lidev.mycountriesapp.ui.screens.countries.model.CountryDetailUi
 import com.lidev.mycountriesapp.ui.screens.countries.model.CountryUi
 import com.lidev.mycountriesapp.ui.theme.MyCountriesAppTheme
+import com.lidev.mycountriesapp.ui.theme.dimens
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -61,7 +60,8 @@ internal fun CountriesScreen() {
         onItemClick = viewModel::selectCountry,
         onFavoriteClick = viewModel::toggleFavorite,
         onSearchQueryChange = viewModel::onSearchQueryChange,
-        searchQuery = state.value.searchQuery
+        searchQuery = state.value.searchQuery,
+        onRetry = viewModel::onRetry,
     )
 }
 
@@ -76,26 +76,28 @@ private fun Content(
     onItemClick: (String) -> Unit,
     onFavoriteClick: (String) -> Unit,
     searchQuery: String,
-    onSearchQueryChange: (String) -> Unit
+    onSearchQueryChange: (String) -> Unit,
+    onRetry: () -> Unit,
 ) {
-
     var showLikeAnimation by remember { mutableStateOf(false) }
     var showSearchBar by remember { mutableStateOf(false) }
     val lazyListState = rememberLazyListState()
-    val filteredCountries = remember(countries, searchQuery) {
-        if (searchQuery.isBlank()) {
-            countries
-        } else {
-            countries.filter {
-                it.name.contains(searchQuery, ignoreCase = true)
-            }.sortedBy { it.name }.toPersistentList()
+    val filteredCountries =
+        remember(countries, searchQuery) {
+            if (searchQuery.isBlank()) {
+                countries
+            } else {
+                countries
+                    .filter {
+                        it.name.contains(searchQuery, ignoreCase = true)
+                    }.sortedBy { it.name }
+                    .toPersistentList()
+            }
         }
-    }
-
 
     LaunchedEffect(showLikeAnimation) {
         if (showLikeAnimation) {
-            delay(1000)
+            delay(CountriesScreenDefaults.DELAY_TIMER)
             showLikeAnimation = false
         }
     }
@@ -108,35 +110,26 @@ private fun Content(
                 onSearchBarToggle = { showSearchBar = it },
                 searchQuery = searchQuery,
                 onSearchQueryChange = onSearchQueryChange,
-                isOnline = isOnline
+                isOnline = isOnline,
             )
-        }
+        },
     ) { innerPadding ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
         ) {
-
             if (!isOnline) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            top = 64.dp
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    NoInternetLottie(
-                        modifier = Modifier.size(360.dp)
-                    )
-                }
+                NoInternetComp(
+                    onRetry = onRetry,
+                )
             } else {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     state = lazyListState,
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.small),
                 ) {
                     items(filteredCountries, key = { it.code }) { countryItem ->
                         CountryItem(
@@ -149,31 +142,39 @@ private fun Content(
                             onFavoriteClick = {
                                 showLikeAnimation = !countryItem.isFavorite
                                 onFavoriteClick(countryItem.code)
-                            }
+                            },
                         )
                     }
                     item {
-                        Spacer(modifier = Modifier.height(24.dp))
+                        Spacer(
+                            modifier =
+                                Modifier.height(
+                                    MaterialTheme.dimens.large,
+                                ),
+                        )
                     }
                 }
             }
 
             if (!showSearchBar && isOnline) {
                 ScrollBubble(
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(end = 8.dp, top = 32.dp),
+                    modifier =
+                        Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(
+                                end = MaterialTheme.dimens.small,
+                                top = MaterialTheme.dimens.extraLarge,
+                            ),
                     lazyListState = lazyListState,
-                    firstLetters = filteredCountries.map { it.name.first() }.toPersistentList()
+                    firstLetters = filteredCountries.map { it.name.first() }.toPersistentList(),
                 )
             }
-
 
             AnimatedVisibility(
                 modifier = Modifier.align(Alignment.Center),
                 visible = showLikeAnimation,
                 enter = scaleIn(spring()),
-                exit = fadeOut()
+                exit = fadeOut(),
             ) {
                 LikeAnimation()
             }
@@ -188,7 +189,7 @@ private fun Content(
         onFavoriteToggle = {
             showLikeAnimation = it
             onFavoriteClick(countryDetail?.code.orEmpty())
-        }
+        },
     )
 }
 
@@ -197,38 +198,44 @@ private fun Content(
 private fun ContentPreview() {
     MyCountriesAppTheme {
         Content(
-            countries = persistentListOf(
-                CountryUi(
-                    code = "US",
-                    name = "United States",
-                    emoji = "🇺🇸",
-                    isFavorite = false
+            countries =
+                persistentListOf(
+                    CountryUi(
+                        code = "US",
+                        name = "United States",
+                        emoji = "🇺🇸",
+                        isFavorite = false,
+                    ),
+                    CountryUi(
+                        code = "CA",
+                        name = "Canada",
+                        emoji = "🇨🇦",
+                        isFavorite = true,
+                    ),
+                    CountryUi(
+                        code = "FR",
+                        name = "France",
+                        emoji = "🇫🇷",
+                        isFavorite = false,
+                    ),
+                    CountryUi(
+                        code = "DE",
+                        name = "Germany",
+                        emoji = "🇩🇪",
+                        isFavorite = false,
+                    ),
                 ),
-                CountryUi(
-                    code = "CA",
-                    name = "Canada",
-                    emoji = "🇨🇦",
-                    isFavorite = true
-                ),
-                CountryUi(
-                    code = "FR",
-                    name = "France",
-                    emoji = "🇫🇷",
-                    isFavorite = false
-                ),
-                CountryUi(
-                    code = "DE",
-                    name = "Germany",
-                    emoji = "🇩🇪",
-                    isFavorite = false
-                )
-            ),
             isLoading = false,
             onItemClick = {},
             onFavoriteClick = {},
             searchQuery = "",
             onSearchQueryChange = {},
-            isOnline = false
+            isOnline = false,
+            onRetry = {},
         )
     }
+}
+
+private object CountriesScreenDefaults {
+    const val DELAY_TIMER: Long = 1000
 }

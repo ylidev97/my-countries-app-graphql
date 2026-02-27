@@ -9,9 +9,10 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
-val appModule = module {
-    single { NetworkMonitor(androidContext()) }
-    factoryOf(::GetCountriesUseCase)
-    factoryOf(::GetCountryByCodeUseCase)
-    viewModelOf(::CountriesScreenViewModel)
-}
+val appModule =
+    module {
+        single { NetworkMonitor(androidContext()) }
+        factoryOf(::GetCountriesUseCase)
+        factoryOf(::GetCountryByCodeUseCase)
+        viewModelOf(::CountriesScreenViewModel)
+    }

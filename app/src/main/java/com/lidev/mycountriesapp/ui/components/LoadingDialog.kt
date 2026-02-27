@@ -12,20 +12,22 @@ import com.lidev.mycountriesapp.ui.theme.MyCountriesAppTheme
 
 @Composable
 internal fun LoadingDialog(
-    isLoading: Boolean
+    isLoading: Boolean,
 ) {
     if (isLoading) {
         Dialog(
             onDismissRequest = {},
-            properties = DialogProperties(
-                dismissOnBackPress = false,
-                dismissOnClickOutside = false,
-                usePlatformDefaultWidth = false
-            )
+            properties =
+                DialogProperties(
+                    dismissOnBackPress = false,
+                    dismissOnClickOutside = false,
+                    usePlatformDefaultWidth = false,
+                ),
         ) {
             Card(
-                modifier = Modifier
-                    .wrapContentSize()
+                modifier =
+                    Modifier
+                        .wrapContentSize(),
             ) {
                 LoadingLottie()
             }
