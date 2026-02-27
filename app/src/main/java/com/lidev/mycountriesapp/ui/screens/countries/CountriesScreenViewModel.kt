@@ -54,6 +54,12 @@ class CountriesScreenViewModel(
         }
     }
 
+    fun onRetry() {
+        viewModelScope.launch {
+            getCountries()
+        }
+    }
+
     fun onSearchQueryChange(query: String) {
         _state.update { it.copy(searchQuery = query) }
     }

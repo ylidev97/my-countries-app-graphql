@@ -68,7 +68,6 @@ android {
                     create("default") {
                     }
                 }
-                @Suppress("UnstableApiUsage")
                 useJunitEngine {
                     inputs += listOf(com.android.build.api.dsl.AgpTestSuiteInputParameters.TESTED_APKS)
                     includeEngines += listOf("journeys-test-engine")

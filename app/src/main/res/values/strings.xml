@@ -13,5 +13,6 @@
     <string name="search">Search</string>
     <string name="search_countries">Search countries…</string>
     <string name="countries">Countries</string>
+    <string name="retry">Retry</string>
 
 </resources>

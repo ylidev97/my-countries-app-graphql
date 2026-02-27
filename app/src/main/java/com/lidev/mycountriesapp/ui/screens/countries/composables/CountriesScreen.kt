@@ -8,10 +8,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -27,16 +25,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lidev.mycountriesapp.ui.components.LikeAnimation
 import com.lidev.mycountriesapp.ui.components.LoadingDialog
-import com.lidev.mycountriesapp.ui.components.NoInternetLottie
 import com.lidev.mycountriesapp.ui.components.ScrollBubble
 import com.lidev.mycountriesapp.ui.screens.countries.CountriesScreenViewModel
 import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountriesTopAppBar
 import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountryDetailSheet
 import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountryItem
+import com.lidev.mycountriesapp.ui.screens.countries.composables.components.NoInternetComp
 import com.lidev.mycountriesapp.ui.screens.countries.model.CountryDetailUi
 import com.lidev.mycountriesapp.ui.screens.countries.model.CountryUi
 import com.lidev.mycountriesapp.ui.theme.MyCountriesAppTheme
@@ -64,6 +61,7 @@ internal fun CountriesScreen() {
         onFavoriteClick = viewModel::toggleFavorite,
         onSearchQueryChange = viewModel::onSearchQueryChange,
         searchQuery = state.value.searchQuery,
+        onRetry = viewModel::onRetry,
     )
 }
 
@@ -79,6 +77,7 @@ private fun Content(
     onFavoriteClick: (String) -> Unit,
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
+    onRetry: () -> Unit,
 ) {
     var showLikeAnimation by remember { mutableStateOf(false) }
     var showSearchBar by remember { mutableStateOf(false) }
@@ -122,22 +121,9 @@ private fun Content(
                     .padding(innerPadding),
         ) {
             if (!isOnline) {
-                Box(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                top = MaterialTheme.dimens.extraExtraLarge,
-                            ),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    NoInternetLottie(
-                        modifier =
-                            Modifier.size(
-                                CountriesScreenDefaults.NO_INTERNET_SIZE,
-                            ),
-                    )
-                }
+                NoInternetComp(
+                    onRetry = onRetry,
+                )
             } else {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
@@ -245,11 +231,11 @@ private fun ContentPreview() {
             searchQuery = "",
             onSearchQueryChange = {},
             isOnline = false,
+            onRetry = {},
         )
     }
 }
 
 private object CountriesScreenDefaults {
     const val DELAY_TIMER: Long = 1000
-    val NO_INTERNET_SIZE = 360.dp
 }
