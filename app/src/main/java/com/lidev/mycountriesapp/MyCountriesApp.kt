@@ -2,13 +2,12 @@ package com.lidev.mycountriesapp
 
 import android.app.Application
 import com.lidev.mycountriesapp.data.id.dataModule
+import io.kotzilla.sdk.analytics.koin.analytics
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
-import io.kotzilla.sdk.analytics.koin.analytics
 
 class MyCountriesApp : Application() {
-
     override fun onCreate() {
         super.onCreate()
         startKoin {
@@ -17,9 +16,8 @@ class MyCountriesApp : Application() {
             analytics()
             modules(
                 appModule,
-                dataModule
+                dataModule,
             )
         }
     }
-
 }
