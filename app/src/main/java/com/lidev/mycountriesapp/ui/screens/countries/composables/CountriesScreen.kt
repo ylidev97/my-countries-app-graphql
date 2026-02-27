@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,6 +40,7 @@ import com.lidev.mycountriesapp.ui.screens.countries.composables.components.Coun
 import com.lidev.mycountriesapp.ui.screens.countries.model.CountryDetailUi
 import com.lidev.mycountriesapp.ui.screens.countries.model.CountryUi
 import com.lidev.mycountriesapp.ui.theme.MyCountriesAppTheme
+import com.lidev.mycountriesapp.ui.theme.dimens
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -61,7 +63,7 @@ internal fun CountriesScreen() {
         onItemClick = viewModel::selectCountry,
         onFavoriteClick = viewModel::toggleFavorite,
         onSearchQueryChange = viewModel::onSearchQueryChange,
-        searchQuery = state.value.searchQuery
+        searchQuery = state.value.searchQuery,
     )
 }
 
@@ -76,26 +78,27 @@ private fun Content(
     onItemClick: (String) -> Unit,
     onFavoriteClick: (String) -> Unit,
     searchQuery: String,
-    onSearchQueryChange: (String) -> Unit
+    onSearchQueryChange: (String) -> Unit,
 ) {
-
     var showLikeAnimation by remember { mutableStateOf(false) }
     var showSearchBar by remember { mutableStateOf(false) }
     val lazyListState = rememberLazyListState()
-    val filteredCountries = remember(countries, searchQuery) {
-        if (searchQuery.isBlank()) {
-            countries
-        } else {
-            countries.filter {
-                it.name.contains(searchQuery, ignoreCase = true)
-            }.sortedBy { it.name }.toPersistentList()
+    val filteredCountries =
+        remember(countries, searchQuery) {
+            if (searchQuery.isBlank()) {
+                countries
+            } else {
+                countries
+                    .filter {
+                        it.name.contains(searchQuery, ignoreCase = true)
+                    }.sortedBy { it.name }
+                    .toPersistentList()
+            }
         }
-    }
-
 
     LaunchedEffect(showLikeAnimation) {
         if (showLikeAnimation) {
-            delay(1000)
+            delay(CountriesScreenDefaults.DELAY_TIMER)
             showLikeAnimation = false
         }
     }
@@ -108,27 +111,31 @@ private fun Content(
                 onSearchBarToggle = { showSearchBar = it },
                 searchQuery = searchQuery,
                 onSearchQueryChange = onSearchQueryChange,
-                isOnline = isOnline
+                isOnline = isOnline,
             )
-        }
+        },
     ) { innerPadding ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
         ) {
-
             if (!isOnline) {
                 Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            top = 64.dp
-                        ),
-                    contentAlignment = Alignment.Center
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                top = MaterialTheme.dimens.extraExtraLarge,
+                            ),
+                    contentAlignment = Alignment.Center,
                 ) {
                     NoInternetLottie(
-                        modifier = Modifier.size(360.dp)
+                        modifier =
+                            Modifier.size(
+                                CountriesScreenDefaults.NO_INTERNET_SIZE,
+                            ),
                     )
                 }
             } else {
@@ -136,7 +143,7 @@ private fun Content(
                     modifier = Modifier.fillMaxSize(),
                     state = lazyListState,
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.small),
                 ) {
                     items(filteredCountries, key = { it.code }) { countryItem ->
                         CountryItem(
@@ -149,31 +156,39 @@ private fun Content(
                             onFavoriteClick = {
                                 showLikeAnimation = !countryItem.isFavorite
                                 onFavoriteClick(countryItem.code)
-                            }
+                            },
                         )
                     }
                     item {
-                        Spacer(modifier = Modifier.height(24.dp))
+                        Spacer(
+                            modifier =
+                                Modifier.height(
+                                    MaterialTheme.dimens.large,
+                                ),
+                        )
                     }
                 }
             }
 
             if (!showSearchBar && isOnline) {
                 ScrollBubble(
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(end = 8.dp, top = 32.dp),
+                    modifier =
+                        Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(
+                                end = MaterialTheme.dimens.small,
+                                top = MaterialTheme.dimens.extraLarge,
+                            ),
                     lazyListState = lazyListState,
-                    firstLetters = filteredCountries.map { it.name.first() }.toPersistentList()
+                    firstLetters = filteredCountries.map { it.name.first() }.toPersistentList(),
                 )
             }
-
 
             AnimatedVisibility(
                 modifier = Modifier.align(Alignment.Center),
                 visible = showLikeAnimation,
                 enter = scaleIn(spring()),
-                exit = fadeOut()
+                exit = fadeOut(),
             ) {
                 LikeAnimation()
             }
@@ -188,7 +203,7 @@ private fun Content(
         onFavoriteToggle = {
             showLikeAnimation = it
             onFavoriteClick(countryDetail?.code.orEmpty())
-        }
+        },
     )
 }
 
@@ -197,38 +212,44 @@ private fun Content(
 private fun ContentPreview() {
     MyCountriesAppTheme {
         Content(
-            countries = persistentListOf(
-                CountryUi(
-                    code = "US",
-                    name = "United States",
-                    emoji = "🇺🇸",
-                    isFavorite = false
+            countries =
+                persistentListOf(
+                    CountryUi(
+                        code = "US",
+                        name = "United States",
+                        emoji = "🇺🇸",
+                        isFavorite = false,
+                    ),
+                    CountryUi(
+                        code = "CA",
+                        name = "Canada",
+                        emoji = "🇨🇦",
+                        isFavorite = true,
+                    ),
+                    CountryUi(
+                        code = "FR",
+                        name = "France",
+                        emoji = "🇫🇷",
+                        isFavorite = false,
+                    ),
+                    CountryUi(
+                        code = "DE",
+                        name = "Germany",
+                        emoji = "🇩🇪",
+                        isFavorite = false,
+                    ),
                 ),
-                CountryUi(
-                    code = "CA",
-                    name = "Canada",
-                    emoji = "🇨🇦",
-                    isFavorite = true
-                ),
-                CountryUi(
-                    code = "FR",
-                    name = "France",
-                    emoji = "🇫🇷",
-                    isFavorite = false
-                ),
-                CountryUi(
-                    code = "DE",
-                    name = "Germany",
-                    emoji = "🇩🇪",
-                    isFavorite = false
-                )
-            ),
             isLoading = false,
             onItemClick = {},
             onFavoriteClick = {},
             searchQuery = "",
             onSearchQueryChange = {},
-            isOnline = false
+            isOnline = false,
         )
     }
+}
+
+private object CountriesScreenDefaults {
+    const val DELAY_TIMER: Long = 1000
+    val NO_INTERNET_SIZE = 360.dp
 }
