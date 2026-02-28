@@ -13,13 +13,15 @@ import com.lidev.mycountriesapp.R
  * •
  * display(Large/Medium/Small): Para pantallas de bienvenida o números muy grandes.
  * •
- * headline(Large/Medium/Small): Para títulos de secciones importantes o nombres de países en su pantalla de detalle.
+ * headline(Large/Medium/Small): Para títulos de secciones importantes o nombres de
+ * países en su pantalla de detalle.
  * •
  * title(Large/Medium/Small): Para títulos de tarjetas (CountryItem) o títulos en la TopAppBar.
  * •
  * body(Large/Medium/Small): Para la mayoría del texto de lectura, descripciones y detalles.
  * •
- * label(Large/Medium/Small): Para textos muy pequeños como etiquetas de botones, subtítulos de campos de texto o leyendas.
+ * label(Large/Medium/Small): Para textos muy pequeños como etiquetas de botones, subtítulos
+ * de campos de texto o leyendas.
  *
  */
 
@@ -33,7 +35,8 @@ val Montserrat =
 // Set of Material typography styles to start with
 val Typography =
     Typography(
-        // DISPLAY: Para pantallas de bienvenida o números muy grandes (Ej.: Pantalla de carga o Splash)
+        // DISPLAY: Para pantallas de bienvenida o números muy grandes
+        // (Ej.: Pantalla de carga o Splash)
         displayLarge =
             TextStyle(
                 fontFamily = Montserrat,
@@ -111,7 +114,8 @@ val Typography =
         // BODY: Para la mayoría del texto de lectura, descripciones y datos del país
         bodyLarge =
             TextStyle(
-                fontFamily = FontFamily.Default, // Fuente del sistema para mejor lectura de bloques largos
+                // Fuente del sistema para mejor lectura de bloques largos
+                fontFamily = FontFamily.Default,
                 fontWeight = FontWeight.Normal,
                 fontSize = 16.sp,
                 lineHeight = 24.sp,
