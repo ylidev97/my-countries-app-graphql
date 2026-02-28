@@ -18,11 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lidev.mycountriesapp.R
 import com.lidev.mycountriesapp.ui.components.FavoriteToggle
 import com.lidev.mycountriesapp.ui.screens.countries.model.CountryDetailUi
+import com.lidev.mycountriesapp.ui.theme.dimens
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -31,7 +31,7 @@ import kotlinx.collections.immutable.persistentListOf
 internal fun CountryDetailSheet(
     countryDetail: CountryDetailUi? = null,
     onFavoriteToggle: (Boolean) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     countryDetail?.let {
         ModalBottomSheet(
@@ -46,11 +46,10 @@ internal fun CountryDetailSheet(
                 capital = countryDetail.capital,
                 phoneCode = countryDetail.phone,
                 continent = countryDetail.continent,
-                languages = countryDetail.languages
+                languages = countryDetail.languages,
             )
         }
     }
-
 }
 
 @Composable
@@ -63,63 +62,70 @@ private fun CountryDetail(
     capital: String = "",
     languages: ImmutableList<String> = persistentListOf(),
     isFavorite: Boolean = false,
-    onFavoriteToggle: (Boolean) -> Unit = {}
+    onFavoriteToggle: (Boolean) -> Unit = {},
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 12.dp)
-            .padding(bottom = 12.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(horizontal = MaterialTheme.dimens.mediumSmall)
+                .padding(bottom = MaterialTheme.dimens.mediumSmall),
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
             FavoriteToggle(
                 isFavorite = isFavorite,
                 onToggle = onFavoriteToggle,
-                modifier = Modifier.align(Alignment.TopEnd)
+                modifier = Modifier.align(Alignment.TopEnd),
             )
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                //emoji
-                Text(emoji, fontSize = 80.0.sp)
-                //countryName
+                // emoji
+                Text(emoji, fontSize = CountryDetailDefaults.EMOJI_FONT_SIZE)
+                // countryName
                 Text(
                     text = countryName,
                     style = MaterialTheme.typography.headlineLarge,
-                    modifier = Modifier.basicMarquee(
-                        iterations = 20
-                    )
+                    modifier =
+                        Modifier.basicMarquee(
+                            iterations = 20,
+                        ),
                 )
             }
         }
 
-        HorizontalDivider(modifier = Modifier.padding(top = 4.dp, bottom = 8.dp))
+        HorizontalDivider(
+            modifier =
+                Modifier.padding(
+                    top = MaterialTheme.dimens.extraSmall,
+                    bottom = MaterialTheme.dimens.small,
+                ),
+        )
 
-        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-
+        Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.smallSmall)) {
             DetailRow(
                 title = stringResource(id = R.string.continent),
-                value = continent
+                value = continent,
             )
 
             if (capital.isNotBlank()) {
                 DetailRow(
                     title = stringResource(id = R.string.capital),
-                    value = capital
+                    value = capital,
                 )
             }
 
             DetailRow(
                 title = stringResource(id = R.string.phone),
-                value = "+($phoneCode)"
+                value = "+($phoneCode)",
             )
 
             if (languages.isNotEmpty()) {
-                //Languages
+                // Languages
                 LanguagesList(
                     modifier = Modifier.fillMaxWidth(),
-                    languages = languages
+                    languages = languages,
                 )
             }
         }
@@ -130,24 +136,29 @@ private fun CountryDetail(
 private fun DetailRow(
     modifier: Modifier = Modifier,
     title: String,
-    value: String
+    value: String,
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = "$title: ",
-            style = MaterialTheme.typography.headlineSmall
+            style = MaterialTheme.typography.headlineSmall,
         )
         Text(
             text = value,
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Light
-            )
+            style =
+                MaterialTheme.typography.bodyMedium.copy(
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Light,
+                ),
         )
     }
+}
+
+private object CountryDetailDefaults {
+    val EMOJI_FONT_SIZE = 80.sp
 }
 
 @Preview
@@ -155,8 +166,10 @@ private fun DetailRow(
 private fun CountryDetailPreview() {
     CountryDetail(
         countryName = "The United States of America",
-        languages = persistentListOf(
-            "Spanish", "French"
-        )
+        languages =
+            persistentListOf(
+                "Spanish",
+                "French",
+            ),
     )
 }

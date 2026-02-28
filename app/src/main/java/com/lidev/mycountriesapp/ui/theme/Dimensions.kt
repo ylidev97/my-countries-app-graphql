@@ -15,6 +15,8 @@ data class Dimensions(
     val default: Dp = 0.dp,
     /** Extra-small spacing (4dp)**/
     val extraSmall: Dp = 4.dp,
+    /** Small-small spacing (6dp)**/
+    val smallSmall: Dp = 6.dp,
     /** Small spacing (8dp)**/
     val small: Dp = 8.dp,
     /** Medium-small spacing (12dp)**/

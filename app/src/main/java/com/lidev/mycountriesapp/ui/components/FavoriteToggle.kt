@@ -15,12 +15,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
 
-
 @Composable
 internal fun FavoriteToggle(
     isFavorite: Boolean,
     onToggle: (Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val scale = remember { Animatable(1f) }
 
@@ -42,10 +41,12 @@ internal fun FavoriteToggle(
             imageVector = if (isFavorite) Icons.Filled.Star else Icons.Filled.StarBorder,
             contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
             tint = if (isFavorite) Color.Yellow else Color.Gray,
-            modifier = Modifier.graphicsLayer {
-                scaleX = scale.value
-                scaleY = scale.value
-            },
+            modifier =
+                Modifier
+                    .graphicsLayer {
+                        scaleX = scale.value
+                        scaleY = scale.value
+                    },
         )
     }
 }
