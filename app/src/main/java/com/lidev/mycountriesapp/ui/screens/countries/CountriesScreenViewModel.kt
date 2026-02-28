@@ -8,6 +8,7 @@ import com.lidev.mycountriesapp.ui.screens.countries.model.CountriesScreenState
 import com.lidev.mycountriesapp.ui.screens.countries.model.toUi
 import com.lidev.mycountriesapp.util.NetworkMonitor
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -48,7 +49,9 @@ class CountriesScreenViewModel(
         val countriesResult = getCountriesUseCase()
         _state.update { screenState ->
             screenState.copy(
-                countries = countriesResult.getOrNull()?.map { it.toUi() } ?: emptyList(),
+                countries =
+                    countriesResult.getOrNull()?.map { it.toUi() }?.toPersistentList()
+                        ?: persistentListOf(),
                 isLoading = false,
             )
         }
@@ -108,16 +111,17 @@ class CountriesScreenViewModel(
 
             _state.update { currentState ->
                 currentState.copy(
-                    favoriteCountryCodes = currentFavorites.toList(),
+                    favoriteCountryCodes = currentFavorites.toPersistentList(),
                     countries =
-                        currentState.countries.map { country ->
-                            // Avoid re-copying if the favorite status hasn't changed
-                            if (country.code == code) {
-                                country.copy(isFavorite = !isCurrentlyFavorite)
-                            } else {
-                                country
-                            }
-                        },
+                        currentState.countries
+                            .map { country ->
+                                // Avoid re-copying if the favorite status hasn't changed
+                                if (country.code == code) {
+                                    country.copy(isFavorite = !isCurrentlyFavorite)
+                                } else {
+                                    country
+                                }
+                            }.toPersistentList(),
                     selectedCountry =
                         currentState.selectedCountry?.let { selected ->
                             if (selected.code == code) {

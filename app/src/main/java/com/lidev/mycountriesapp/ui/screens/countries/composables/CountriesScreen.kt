@@ -45,7 +45,7 @@ internal fun CountriesScreen() {
     val state = viewModel.state.collectAsStateWithLifecycle()
 
     Content(
-        countries = state.value.countries.toPersistentList(),
+        countries = state.value.countries,
         countryDetail = state.value.selectedCountry,
         isOnline = state.value.isOnline,
         onDismissSheet = {
