@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.apollo)
     alias(libs.plugins.kotzilla)
     alias(libs.plugins.detekt)
+    id("jacoco")
 }
 
 android {
@@ -42,6 +43,8 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
         }
 
         release {
@@ -50,6 +53,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -60,6 +64,9 @@ android {
         compose = true
     }
     testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
         suites {
             create("journeysTest") {
                 assets {
@@ -180,3 +187,6 @@ tasks.withType<Detekt>().configureEach {
 tasks.withType<DetektCreateBaselineTask>().configureEach {
     jvmTarget = "1.8"
 }
+
+project.extra.set("jacocoVersion", libs.versions.jacoco.get())
+apply(from = "../gradle/jacoco.gradle.kts")

@@ -50,7 +50,12 @@ class CountriesScreenViewModel(
         _state.update { screenState ->
             screenState.copy(
                 countries =
-                    countriesResult.getOrNull()?.map { it.toUi() }?.toPersistentList()
+                    countriesResult
+                        .getOrNull()
+                        ?.map {
+                            val isFavorite = screenState.favoriteCountryCodes.contains(it.code)
+                            it.toUi(isFavorite = isFavorite)
+                        }?.toPersistentList()
                         ?: persistentListOf(),
                 isLoading = false,
             )
