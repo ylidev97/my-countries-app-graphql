@@ -8,10 +8,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.lidev.mycountriesapp.R
 
-// TODO
-
 /**
- * Buenas practicas de Material3
+ * Buenas prácticas de Material3
  * •
  * display(Large/Medium/Small): Para pantallas de bienvenida o números muy grandes.
  * •
@@ -35,7 +33,7 @@ val Montserrat =
 // Set of Material typography styles to start with
 val Typography =
     Typography(
-        // DISPLAY: Para pantallas de bienvenida o números muy grandes (Ej: Pantalla de carga o Splash)
+        // DISPLAY: Para pantallas de bienvenida o números muy grandes (Ej.: Pantalla de carga o Splash)
         displayLarge =
             TextStyle(
                 fontFamily = Montserrat,
