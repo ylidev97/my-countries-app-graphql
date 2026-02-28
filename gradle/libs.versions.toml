@@ -7,7 +7,7 @@ espressoCore = "3.7.0"
 lifecycleRuntimeKtx = "2.10.0"
 activityCompose = "1.12.4"
 kotlin = "2.3.10"
-composeBom = "2026.02.00"
+composeBom = "2026.02.01"
 
 apollo = "4.4.1"
 ##Rom/Store
@@ -16,7 +16,7 @@ datastore = "1.2.0"
 
 corutines-ktx = "1.10.2"
 koin = "4.1.1"
-coil = "3.3.0"
+coil = "3.4.0"
 kotzilla = "2.0.6"
 junitPlatformLauncher = "6.0.3"
 junitPlatformEngine = "6.0.3"
@@ -96,6 +96,7 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
 kotzilla = { id = "io.kotzilla.kotzilla-plugin", version.ref = "kotzilla" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+#noinspection UnusedVersionCatalogEntry Temporal
 jacoco = { id = "org.jacoco", version.ref = "jacoco" }
 
 #noinspection UnusedVersionCatalogEntry Temporal
