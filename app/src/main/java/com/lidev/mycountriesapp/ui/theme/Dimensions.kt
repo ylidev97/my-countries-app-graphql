@@ -34,4 +34,4 @@ data class Dimensions(
 /**
  * CompositionLocal to provide [Dimensions] to the UI tree.
  */
-val LocalDimensions = staticCompositionLocalOf { Dimensions() }
+internal val LocalDimensions = staticCompositionLocalOf { Dimensions() }
