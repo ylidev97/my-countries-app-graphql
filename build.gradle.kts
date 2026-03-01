@@ -5,3 +5,8 @@ plugins {
     alias(libs.plugins.kotzilla) apply false
     alias(libs.plugins.detekt) apply false
 }
+allprojects{
+    apply {
+        plugin("io.gitlab.arturbosch.detekt")
+    }
+}

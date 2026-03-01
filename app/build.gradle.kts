@@ -126,6 +126,8 @@ dependencies {
     implementation(libs.koin.androidx.navigation)
     implementation(libs.koin.test.implementation)
     implementation(libs.kotzilla.sdk)
+
+    detektPlugins(libs.detekt.rules.ktlint.wrapper)
 }
 
 apollo {
@@ -169,8 +171,7 @@ tasks.withType<Detekt>().configureEach {
         html.required.set(true)
         xml.required.set(true)
         txt.required.set(false)
-        sarif.required.set(true)
-        // standardized SARIF format (https://sarifweb.azurewebsites.net/) to support integrations with GitHub Code Scanning
+        sarif.required.set(false)
 
 //        html.outputLocation.set(file("$buildDir/reports/detekt/detekt.html"))
 //        xml.outputLocation.set(file("$buildDir/reports/detekt/detekt.xml"))

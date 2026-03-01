@@ -1,137 +1,209 @@
+# Detekt configuration file / Archivo de configuración de Detekt
+
 build:
   # The maximum number of issues allowed before the build fails.
-  maxIssues: 10
+  # El número máximo de incidencias permitidas antes de que falle la compilación.
+  maxIssues: 0
 
 config:
-  # Whether detest should validate its own configuration file.
+  # Whether detekt should validate its own configuration file.
+  # Si detekt debe validar su propio archivo de configuración.
   validation: true
-  warningsAsErrors: false
+  # Whether to treat warnings as errors.
+  # Si se deben tratar las advertencias como errores.
+  warningsAsErrors: true
 
 processors:
-  # Enables or disables all code processors.
+  # Processors collect data during the analysis.
+  # Los procesadores recopilan datos durante el análisis.
   active: true
   exclude:
     - 'DetektProgressListener'
-      # - 'KtFileCountProcessor'
-      # - 'PackageCountProcessor'
-      # - 'ClassCountProcessor'
-      # - 'FunctionCountProcessor'
-      # - 'PropertyCountProcessor'
-      # - 'ProjectComplexityProcessor'
-      # - 'ProjectCognitiveComplexityProcessor'
-      # - 'ProjectLLOCProcessor'
-      # - 'ProjectCLOCProcessor'
-      # - 'ProjectLOCProcessor'
-      # - 'ProjectSLOCProcessor'
-    # - 'LicenseHeaderLoaderExtension'
-
-output-reports:
-  active: true
-  exclude:
-    [ ]
-  #  - 'HtmlOutputReport'
-  #  - 'XmlOutputReport'
-  #  - 'sarif'
-  #  - 'MdOutputReport'
 
 console-reports:
-  # Enables or disables reports printed directly to the console.
+  # Configuration for reports printed directly to the console.
+  # Configuración para los informes impresos directamente en la consola.
   active: true
-  #  - 'ProjectStatisticsReport'
-  #  - 'ComplexityReport'
-  #  - 'NotificationReport'
-  #  - 'FindingsReport'
-  #  - 'FileBasedFindingsReport'
-  #  - 'LiteFindingsReport'
+  exclude:
+    - 'ProjectStatisticsReport'
+    - 'ComplexityReport'
+    - 'NotificationReport'
+    - 'FindingsReport'
+    - 'FileBasedFindingsReport'
+
+output-reports:
+  # Configuration for file-based reports (HTML, XML, SARIF).
+  # Configuración para informes en archivos (HTML, XML, SARIF).
+  active: true
+  exclude: [ ]
+
+# Rule Sets / Conjunto de Reglas
 
 naming:
-  # Enforces that @Composable functions start with an uppercase letter (PascalCase).
+  # Naming rules for functions, classes, variables, etc.
+  # Reglas de nomenclatura para funciones, clases, variables, etc.
+  active: true
+
   FunctionNaming:
     active: true
-    functionPattern: '[a-z][a-zA-Z0-0]*|[A-Z][a-zA-Z0-0]*'
+    # Enforces PascalCase for @Composable functions and camelCase for others.
+    # Impone PascalCase para funciones @Composable y camelCase para las demás.
+    functionPattern: '[a-z][a-zA-Z0-9]*|[A-Z][a-zA-Z0-9]*'
     excludeClassPattern: '.*'
-    ignoreAnnotated: [ 'Composable','Preview' ]
+    ignoreAnnotated: [ 'Composable', 'Preview' ]
+    excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**' ]
+
+  ClassNaming:
+    active: true
+    classPattern: '[A-Z][a-zA-Z0-9]*'
+
+  ConstructorParameterNaming:
+    active: true
+    parameterPattern: '[a-z][A-Za-z0-9]*'
+    privateParameterPattern: '[a-z][A-Za-z0-9]*'
+
+  EnumNaming:
+    active: true
+    enumEntryPattern: '[A-Z][_a-zA-Z0-9]*'
+
+  VariableNaming:
+    active: true
+    variablePattern: '[a-z][A-Za-z0-9]*'
+    privateVariablePattern: '(_)?[a-z][A-Za-z0-9]*'
+
+  TopLevelPropertyNaming:
+    active: true
+    constantPattern: '[A-Z][_A-Z0-9]*'
+    propertyPattern: '[A-Za-z][_A-Za-z0-9]*'
+    privatePropertyPattern: '_?[A-Za-z][_A-Za-z0-9]*'
+
+  ObjectPropertyNaming:
+    active: true
+    constantPattern: '[A-Za-z][_A-Za-z0-9]*'
+    propertyPattern: '[A-Za-z][_A-Za-z0-9]*'
+
+  PackageNaming:
+    active: true
+    packagePattern: '[a-z]+(\.[a-z][A-Za-z0-9]*)*'
 
 complexity:
-  # Reports functions with a long parameter list.
+  # Rules dealing with code complexity (nesting, size, etc.).
+  # Reglas relacionadas con la complejidad del código (anidamiento, tamaño, etc.).
+  active: true
+
   LongParameterList:
-    ignoreAnnotated: [ 'Composable','Preview' ]
-  # Reports classes with too many lines of code.
+    # Ignore long parameter lists in Composables (common for slot API).
+    # Ignorar listas largas de parámetros en Composables (común en API de slots).
+    ignoreAnnotated: [ 'Composable', 'Preview' ]
+
   LargeClass:
+    # Threshold for the maximum number of lines in a class.
+    # Umbral para el número máximo de líneas en una clase.
     threshold: 600
-  # Reports functions with too many lines of code.
+
   LongMethod:
+    # Threshold for the maximum number of lines in a function.
+    # Umbral para el número máximo de líneas en una función.
     threshold: 100
     ignoreAnnotated: [ 'Composable', 'Preview' ]
-  # Reports nested code blocks that are too deep.
+
   NestedBlockDepth:
+    # Maximum allowed nesting depth for code blocks.
+    # Profundidad máxima permitida de anidamiento para bloques de código.
     threshold: 4
-  # Measures the complexity of a method using Cyclomatic Complexity.
-  # Renamed from ComplexMethod to CyclomaticComplexMethod in recent versions.
+
   CyclomaticComplexMethod:
+    # Measures complexity based on decision points (if, for, etc.).
+    # Mide la complejidad basada en puntos de decisión (if, for, etc.).
     active: true
     threshold: 15
-  # Reports files with too many functions.
+
   TooManyFunctions:
+    # Limits the number of functions allowed in a file or class.
+    # Limita el número de funciones permitidas en un archivo o clase.
     thresholdInFiles: 40
     thresholdInClasses: 30
-    thresholdInInterfaces: 20
 
 style:
-  # The maximum allowed length for a single line of code.
+  # Style and formatting rules.
+  # Reglas de estilo y formato.
+  active: true
+
   MaxLineLength:
+    # Maximum length for a single line of code.
+    # Longitud máxima para una sola línea de código.
     maxLineLength: 120
     excludePackageStatements: true
     excludeImportStatements: true
-  # Reports the use of magic numbers.
+
   MagicNumber:
-    ignoreNumbers:
-      - '-1'
-      - '0'
-      - '1'
-      - '2'
-      - '100'
-  # Limits the number of return statements in a function.
+    # Discourages use of unexplained numbers in code.
+    # Desaconseja el uso de números sin explicación en el código.
+    ignoreNumbers: [ '-1', '0', '1', '2', '100' ]
+
   ReturnCount:
+    # Limits the number of return statements in a function.
+    # Limita el número de sentencias de retorno en una función.
     max: 3
-  # Reports unused private classes, functions, and properties.
+
   UnusedPrivateMember:
+    # Reports unused private classes, functions, and properties.
+    # Reporta clases, funciones y propiedades privadas no utilizadas.
     active: true
     ignoreAnnotated: [ 'Composable', 'Preview' ]
-  # Discourages wildcard imports like import.a.b.*
+
   WildcardImport:
+    # Discourages using wildcard imports (import a.b.*).
+    # Desaconseja el uso de importaciones con comodines (import a.b.*).
     active: true
-  # Enforces standard order of modifiers. Essential for Compose Modifiers.
+
   ModifierOrder:
+    # Enforces standard order of modifiers (public, private, internal, etc.).
+    # Impone el orden estándar de los modificadores (public, private, internal, etc.).
     active: true
 
 performance:
-  # Reports use of the spread operator (*args) which can be expensive.
+  # Rules related to code execution performance.
+  # Reglas relacionadas con el rendimiento de la ejecución del código.
+  active: true
+
   SpreadOperator:
+    # Spread operator (*) can be expensive in terms of performance.
+    # El operador de propagación (*) puede ser costoso en términos de rendimiento.
     active: true
 
 potential-bugs:
-  # Reports invalid ranges.
+  # Rules to prevent potential bugs or unintended behavior.
+  # Reglas para prevenir posibles errores o comportamientos no deseados.
+  active: true
+
   InvalidRange:
     active: true
-  # Reports usage of referential equality (===) where structural equality (==) is likely intended.
   AvoidReferentialEquality:
+    # Encourages using == instead of === for structural equality.
+    # Fomenta el uso de == en lugar de === para la igualdad estructural.
     active: true
 
 empty-blocks:
-  # Reports empty catch blocks.
+  # Rules regarding empty code blocks.
+  # Reglas relativas a bloques de código vacíos.
+  active: true
+
   EmptyCatchBlock:
     active: true
-  # Reports empty function bodies.
   EmptyFunctionBlock:
     active: true
-    ignoreAnnotated: [ 'Composable' ] # Some Composables are intentionally empty for slot APIs.
-  # Reports empty if blocks.
+    # Some Composables are intentionally empty for slot APIs.
+    # Algunos Composables están intencionalmente vacíos para APIs de slots.
+    ignoreAnnotated: [ 'Composable' ]
   EmptyIfBlock:
     active: true
 
 comments:
-  # Requires all public classes to have KDoc documentation.
+  # Rules regarding documentation and comments.
+  # Reglas relativas a la documentación y los comentarios.
+  active: false
+
   UndocumentedPublicClass:
     active: false
     excludes: [
@@ -142,9 +214,4 @@ comments:
       '**/*ViewModel.kt',
       '**/*Screen.kt'
     ]
-    ignoreAnnotated:
-      - 'Composable'
-      - 'Preview'
-      - 'Stable'
-      - 'Immutable'
-      - 'AndroidEntryPoint'
+    ignoreAnnotated: [ 'Composable', 'Preview', 'Stable', 'Immutable' ]
