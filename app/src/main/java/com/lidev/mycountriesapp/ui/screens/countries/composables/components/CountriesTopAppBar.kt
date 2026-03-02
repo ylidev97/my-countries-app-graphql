@@ -83,7 +83,7 @@ private fun RegularTopAppBar(
 private fun SearchIcon() {
     Icon(
         painter = painterResource(id = R.drawable.ic_search),
-        contentDescription = "Search",
+        contentDescription = stringResource(R.string.search),
     )
 }
 

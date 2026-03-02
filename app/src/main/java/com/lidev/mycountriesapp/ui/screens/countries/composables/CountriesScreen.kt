@@ -25,8 +25,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.lidev.mycountriesapp.R
 import com.lidev.mycountriesapp.ui.components.LikeAnimation
 import com.lidev.mycountriesapp.ui.components.ScrollBubble
 import com.lidev.mycountriesapp.ui.screens.countries.CountriesScreenViewModel
@@ -141,7 +143,7 @@ private fun Content(
                         FilterChip(
                             selected = selectedContinent == null,
                             onClick = { selectedContinent = null },
-                            label = { Text("All") },
+                            label = { Text(stringResource(R.string.all)) },
                         )
                     }
                     items(continents) { continent ->

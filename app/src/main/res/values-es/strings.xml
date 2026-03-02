@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">MyCountriesApp</string>
+    <string name="country_name">Nombre del país</string>
+    <string name="languages">Idiomas</string>
+    <string name="currency">Moneda</string>
+    <string name="language_native">%s (Nativo)</string>
+    <string name="phone">Teléfono</string>
+    <string name="continent">Continente</string>
+    <string name="capital">Capital</string>
+    <string name="favorite">Favorito</string>
+    <string name="no_internet_connection">Sin conexión a internet</string>
+    <string name="close">Cerrar</string>
+    <string name="search">Buscar</string>
+    <string name="search_countries">Buscar países…</string>
+    <string name="countries">Países</string>
+    <string name="retry">Reintentar</string>
+    <string name="all">Todos</string>
+    <string name="remove_from_favorites">Quitar de favoritos</string>
+    <string name="add_to_favorites">Añadir a favoritos</string>
+</resources>

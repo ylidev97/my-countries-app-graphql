@@ -13,7 +13,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.lidev.mycountriesapp.R
 import com.lidev.mycountriesapp.ui.theme.localColors
 
 @Composable
@@ -40,8 +42,18 @@ internal fun FavoriteToggle(
     }, modifier = modifier) {
         Icon(
             imageVector = if (isFavorite) Icons.Filled.Star else Icons.Filled.StarBorder,
-            contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
-            tint = if (isFavorite) MaterialTheme.localColors.favorite else MaterialTheme.localColors.favoriteEmpty,
+            contentDescription =
+                if (isFavorite) {
+                    stringResource(R.string.remove_from_favorites)
+                } else {
+                    stringResource(R.string.add_to_favorites)
+                },
+            tint =
+                if (isFavorite) {
+                    MaterialTheme.localColors.favorite
+                } else {
+                    MaterialTheme.localColors.favoriteEmpty
+                },
             modifier =
                 Modifier
                     .graphicsLayer {
