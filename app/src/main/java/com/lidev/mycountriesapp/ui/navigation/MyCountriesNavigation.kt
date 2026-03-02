@@ -8,8 +8,11 @@ import androidx.navigation.compose.composable
 import com.lidev.mycountriesapp.ui.screens.countries.composables.CountriesScreen
 import com.lidev.mycountriesapp.ui.screens.settings.composables.SettingsScreen
 
-sealed class Screen(val route: String) {
+sealed class Screen(
+    val route: String,
+) {
     data object Countries : Screen("countries")
+
     data object Settings : Screen("settings")
 }
 
