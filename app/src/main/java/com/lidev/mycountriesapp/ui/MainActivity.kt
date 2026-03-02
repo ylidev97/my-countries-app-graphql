@@ -48,6 +48,7 @@ private fun MyCountriesApp(viewModel: MainViewModel = koinViewModel()) {
     CompositionLocalProvider(LocalContext provides localizedContext) {
         MyCountriesAppTheme(
             darkTheme = darkTheme,
+            palette = state.palette,
             dynamicColor = state.dynamicColor,
         ) {
             val navController = rememberNavController()

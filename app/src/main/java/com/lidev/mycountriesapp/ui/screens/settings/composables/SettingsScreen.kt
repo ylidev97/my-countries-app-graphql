@@ -29,6 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lidev.mycountriesapp.R
 import com.lidev.mycountriesapp.ui.screens.settings.SettingsViewModel
 import com.lidev.mycountriesapp.ui.screens.settings.composables.components.LanguageSettings
+import com.lidev.mycountriesapp.ui.screens.settings.composables.components.PaletteSettings
 import com.lidev.mycountriesapp.ui.screens.settings.composables.components.SettingsListItem
 import com.lidev.mycountriesapp.ui.screens.settings.composables.components.SettingsSection
 import com.lidev.mycountriesapp.ui.screens.settings.composables.components.ThemeSettings
@@ -47,6 +48,7 @@ fun SettingsScreen(
         state = state,
         onBackClick = onBackClick,
         onThemeSelected = viewModel::setTheme,
+        onPaletteSelected = viewModel::setPalette,
         onDynamicColorChanged = viewModel::setDynamicColor,
         onLanguageSelected = viewModel::setLanguage,
     )
@@ -58,6 +60,7 @@ private fun SettingsContent(
     state: SettingsState,
     onBackClick: () -> Unit,
     onThemeSelected: (String) -> Unit,
+    onPaletteSelected: (String) -> Unit,
     onDynamicColorChanged: (Boolean) -> Unit,
     onLanguageSelected: (String) -> Unit,
 ) {
@@ -112,7 +115,18 @@ private fun SettingsContent(
                 }
             }
 
-            item { Spacer(modifier = Modifier.height(28.dp)) }
+            item { Spacer(modifier = Modifier.height(24.dp)) }
+
+            item {
+                SettingsSection(title = stringResource(R.string.palette)) {
+                    PaletteSettings(
+                        selectedPalette = state.palette,
+                        onPaletteSelected = onPaletteSelected,
+                    )
+                }
+            }
+
+            item { Spacer(modifier = Modifier.height(24.dp)) }
 
             item {
                 SettingsSection(title = stringResource(R.string.dynamic_color)) {
@@ -133,7 +147,7 @@ private fun SettingsContent(
                 }
             }
 
-            item { Spacer(modifier = Modifier.height(28.dp)) }
+            item { Spacer(modifier = Modifier.height(24.dp)) }
 
             item {
                 SettingsSection(title = stringResource(R.string.language)) {
@@ -157,6 +171,7 @@ private fun SettingsScreenPreview() {
             state = SettingsState(),
             onBackClick = {},
             onThemeSelected = {},
+            onPaletteSelected = {},
             onDynamicColorChanged = {},
             onLanguageSelected = {},
         )

@@ -4,9 +4,11 @@ import com.lidev.mycountriesapp.domain.usecases.GetCountriesUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetCountryByCodeUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetDynamicColorUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetLanguageUseCase
+import com.lidev.mycountriesapp.domain.usecases.GetPaletteUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetThemeUseCase
 import com.lidev.mycountriesapp.domain.usecases.SetDynamicColorUseCase
 import com.lidev.mycountriesapp.domain.usecases.SetLanguageUseCase
+import com.lidev.mycountriesapp.domain.usecases.SetPaletteUseCase
 import com.lidev.mycountriesapp.domain.usecases.SetThemeUseCase
 import com.lidev.mycountriesapp.ui.MainViewModel
 import com.lidev.mycountriesapp.ui.screens.countries.CountriesScreenViewModel
@@ -25,9 +27,11 @@ val appModule =
         factoryOf(::GetCountryByCodeUseCase)
 
         factoryOf(::GetThemeUseCase)
+        factoryOf(::GetPaletteUseCase)
         factoryOf(::GetDynamicColorUseCase)
         factoryOf(::GetLanguageUseCase)
         factoryOf(::SetThemeUseCase)
+        factoryOf(::SetPaletteUseCase)
         factoryOf(::SetDynamicColorUseCase)
         factoryOf(::SetLanguageUseCase)
 

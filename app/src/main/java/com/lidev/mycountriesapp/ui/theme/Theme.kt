@@ -24,15 +24,20 @@ private val LightColorScheme =
         primary = Purple40,
         secondary = PurpleGrey40,
         tertiary = Pink40,
-        /* Other default colors to override
-        background = Color(0xFFFFFBFE),
-        surface = Color(0xFFFFFBFE),
-        onPrimary = Color.White,
-        onSecondary = Color.White,
-        onTertiary = Color.White,
-        onBackground = Color(0xFF1C1B1F),
-        onSurface = Color(0xFF1C1B1F),
-         */
+    )
+
+private val NatureDarkColorScheme =
+    darkColorScheme(
+        primary = Green80,
+        secondary = GreenGrey80,
+        tertiary = Sage80,
+    )
+
+private val NatureLightColorScheme =
+    lightColorScheme(
+        primary = Green40,
+        secondary = GreenGrey40,
+        tertiary = Sage40,
     )
 
 /**
@@ -58,6 +63,7 @@ val MaterialTheme.localColors: MyCountriesAppColors
 @Composable
 fun MyCountriesAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    palette: String = "default",
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit,
@@ -67,6 +73,10 @@ fun MyCountriesAppTheme(
             dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
                 val context = LocalContext.current
                 if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            }
+
+            palette == "nature" -> {
+                if (darkTheme) NatureDarkColorScheme else NatureLightColorScheme
             }
 
             darkTheme -> {
