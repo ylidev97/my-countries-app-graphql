@@ -21,7 +21,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lidev.mycountriesapp.R
 import com.lidev.mycountriesapp.ui.screens.settings.SettingsViewModel
@@ -33,6 +32,7 @@ import com.lidev.mycountriesapp.ui.screens.settings.composables.components.Theme
 import com.lidev.mycountriesapp.ui.screens.settings.model.SettingsState
 import com.lidev.mycountriesapp.ui.theme.MyCountriesAppTheme
 import com.lidev.mycountriesapp.ui.theme.MyIcons
+import com.lidev.mycountriesapp.ui.theme.dimens
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -100,9 +100,9 @@ private fun SettingsContent(
                 Modifier
                     .fillMaxSize()
                     .padding(padding)
-                    .padding(horizontal = 20.dp),
+                    .padding(horizontal = MaterialTheme.dimens.large),
         ) {
-            item { Spacer(modifier = Modifier.height(16.dp)) }
+            item { Spacer(modifier = Modifier.height(MaterialTheme.dimens.medium)) }
 
             item {
                 SettingsSection(title = stringResource(R.string.theme)) {
@@ -113,7 +113,7 @@ private fun SettingsContent(
                 }
             }
 
-            item { Spacer(modifier = Modifier.height(28.dp)) }
+            item { Spacer(modifier = Modifier.height(MaterialTheme.dimens.extraLarge)) }
 
             item {
                 SettingsSection(title = stringResource(R.string.palette)) {
@@ -124,7 +124,7 @@ private fun SettingsContent(
                 }
             }
 
-            item { Spacer(modifier = Modifier.height(28.dp)) }
+            item { Spacer(modifier = Modifier.height(MaterialTheme.dimens.extraLarge)) }
 
             item {
                 SettingsSection(title = stringResource(R.string.dynamic_color)) {
@@ -132,8 +132,8 @@ private fun SettingsContent(
                         title = stringResource(R.string.dynamic_color),
                         subtitle = stringResource(R.string.dynamic_color_desc),
                         icon = MyIcons.colorLensIcon,
-                        iconContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                        iconContentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                        iconContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                        iconContentColor = MaterialTheme.colorScheme.onTertiaryContainer,
                         trailingContent = {
                             Switch(
                                 checked = state.dynamicColor,
@@ -145,7 +145,7 @@ private fun SettingsContent(
                 }
             }
 
-            item { Spacer(modifier = Modifier.height(28.dp)) }
+            item { Spacer(modifier = Modifier.height(MaterialTheme.dimens.extraLarge)) }
 
             item {
                 SettingsSection(title = stringResource(R.string.language)) {
@@ -156,7 +156,7 @@ private fun SettingsContent(
                 }
             }
 
-            item { Spacer(modifier = Modifier.height(48.dp)) }
+            item { Spacer(modifier = Modifier.height(MaterialTheme.dimens.extraExtraLarge)) }
         }
     }
 }

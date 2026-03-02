@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lidev.mycountriesapp.ui.theme.dimens
 
 @Composable
 fun SettingsSection(
@@ -24,23 +25,27 @@ fun SettingsSection(
         Text(
             text = title.uppercase(),
             style =
-                MaterialTheme.typography.labelMedium.copy(
-                    letterSpacing = 1.2.sp,
-                    fontWeight = FontWeight.SemiBold,
+                MaterialTheme.typography.labelSmall.copy(
+                    letterSpacing = 1.5.sp,
+                    fontWeight = FontWeight.Bold,
                 ),
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(start = 12.dp, bottom = 12.dp),
+            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+            modifier =
+                Modifier.padding(
+                    start = MaterialTheme.dimens.medium,
+                    bottom = MaterialTheme.dimens.mediumSmall,
+                ),
         )
         Surface(
-            shape = RoundedCornerShape(28.dp),
-            color = MaterialTheme.colorScheme.surfaceContainerLow,
+            shape = RoundedCornerShape(MaterialTheme.dimens.extraLarge),
+            color = MaterialTheme.colorScheme.surfaceContainerLowest,
             tonalElevation = 1.dp,
             modifier = Modifier.fillMaxWidth(),
         ) {
             Column(
                 modifier =
                     Modifier
-                        .padding(vertical = 8.dp)
+                        .padding(vertical = MaterialTheme.dimens.mediumSmall)
                         .animateContentSize(),
             ) {
                 content()

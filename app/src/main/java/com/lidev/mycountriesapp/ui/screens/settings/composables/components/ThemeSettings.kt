@@ -10,6 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.lidev.mycountriesapp.R
 import com.lidev.mycountriesapp.ui.theme.MyIcons
+import com.lidev.mycountriesapp.ui.theme.dimens
 
 @Composable
 fun ThemeSettings(
@@ -53,7 +54,11 @@ fun ThemeSettings(
         )
         if (index < options.size - 1) {
             HorizontalDivider(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+                modifier =
+                    Modifier.padding(
+                        horizontal = MaterialTheme.dimens.medium,
+                        vertical = MaterialTheme.dimens.extraSmall,
+                    ),
                 thickness = 0.5.dp,
                 color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
             )
