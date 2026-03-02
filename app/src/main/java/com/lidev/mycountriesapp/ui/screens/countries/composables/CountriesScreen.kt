@@ -5,12 +5,18 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -76,17 +82,23 @@ private fun Content(
     var showLikeAnimation by remember { mutableStateOf(false) }
     var showSearchBar by remember { mutableStateOf(false) }
     val lazyListState = rememberLazyListState()
+
+    val continents =
+        remember(countries) {
+            countries.map { it.continent }.distinct().sorted()
+        }
+    var selectedContinent by remember { mutableStateOf<String?>(null) }
+
     val filteredCountries =
-        remember(countries, searchQuery) {
-            if (searchQuery.isBlank()) {
-                countries
-            } else {
-                countries
-                    .filter {
-                        it.name.contains(searchQuery, ignoreCase = true)
-                    }.sortedBy { it.name }
-                    .toPersistentList()
-            }
+        remember(countries, searchQuery, selectedContinent) {
+            countries
+                .filter {
+                    val matchesSearch = it.name.contains(searchQuery, ignoreCase = true)
+                    val matchesContinent =
+                        selectedContinent == null || it.continent == selectedContinent
+                    matchesSearch && matchesContinent
+                }.sortedBy { it.name }
+                .toPersistentList()
         }
 
     LaunchedEffect(showLikeAnimation) {
@@ -108,51 +120,86 @@ private fun Content(
             )
         },
     ) { innerPadding ->
-        Box(
+        Column(
             modifier =
                 Modifier
                     .fillMaxSize()
                     .padding(innerPadding),
         ) {
-            if (!isOnline) {
-                NoInternetComp(
-                    onRetry = onRetry,
-                )
-            } else {
-                CountryList(
-                    modifier = Modifier.fillMaxSize(),
-                    lazyListState = lazyListState,
-                    filteredCountries = filteredCountries,
-                    onItemClick = onItemClick,
-                    isLoading = isLoading,
-                    onFavoriteClick = {
-                        showLikeAnimation = !it.isFavorite
-                        onFavoriteClick(it.code)
-                    },
-                )
-            }
-
-            if (!showSearchBar && isOnline) {
-                ScrollBubble(
+            if (isOnline && continents.isNotEmpty()) {
+                LazyRow(
                     modifier =
                         Modifier
-                            .align(Alignment.TopEnd)
-                            .padding(
-                                end = MaterialTheme.dimens.small,
-                                top = MaterialTheme.dimens.extraLarge,
-                            ),
-                    lazyListState = lazyListState,
-                    firstLetters = filteredCountries.map { it.name.first() }.toPersistentList(),
-                )
+                            .fillMaxWidth()
+                            .padding(horizontal = MaterialTheme.dimens.mediumSmall),
+                    horizontalArrangement =
+                        androidx.compose.foundation.layout.Arrangement.spacedBy(
+                            MaterialTheme.dimens.small,
+                        ),
+                ) {
+                    item {
+                        FilterChip(
+                            selected = selectedContinent == null,
+                            onClick = { selectedContinent = null },
+                            label = { Text("All") },
+                        )
+                    }
+                    items(continents) { continent ->
+                        FilterChip(
+                            selected = selectedContinent == continent,
+                            onClick = {
+                                selectedContinent =
+                                    if (selectedContinent == continent) null else continent
+                            },
+                            label = { Text(continent) },
+                        )
+                    }
+                }
             }
 
-            AnimatedVisibility(
-                modifier = Modifier.align(Alignment.Center),
-                visible = showLikeAnimation,
-                enter = scaleIn(spring()),
-                exit = fadeOut(),
+            Box(
+                modifier = Modifier.weight(1f),
             ) {
-                LikeAnimation()
+                if (!isOnline) {
+                    NoInternetComp(
+                        onRetry = onRetry,
+                    )
+                } else {
+                    CountryList(
+                        modifier = Modifier.fillMaxSize(),
+                        lazyListState = lazyListState,
+                        filteredCountries = filteredCountries,
+                        onItemClick = onItemClick,
+                        isLoading = isLoading,
+                        onFavoriteClick = {
+                            showLikeAnimation = !it.isFavorite
+                            onFavoriteClick(it.code)
+                        },
+                    )
+                }
+
+                if (!showSearchBar && isOnline) {
+                    ScrollBubble(
+                        modifier =
+                            Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(
+                                    end = MaterialTheme.dimens.small,
+                                    top = MaterialTheme.dimens.extraLarge,
+                                ),
+                        lazyListState = lazyListState,
+                        firstLetters = filteredCountries.map { it.name.first() }.toPersistentList(),
+                    )
+                }
+
+                this@Column.AnimatedVisibility(
+                    modifier = Modifier.align(Alignment.Center),
+                    visible = showLikeAnimation,
+                    enter = scaleIn(spring()),
+                    exit = fadeOut(),
+                ) {
+                    LikeAnimation()
+                }
             }
         }
     }
@@ -180,24 +227,28 @@ private fun ContentPreview() {
                         code = "US",
                         name = "United States",
                         emoji = "🇺🇸",
+                        continent = "North America",
                         isFavorite = false,
                     ),
                     CountryUi(
                         code = "CA",
                         name = "Canada",
                         emoji = "🇨🇦",
+                        continent = "North America",
                         isFavorite = true,
                     ),
                     CountryUi(
                         code = "FR",
                         name = "France",
                         emoji = "🇫🇷",
+                        continent = "Europe",
                         isFavorite = false,
                     ),
                     CountryUi(
                         code = "DE",
                         name = "Germany",
                         emoji = "🇩🇪",
+                        continent = "Europe",
                         isFavorite = false,
                     ),
                 ),
