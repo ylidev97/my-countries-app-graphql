@@ -23,6 +23,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lidev.mycountriesapp.R
+import com.lidev.mycountriesapp.domain.model.AppLanguage
+import com.lidev.mycountriesapp.domain.model.AppPalette
+import com.lidev.mycountriesapp.domain.model.AppTheme
 import com.lidev.mycountriesapp.ui.screens.settings.SettingsViewModel
 import com.lidev.mycountriesapp.ui.screens.settings.composables.components.LanguageSettings
 import com.lidev.mycountriesapp.ui.screens.settings.composables.components.PaletteSettings
@@ -57,10 +60,10 @@ fun SettingsScreen(
 private fun SettingsContent(
     state: SettingsState,
     onBackClick: () -> Unit,
-    onThemeSelected: (String) -> Unit,
-    onPaletteSelected: (String) -> Unit,
+    onThemeSelected: (AppTheme) -> Unit,
+    onPaletteSelected: (AppPalette) -> Unit,
     onDynamicColorChanged: (Boolean) -> Unit,
-    onLanguageSelected: (String) -> Unit,
+    onLanguageSelected: (AppLanguage) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
@@ -113,7 +116,7 @@ private fun SettingsContent(
                 }
             }
 
-            item { Spacer(modifier = Modifier.height(MaterialTheme.dimens.extraLarge)) }
+            item { Spacer(modifier = Modifier.height(MaterialTheme.dimens.large)) }
 
             item {
                 SettingsSection(title = stringResource(R.string.palette)) {
@@ -124,7 +127,7 @@ private fun SettingsContent(
                 }
             }
 
-            item { Spacer(modifier = Modifier.height(MaterialTheme.dimens.extraLarge)) }
+            item { Spacer(modifier = Modifier.height(MaterialTheme.dimens.large)) }
 
             item {
                 SettingsSection(title = stringResource(R.string.dynamic_color)) {
@@ -145,7 +148,7 @@ private fun SettingsContent(
                 }
             }
 
-            item { Spacer(modifier = Modifier.height(MaterialTheme.dimens.extraLarge)) }
+            item { Spacer(modifier = Modifier.height(MaterialTheme.dimens.large)) }
 
             item {
                 SettingsSection(title = stringResource(R.string.language)) {

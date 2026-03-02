@@ -7,45 +7,45 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.lidev.mycountriesapp.R
+import com.lidev.mycountriesapp.domain.model.AppPalette
 import com.lidev.mycountriesapp.ui.theme.MyIcons
 import com.lidev.mycountriesapp.ui.theme.dimens
 
 @Composable
 fun PaletteSettings(
-    selectedPalette: String,
-    onPaletteSelected: (String) -> Unit,
+    selectedPalette: AppPalette,
+    onPaletteSelected: (AppPalette) -> Unit,
 ) {
     val options =
         listOf(
-            "default" to stringResource(R.string.palette_default),
-            "nature" to stringResource(R.string.palette_nature),
+            stringResource(R.string.palette_default) to AppPalette.Default,
+            stringResource(R.string.palette_nature) to AppPalette.Nature,
         )
 
-    options.forEachIndexed { index, (key, label) ->
+    options.forEachIndexed { index, (label, palette) ->
         SettingsListItem(
             title = label,
             icon = MyIcons.paletteIcon,
             iconContainerColor =
-                if (selectedPalette == key) {
+                if (selectedPalette == palette) {
                     MaterialTheme.colorScheme.primary
                 } else {
                     MaterialTheme.colorScheme.surfaceVariant
                 },
             iconContentColor =
-                if (selectedPalette == key) {
+                if (selectedPalette == palette) {
                     MaterialTheme.colorScheme.onPrimary
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
                 },
             trailingContent = {
                 RadioButton(
-                    selected = (selectedPalette == key),
+                    selected = (selectedPalette == palette),
                     onClick = null,
                 )
             },
-            onClick = { onPaletteSelected(key) },
+            onClick = { onPaletteSelected(palette) },
         )
         if (index < options.size - 1) {
             HorizontalDivider(
@@ -54,7 +54,7 @@ fun PaletteSettings(
                         horizontal = MaterialTheme.dimens.extraExtraLarge,
                         vertical = MaterialTheme.dimens.extraSmall,
                     ),
-                thickness = 0.5.dp,
+                thickness = MaterialTheme.dimens.extraSmall / 8, // 0.5.dp
                 color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
             )
         }

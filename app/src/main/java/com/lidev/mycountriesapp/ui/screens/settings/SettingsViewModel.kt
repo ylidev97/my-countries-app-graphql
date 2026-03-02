@@ -2,6 +2,9 @@ package com.lidev.mycountriesapp.ui.screens.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lidev.mycountriesapp.domain.model.AppLanguage
+import com.lidev.mycountriesapp.domain.model.AppPalette
+import com.lidev.mycountriesapp.domain.model.AppTheme
 import com.lidev.mycountriesapp.domain.usecases.GetDynamicColorUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetLanguageUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetPaletteUseCase
@@ -41,13 +44,13 @@ class SettingsViewModel(
             initialValue = SettingsState(),
         )
 
-    fun setTheme(theme: String) {
+    fun setTheme(theme: AppTheme) {
         viewModelScope.launch {
             setThemeUseCase(theme)
         }
     }
 
-    fun setPalette(palette: String) {
+    fun setPalette(palette: AppPalette) {
         viewModelScope.launch {
             setPaletteUseCase(palette)
         }
@@ -59,7 +62,7 @@ class SettingsViewModel(
         }
     }
 
-    fun setLanguage(language: String) {
+    fun setLanguage(language: AppLanguage) {
         viewModelScope.launch {
             setLanguageUseCase(language)
         }

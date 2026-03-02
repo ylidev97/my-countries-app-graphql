@@ -9,46 +9,51 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.lidev.mycountriesapp.R
+import com.lidev.mycountriesapp.domain.model.AppLanguage
 import com.lidev.mycountriesapp.ui.theme.MyIcons
 import com.lidev.mycountriesapp.ui.theme.dimens
 
 @Composable
 fun LanguageSettings(
-    selectedLanguage: String,
-    onLanguageSelected: (String) -> Unit,
+    selectedLanguage: AppLanguage,
+    onLanguageSelected: (AppLanguage) -> Unit,
 ) {
     val options =
         listOf(
-            "system" to stringResource(R.string.language_system),
-            "en" to "English",
-            "es" to "Español",
+            Triple(
+                AppLanguage.System,
+                stringResource(R.string.language_system),
+                MyIcons.languageIcon,
+            ),
+            Triple(AppLanguage.English, "English", MyIcons.languageIcon),
+            Triple(AppLanguage.Spanish, "Español", MyIcons.languageIcon),
         )
 
-    options.forEachIndexed { index, (key, label) ->
+    options.forEachIndexed { index, (language, label, icon) ->
         SettingsListItem(
             title = label,
-            icon = MyIcons.languageIcon,
+            icon = icon,
             iconContainerColor =
-                if (selectedLanguage == key) {
+                if (selectedLanguage == language) {
                     MaterialTheme.colorScheme.secondary
                 } else {
                     MaterialTheme.colorScheme.surfaceVariant
                 },
             iconContentColor =
-                if (selectedLanguage == key) {
+                if (selectedLanguage == language) {
                     MaterialTheme.colorScheme.onSecondary
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
                 },
             trailingContent = {
                 RadioButton(
-                    selected = (selectedLanguage == key),
+                    selected = (selectedLanguage == language),
                     onClick = null,
                 )
             },
-            onClick = { onLanguageSelected(key) },
+            onClick = { onLanguageSelected(language) },
         )
-        if (index < options.size - 1) {
+        if (index < options.lastIndex) {
             HorizontalDivider(
                 modifier =
                     Modifier.padding(

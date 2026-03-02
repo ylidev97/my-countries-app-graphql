@@ -9,48 +9,49 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.lidev.mycountriesapp.R
+import com.lidev.mycountriesapp.domain.model.AppTheme
 import com.lidev.mycountriesapp.ui.theme.MyIcons
 import com.lidev.mycountriesapp.ui.theme.dimens
 
 @Composable
 fun ThemeSettings(
-    selectedTheme: String,
-    onThemeSelected: (String) -> Unit,
+    selectedTheme: AppTheme,
+    onThemeSelected: (AppTheme) -> Unit,
 ) {
     val options =
         listOf(
             Triple(
-                "system",
+                AppTheme.System,
                 stringResource(R.string.theme_system),
                 MyIcons.settingsSystemDayDreamIcon,
             ),
-            Triple("light", stringResource(R.string.theme_light), MyIcons.lightModeIcon),
-            Triple("dark", stringResource(R.string.theme_dark), MyIcons.darkModeIcon),
+            Triple(AppTheme.Light, stringResource(R.string.theme_light), MyIcons.lightModeIcon),
+            Triple(AppTheme.Dark, stringResource(R.string.theme_dark), MyIcons.darkModeIcon),
         )
 
-    options.forEachIndexed { index, (key, label, icon) ->
+    options.forEachIndexed { index, (theme, label, icon) ->
         SettingsListItem(
             title = label,
             icon = icon,
             iconContainerColor =
-                if (selectedTheme == key) {
+                if (selectedTheme == theme) {
                     MaterialTheme.colorScheme.primary
                 } else {
                     MaterialTheme.colorScheme.surfaceVariant
                 },
             iconContentColor =
-                if (selectedTheme == key) {
+                if (selectedTheme == theme) {
                     MaterialTheme.colorScheme.onPrimary
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
                 },
             trailingContent = {
                 RadioButton(
-                    selected = (selectedTheme == key),
+                    selected = (selectedTheme == theme),
                     onClick = null,
                 )
             },
-            onClick = { onThemeSelected(key) },
+            onClick = { onThemeSelected(theme) },
         )
         if (index < options.lastIndex) {
             HorizontalDivider(

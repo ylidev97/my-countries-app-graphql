@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
+import com.lidev.mycountriesapp.domain.model.AppTheme
 import com.lidev.mycountriesapp.ui.navigation.MyCountriesNavHost
 import com.lidev.mycountriesapp.ui.theme.MyCountriesAppTheme
 import org.koin.androidx.compose.koinViewModel
@@ -38,17 +39,17 @@ private fun MyCountriesApp(viewModel: MainViewModel = koinViewModel()) {
 
     val darkTheme =
         when (state.theme) {
-            "light" -> false
-            "dark" -> true
-            else -> isSystemInDarkTheme()
+            AppTheme.Light -> false
+            AppTheme.Dark -> true
+            AppTheme.System -> isSystemInDarkTheme()
         }
 
-    val localizedContext = rememberLocalizedContext(language = state.language)
+    val localizedContext = rememberLocalizedContext(language = state.language.tag)
 
     CompositionLocalProvider(LocalContext provides localizedContext) {
         MyCountriesAppTheme(
             darkTheme = darkTheme,
-            palette = state.palette,
+            palette = state.palette.key,
             dynamicColor = state.dynamicColor,
         ) {
             val navController = rememberNavController()
