@@ -17,6 +17,7 @@ class SettingsDataStore(
 ) {
     companion object {
         val THEME_KEY = stringPreferencesKey("theme")
+        val PALETTE_KEY = stringPreferencesKey("palette")
         val DYNAMIC_COLOR_KEY = booleanPreferencesKey("dynamic_color")
         val LANGUAGE_KEY = stringPreferencesKey("language")
     }
@@ -24,6 +25,11 @@ class SettingsDataStore(
     val themeFlow: Flow<String> =
         context.dataStore.data.map { preferences ->
             preferences[THEME_KEY] ?: "system"
+        }
+
+    val paletteFlow: Flow<String> =
+        context.dataStore.data.map { preferences ->
+            preferences[PALETTE_KEY] ?: "default"
         }
 
     val dynamicColorFlow: Flow<Boolean> =
@@ -39,6 +45,12 @@ class SettingsDataStore(
     suspend fun setTheme(theme: String) {
         context.dataStore.edit { preferences ->
             preferences[THEME_KEY] = theme
+        }
+    }
+
+    suspend fun setPalette(palette: String) {
+        context.dataStore.edit { preferences ->
+            preferences[PALETTE_KEY] = palette
         }
     }
 
