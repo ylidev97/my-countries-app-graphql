@@ -2,7 +2,14 @@ package com.lidev.mycountriesapp
 
 import com.lidev.mycountriesapp.domain.usecases.GetCountriesUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetCountryByCodeUseCase
+import com.lidev.mycountriesapp.domain.usecases.GetDynamicColorUseCase
+import com.lidev.mycountriesapp.domain.usecases.GetLanguageUseCase
+import com.lidev.mycountriesapp.domain.usecases.GetThemeUseCase
+import com.lidev.mycountriesapp.domain.usecases.SetDynamicColorUseCase
+import com.lidev.mycountriesapp.domain.usecases.SetLanguageUseCase
+import com.lidev.mycountriesapp.domain.usecases.SetThemeUseCase
 import com.lidev.mycountriesapp.ui.screens.countries.CountriesScreenViewModel
+import com.lidev.mycountriesapp.ui.screens.settings.SettingsViewModel
 import com.lidev.mycountriesapp.util.NetworkMonitor
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.factoryOf
@@ -12,7 +19,17 @@ import org.koin.dsl.module
 val appModule =
     module {
         single { NetworkMonitor(androidContext()) }
+
         factoryOf(::GetCountriesUseCase)
         factoryOf(::GetCountryByCodeUseCase)
+
+        factoryOf(::GetThemeUseCase)
+        factoryOf(::GetDynamicColorUseCase)
+        factoryOf(::GetLanguageUseCase)
+        factoryOf(::SetThemeUseCase)
+        factoryOf(::SetDynamicColorUseCase)
+        factoryOf(::SetLanguageUseCase)
+
         viewModelOf(::CountriesScreenViewModel)
+        viewModelOf(::SettingsViewModel)
     }
