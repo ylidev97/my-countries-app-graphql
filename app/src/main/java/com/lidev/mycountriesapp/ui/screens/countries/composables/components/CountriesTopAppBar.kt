@@ -100,9 +100,12 @@ private fun RegularTopAppBar(
             }
         },
         colors =
-            TopAppBarDefaults.centerAlignedTopAppBarColors(
+            TopAppBarDefaults.topAppBarColors(
                 containerColor = Color.Transparent,
                 scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                navigationIconContentColor = Color.Unspecified,
+                titleContentColor = Color.Unspecified,
+                actionIconContentColor = Color.Unspecified,
             ),
         scrollBehavior = scrollBehavior,
     )
@@ -160,9 +163,12 @@ private fun SearchTopAppBar(
             )
         },
         colors =
-            TopAppBarDefaults.centerAlignedTopAppBarColors(
+            TopAppBarDefaults.topAppBarColors(
                 containerColor = Color.Transparent,
                 scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                navigationIconContentColor = Color.Unspecified,
+                titleContentColor = Color.Unspecified,
+                actionIconContentColor = Color.Unspecified,
             ),
         scrollBehavior = scrollBehavior,
     )
