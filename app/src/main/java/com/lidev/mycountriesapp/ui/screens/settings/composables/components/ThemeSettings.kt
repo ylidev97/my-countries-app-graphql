@@ -1,0 +1,65 @@
+package com.lidev.mycountriesapp.ui.screens.settings.composables.components
+
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.filled.SettingsSystemDaydream
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.lidev.mycountriesapp.R
+
+@Composable
+fun ThemeSettings(
+    selectedTheme: String,
+    onThemeSelected: (String) -> Unit,
+) {
+    val options =
+        listOf(
+            Triple(
+                "system",
+                stringResource(R.string.theme_system),
+                Icons.Default.SettingsSystemDaydream,
+            ),
+            Triple("light", stringResource(R.string.theme_light), Icons.Default.LightMode),
+            Triple("dark", stringResource(R.string.theme_dark), Icons.Default.DarkMode),
+        )
+
+    options.forEachIndexed { index, (key, label, icon) ->
+        SettingsListItem(
+            title = label,
+            icon = icon,
+            iconContainerColor =
+                if (selectedTheme == key) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.surfaceVariant
+                },
+            iconContentColor =
+                if (selectedTheme == key) {
+                    MaterialTheme.colorScheme.onPrimary
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                },
+            trailingContent = {
+                RadioButton(
+                    selected = (selectedTheme == key),
+                    onClick = null,
+                )
+            },
+            onClick = { onThemeSelected(key) },
+        )
+        if (index < options.size - 1) {
+            HorizontalDivider(
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+                thickness = 0.5.dp,
+                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
+            )
+        }
+    }
+}
