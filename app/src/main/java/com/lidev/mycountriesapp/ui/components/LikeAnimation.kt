@@ -10,7 +10,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.lidev.mycountriesapp.R
 
 @Composable
-fun LikeAnimation(modifier: Modifier = Modifier) {
+internal fun LikeAnimation(modifier: Modifier = Modifier) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.star_blast))
     val progress by animateLottieCompositionAsState(composition)
     LottieAnimation(

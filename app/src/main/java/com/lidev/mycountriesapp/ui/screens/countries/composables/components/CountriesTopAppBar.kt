@@ -8,8 +8,6 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -25,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.lidev.mycountriesapp.R
 import com.lidev.mycountriesapp.ui.theme.MyCountriesAppTheme
+import com.lidev.mycountriesapp.ui.theme.MyIcons
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -79,7 +78,7 @@ private fun RegularTopAppBar(
         navigationIcon = {
             IconButton(onClick = onSettingsClick) {
                 Icon(
-                    imageVector = Icons.Default.Settings,
+                    imageVector = MyIcons.settingsIcon,
                     contentDescription = stringResource(R.string.settings),
                 )
             }

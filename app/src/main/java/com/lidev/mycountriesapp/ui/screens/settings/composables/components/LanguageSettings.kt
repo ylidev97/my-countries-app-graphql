@@ -1,8 +1,6 @@
 package com.lidev.mycountriesapp.ui.screens.settings.composables.components
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Language
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -11,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.lidev.mycountriesapp.R
+import com.lidev.mycountriesapp.ui.theme.MyIcons
 
 @Composable
 fun LanguageSettings(
@@ -27,7 +26,7 @@ fun LanguageSettings(
     options.forEachIndexed { index, (key, label) ->
         SettingsListItem(
             title = label,
-            icon = Icons.Default.Language,
+            icon = MyIcons.languageIcon,
             iconContainerColor =
                 if (selectedLanguage == key) {
                     MaterialTheme.colorScheme.secondary
@@ -50,7 +49,7 @@ fun LanguageSettings(
         )
         if (index < options.size - 1) {
             HorizontalDivider(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+                modifier = Modifier.padding(horizontal = 64.dp, vertical = 4.dp),
                 thickness = 0.5.dp,
                 color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
             )

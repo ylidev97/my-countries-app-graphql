@@ -1,8 +1,6 @@
 package com.lidev.mycountriesapp.ui.screens.settings.composables.components
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -11,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.lidev.mycountriesapp.R
+import com.lidev.mycountriesapp.ui.theme.MyIcons
 
 @Composable
 fun PaletteSettings(
@@ -26,7 +25,7 @@ fun PaletteSettings(
     options.forEachIndexed { index, (key, label) ->
         SettingsListItem(
             title = label,
-            icon = Icons.Default.Palette,
+            icon = MyIcons.paletteIcon,
             iconContainerColor =
                 if (selectedPalette == key) {
                     MaterialTheme.colorScheme.primary

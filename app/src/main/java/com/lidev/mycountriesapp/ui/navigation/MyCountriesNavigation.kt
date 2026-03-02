@@ -18,7 +18,7 @@ sealed class Screen(
 
 @Suppress("ParamsComparedByRef")
 @Composable
-fun MyCountriesNavHost(
+internal fun MyCountriesNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
 ) {

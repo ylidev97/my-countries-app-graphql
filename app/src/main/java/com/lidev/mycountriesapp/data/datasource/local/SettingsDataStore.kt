@@ -1,4 +1,4 @@
-package com.lidev.mycountriesapp.data.datasource
+package com.lidev.mycountriesapp.data.datasource.local
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
-class SettingsDataStore(
+internal class SettingsDataStore(
     private val context: Context,
 ) {
     companion object {

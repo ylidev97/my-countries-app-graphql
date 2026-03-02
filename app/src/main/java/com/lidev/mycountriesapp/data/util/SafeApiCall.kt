@@ -1,6 +1,6 @@
 package com.lidev.mycountriesapp.data.util
 
-import com.lidev.mycountriesapp.data.mappers.toNetworkError
+import com.lidev.mycountriesapp.data.mappers.remote.toNetworkError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

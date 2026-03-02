@@ -1,8 +1,8 @@
 package com.lidev.mycountriesapp.data.id
 
 import com.apollographql.apollo.ApolloClient
-import com.lidev.mycountriesapp.data.datasource.ApolloCountryClient
-import com.lidev.mycountriesapp.data.datasource.SettingsDataStore
+import com.lidev.mycountriesapp.data.datasource.local.SettingsDataStore
+import com.lidev.mycountriesapp.data.datasource.remote.ApolloCountryClient
 import com.lidev.mycountriesapp.data.repository.CountryRepositoryImpl
 import com.lidev.mycountriesapp.data.repository.SettingsRepositoryImpl
 import com.lidev.mycountriesapp.domain.repository.CountryRepository

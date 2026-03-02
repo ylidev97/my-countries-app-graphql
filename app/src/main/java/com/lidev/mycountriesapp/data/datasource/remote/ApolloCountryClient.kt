@@ -1,14 +1,14 @@
-package com.lidev.mycountriesapp.data.datasource
+package com.lidev.mycountriesapp.data.datasource.remote
 
 import com.apollographql.apollo.ApolloClient
 import com.lidev.mycountriesapp.countriestrevorblades.GetCountriesQuery
 import com.lidev.mycountriesapp.countriestrevorblades.GetCountryByCodeQuery
-import com.lidev.mycountriesapp.data.mappers.toDomain
+import com.lidev.mycountriesapp.data.mappers.remote.toDomain
 import com.lidev.mycountriesapp.data.util.safeApiCall
 import com.lidev.mycountriesapp.domain.model.Country
 import com.lidev.mycountriesapp.domain.model.CountryDetail
 
-class ApolloCountryClient(
+internal class ApolloCountryClient(
     private val apolloClient: ApolloClient,
 ) {
     suspend fun getCountries(): Result<List<Country>> {

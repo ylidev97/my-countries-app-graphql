@@ -1,10 +1,6 @@
 package com.lidev.mycountriesapp.ui.screens.settings.composables.components
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DarkMode
-import androidx.compose.material.icons.filled.LightMode
-import androidx.compose.material.icons.filled.SettingsSystemDaydream
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -13,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.lidev.mycountriesapp.R
+import com.lidev.mycountriesapp.ui.theme.MyIcons
 
 @Composable
 fun ThemeSettings(
@@ -24,10 +21,10 @@ fun ThemeSettings(
             Triple(
                 "system",
                 stringResource(R.string.theme_system),
-                Icons.Default.SettingsSystemDaydream,
+                MyIcons.settingsSystemDayDreamIcon,
             ),
-            Triple("light", stringResource(R.string.theme_light), Icons.Default.LightMode),
-            Triple("dark", stringResource(R.string.theme_dark), Icons.Default.DarkMode),
+            Triple("light", stringResource(R.string.theme_light), MyIcons.lightModeIcon),
+            Triple("dark", stringResource(R.string.theme_dark), MyIcons.darkModeIcon),
         )
 
     options.forEachIndexed { index, (key, label, icon) ->

@@ -1,4 +1,4 @@
-package com.lidev.mycountriesapp.data.mappers
+package com.lidev.mycountriesapp.data.mappers.remote
 
 import com.lidev.mycountriesapp.countriestrevorblades.GetCountriesQuery
 import com.lidev.mycountriesapp.countriestrevorblades.GetCountryByCodeQuery

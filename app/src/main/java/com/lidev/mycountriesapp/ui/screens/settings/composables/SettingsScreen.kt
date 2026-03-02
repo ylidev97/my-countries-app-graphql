@@ -5,9 +5,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -35,6 +32,7 @@ import com.lidev.mycountriesapp.ui.screens.settings.composables.components.Setti
 import com.lidev.mycountriesapp.ui.screens.settings.composables.components.ThemeSettings
 import com.lidev.mycountriesapp.ui.screens.settings.model.SettingsState
 import com.lidev.mycountriesapp.ui.theme.MyCountriesAppTheme
+import com.lidev.mycountriesapp.ui.theme.MyIcons
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -82,7 +80,7 @@ private fun SettingsContent(
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
+                            imageVector = MyIcons.arrowBackIcon,
                             contentDescription = stringResource(R.string.back),
                         )
                     }
@@ -115,7 +113,7 @@ private fun SettingsContent(
                 }
             }
 
-            item { Spacer(modifier = Modifier.height(24.dp)) }
+            item { Spacer(modifier = Modifier.height(28.dp)) }
 
             item {
                 SettingsSection(title = stringResource(R.string.palette)) {
@@ -126,14 +124,14 @@ private fun SettingsContent(
                 }
             }
 
-            item { Spacer(modifier = Modifier.height(24.dp)) }
+            item { Spacer(modifier = Modifier.height(28.dp)) }
 
             item {
                 SettingsSection(title = stringResource(R.string.dynamic_color)) {
                     SettingsListItem(
                         title = stringResource(R.string.dynamic_color),
                         subtitle = stringResource(R.string.dynamic_color_desc),
-                        icon = Icons.Default.ColorLens,
+                        icon = MyIcons.colorLensIcon,
                         iconContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                         iconContentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                         trailingContent = {
@@ -147,7 +145,7 @@ private fun SettingsContent(
                 }
             }
 
-            item { Spacer(modifier = Modifier.height(24.dp)) }
+            item { Spacer(modifier = Modifier.height(28.dp)) }
 
             item {
                 SettingsSection(title = stringResource(R.string.language)) {
