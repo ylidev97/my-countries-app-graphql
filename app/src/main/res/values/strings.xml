@@ -23,6 +23,9 @@
     <string name="theme_system">System</string>
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
+    <string name="palette">Color Palette</string>
+    <string name="palette_default">Default (Purple)</string>
+    <string name="palette_nature">Nature (Green)</string>
     <string name="dynamic_color">Dynamic Color</string>
     <string name="dynamic_color_desc">Enable dynamic color based on your wallpaper (Android 12+)</string>
     <string name="language">Language</string>

@@ -23,6 +23,9 @@
     <string name="theme_system">Sistema</string>
     <string name="theme_light">Claro</string>
     <string name="theme_dark">Oscuro</string>
+    <string name="palette">Paleta de colores</string>
+    <string name="palette_default">Predeterminado (Púrpura)</string>
+    <string name="palette_nature">Naturaleza (Verde)</string>
     <string name="dynamic_color">Color Dinámico</string>
     <string name="dynamic_color_desc">Activa el color dinámico basado en tu fondo de pantalla (Android 12+)</string>
     <string name="language">Idioma</string>
