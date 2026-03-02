@@ -7,16 +7,12 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -25,13 +21,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.lidev.mycountriesapp.R
 import com.lidev.mycountriesapp.ui.components.LikeAnimation
-import com.lidev.mycountriesapp.ui.components.ScrollBubble
 import com.lidev.mycountriesapp.ui.screens.countries.CountriesScreenViewModel
+import com.lidev.mycountriesapp.ui.screens.countries.composables.components.ContinentFilter
 import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountriesTopAppBar
 import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountryDetailSheet
 import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountryList
@@ -48,21 +43,21 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun CountriesScreen(onSettingsClick: () -> Unit = {}) {
-    val viewModel: CountriesScreenViewModel = koinViewModel<CountriesScreenViewModel>()
-    val state = viewModel.state.collectAsStateWithLifecycle()
+    val viewModel: CountriesScreenViewModel = koinViewModel()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     Content(
-        countries = state.value.countries,
-        countryDetail = state.value.selectedCountry,
-        isOnline = state.value.isOnline,
+        countries = state.countries,
+        countryDetail = state.selectedCountry,
+        isOnline = state.isOnline,
         onDismissSheet = {
             viewModel.selectCountry(null)
         },
-        isLoading = state.value.isLoading,
+        isLoading = state.isLoading,
         onItemClick = viewModel::selectCountry,
         onFavoriteClick = viewModel::toggleFavorite,
         onSearchQueryChange = viewModel::onSearchQueryChange,
-        searchQuery = state.value.searchQuery,
+        searchQuery = state.searchQuery,
         onRetry = viewModel::onRetry,
         onSettingsClick = onSettingsClick,
     )
@@ -86,10 +81,15 @@ private fun Content(
     var showLikeAnimation by remember { mutableStateOf(false) }
     var showSearchBar by remember { mutableStateOf(false) }
     val lazyListState = rememberLazyListState()
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     val continents =
         remember(countries) {
-            countries.map { it.continent }.distinct().sorted()
+            countries
+                .map { it.continent }
+                .distinct()
+                .sorted()
+                .toPersistentList()
         }
     var selectedContinent by remember { mutableStateOf<String?>(null) }
 
@@ -113,7 +113,11 @@ private fun Content(
     }
 
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .nestedScroll(scrollBehavior.nestedScrollConnection),
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             CountriesTopAppBar(
                 showSearchBar = showSearchBar,
@@ -122,6 +126,7 @@ private fun Content(
                 onSearchQueryChange = onSearchQueryChange,
                 isOnline = isOnline,
                 onSettingsClick = onSettingsClick,
+                scrollBehavior = scrollBehavior,
             )
         },
     ) { innerPadding ->
@@ -132,34 +137,11 @@ private fun Content(
                     .padding(innerPadding),
         ) {
             if (isOnline && continents.isNotEmpty()) {
-                LazyRow(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = MaterialTheme.dimens.mediumSmall),
-                    horizontalArrangement =
-                        androidx.compose.foundation.layout.Arrangement.spacedBy(
-                            MaterialTheme.dimens.small,
-                        ),
-                ) {
-                    item {
-                        FilterChip(
-                            selected = selectedContinent == null,
-                            onClick = { selectedContinent = null },
-                            label = { Text(stringResource(R.string.all)) },
-                        )
-                    }
-                    items(continents) { continent ->
-                        FilterChip(
-                            selected = selectedContinent == continent,
-                            onClick = {
-                                selectedContinent =
-                                    if (selectedContinent == continent) null else continent
-                            },
-                            label = { Text(continent) },
-                        )
-                    }
-                }
+                ContinentFilter(
+                    continents = continents,
+                    selectedContinent = selectedContinent,
+                    onContinentSelected = { selectedContinent = it },
+                )
             }
 
             Box(
@@ -171,7 +153,10 @@ private fun Content(
                     )
                 } else {
                     CountryList(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier =
+                            Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = MaterialTheme.dimens.medium),
                         lazyListState = lazyListState,
                         filteredCountries = filteredCountries,
                         onItemClick = onItemClick,
@@ -180,20 +165,6 @@ private fun Content(
                             showLikeAnimation = !it.isFavorite
                             onFavoriteClick(it.code)
                         },
-                    )
-                }
-
-                if (!showSearchBar && isOnline) {
-                    ScrollBubble(
-                        modifier =
-                            Modifier
-                                .align(Alignment.TopEnd)
-                                .padding(
-                                    end = MaterialTheme.dimens.small,
-                                    top = MaterialTheme.dimens.extraLarge,
-                                ),
-                        lazyListState = lazyListState,
-                        firstLetters = filteredCountries.map { it.name.first() }.toPersistentList(),
                     )
                 }
 
@@ -208,8 +179,6 @@ private fun Content(
             }
         }
     }
-
-//    LoadingDialog(isLoading)
 
     CountryDetailSheet(
         countryDetail = countryDetail,

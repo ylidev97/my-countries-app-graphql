@@ -12,14 +12,18 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.lidev.mycountriesapp.R
 import com.lidev.mycountriesapp.ui.theme.MyCountriesAppTheme
@@ -34,6 +38,7 @@ internal fun CountriesTopAppBar(
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
     onSettingsClick: () -> Unit = {},
+    scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
     AnimatedContent(
         targetState = showSearchBar,
@@ -55,12 +60,14 @@ internal fun CountriesTopAppBar(
                 searchQuery = searchQuery,
                 onSearchQueryChange = onSearchQueryChange,
                 onCloseSearch = { onSearchBarToggle(false) },
+                scrollBehavior = scrollBehavior,
             )
         } else {
             RegularTopAppBar(
                 onOpenSearch = { onSearchBarToggle(true) },
                 searchIconEnable = isOnline,
                 onSettingsClick = onSettingsClick,
+                scrollBehavior = scrollBehavior,
             )
         }
     }
@@ -72,10 +79,19 @@ private fun RegularTopAppBar(
     searchIconEnable: Boolean,
     onOpenSearch: () -> Unit,
     onSettingsClick: () -> Unit,
+    scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
     CenterAlignedTopAppBar(
-        title = { Text(text = stringResource(R.string.countries)) },
-        navigationIcon = {
+        title = {
+            Text(
+                text = stringResource(R.string.countries),
+                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
+            )
+        },
+        actions = {
+            IconButton(onClick = onOpenSearch, enabled = searchIconEnable) {
+                SearchIcon()
+            }
             IconButton(onClick = onSettingsClick) {
                 Icon(
                     imageVector = MyIcons.settingsIcon,
@@ -83,11 +99,12 @@ private fun RegularTopAppBar(
                 )
             }
         },
-        actions = {
-            IconButton(onClick = onOpenSearch, enabled = searchIconEnable) {
-                SearchIcon()
-            }
-        },
+        colors =
+            TopAppBarDefaults.centerAlignedTopAppBarColors(
+                containerColor = Color.Transparent,
+                scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+            ),
+        scrollBehavior = scrollBehavior,
     )
 }
 
@@ -105,6 +122,7 @@ private fun SearchTopAppBar(
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
     onCloseSearch: () -> Unit,
+    scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -141,9 +159,16 @@ private fun SearchTopAppBar(
                     ),
             )
         },
+        colors =
+            TopAppBarDefaults.centerAlignedTopAppBarColors(
+                containerColor = Color.Transparent,
+                scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+            ),
+        scrollBehavior = scrollBehavior,
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 private fun CountriesTopAppBarPreview() {
@@ -157,6 +182,7 @@ private fun CountriesTopAppBarPreview() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 private fun CountriesTopAppBarSearchPreview() {
