@@ -8,6 +8,7 @@ import com.lidev.mycountriesapp.domain.usecases.GetThemeUseCase
 import com.lidev.mycountriesapp.domain.usecases.SetDynamicColorUseCase
 import com.lidev.mycountriesapp.domain.usecases.SetLanguageUseCase
 import com.lidev.mycountriesapp.domain.usecases.SetThemeUseCase
+import com.lidev.mycountriesapp.ui.MainViewModel
 import com.lidev.mycountriesapp.ui.screens.countries.CountriesScreenViewModel
 import com.lidev.mycountriesapp.ui.screens.settings.SettingsViewModel
 import com.lidev.mycountriesapp.util.NetworkMonitor
@@ -32,4 +33,5 @@ val appModule =
 
         viewModelOf(::CountriesScreenViewModel)
         viewModelOf(::SettingsViewModel)
+        viewModelOf(::MainViewModel)
     }
