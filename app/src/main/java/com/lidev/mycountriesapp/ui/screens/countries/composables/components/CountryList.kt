@@ -24,6 +24,7 @@ internal fun CountryList(
     modifier: Modifier = Modifier,
     lazyListState: LazyListState,
     filteredCountries: ImmutableList<CountryUi>,
+    isLoading: Boolean = false,
     onItemClick: (String) -> Unit,
     onFavoriteClick: (CountryUi) -> Unit,
 ) {
@@ -33,18 +34,24 @@ internal fun CountryList(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.small),
     ) {
-        items(filteredCountries, key = { it.code }) { countryItem ->
-            CountryItem(
-                isFavorite = countryItem.isFavorite,
-                emoji = countryItem.emoji,
-                name = countryItem.name,
-                onItemClick = {
-                    onItemClick(countryItem.code)
-                },
-                onFavoriteClick = {
-                    onFavoriteClick(countryItem)
-                },
-            )
+        if (isLoading && filteredCountries.isEmpty()) {
+            items(20) {
+                CountryItemShimmer()
+            }
+        } else {
+            items(filteredCountries, key = { it.code }) { countryItem ->
+                CountryItem(
+                    isFavorite = countryItem.isFavorite,
+                    emoji = countryItem.emoji,
+                    name = countryItem.name,
+                    onItemClick = {
+                        onItemClick(countryItem.code)
+                    },
+                    onFavoriteClick = {
+                        onFavoriteClick(countryItem)
+                    },
+                )
+            }
         }
         item {
             Spacer(
@@ -77,19 +84,21 @@ private fun CountryListPreview() {
                         emoji = "🇨🇦",
                         isFavorite = true,
                     ),
-                    CountryUi(
-                        code = "FR",
-                        name = "France",
-                        emoji = "🇫🇷",
-                        isFavorite = false,
-                    ),
-                    CountryUi(
-                        code = "DE",
-                        name = "Germany",
-                        emoji = "🇩🇪",
-                        isFavorite = false,
-                    ),
                 ),
+            onItemClick = {},
+            onFavoriteClick = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CountryListLoadingPreview() {
+    MyCountriesAppTheme {
+        CountryList(
+            lazyListState = rememberLazyListState(),
+            filteredCountries = persistentListOf(),
+            isLoading = true,
             onItemClick = {},
             onFavoriteClick = {},
         )

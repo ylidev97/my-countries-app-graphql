@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lidev.mycountriesapp.ui.components.LikeAnimation
-import com.lidev.mycountriesapp.ui.components.LoadingDialog
 import com.lidev.mycountriesapp.ui.components.ScrollBubble
 import com.lidev.mycountriesapp.ui.screens.countries.CountriesScreenViewModel
 import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountriesTopAppBar
@@ -125,6 +124,7 @@ private fun Content(
                     lazyListState = lazyListState,
                     filteredCountries = filteredCountries,
                     onItemClick = onItemClick,
+                    isLoading = isLoading,
                     onFavoriteClick = {
                         showLikeAnimation = !it.isFavorite
                         onFavoriteClick(it.code)
@@ -157,7 +157,7 @@ private fun Content(
         }
     }
 
-    LoadingDialog(isLoading)
+//    LoadingDialog(isLoading)
 
     CountryDetailSheet(
         countryDetail = countryDetail,
