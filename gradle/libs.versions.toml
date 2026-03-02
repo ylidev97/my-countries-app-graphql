@@ -8,6 +8,7 @@ composeBom = "2026.02.01"
 activityCompose = "1.12.4"
 coreKtx = "1.17.0"
 lifecycleRuntimeKtx = "2.10.0"
+navigationCompose = "2.9.7"
 window = "1.5.1"
 
 # Network
@@ -53,6 +54,7 @@ androidx-activity-compose = { group = "androidx.activity", name = "activity-comp
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 # noinspection UnusedVersionCatalogEntry
 androidx-compose-material-windows-size = { group = "androidx.compose.material3", name = "material3-window-size-class" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }

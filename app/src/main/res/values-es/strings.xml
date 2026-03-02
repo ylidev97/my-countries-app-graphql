@@ -17,4 +17,14 @@
     <string name="all">Todos</string>
     <string name="remove_from_favorites">Quitar de favoritos</string>
     <string name="add_to_favorites">Añadir a favoritos</string>
+    <string name="settings">Configuración</string>
+    <string name="back">Volver</string>
+    <string name="theme">Tema</string>
+    <string name="theme_system">Sistema</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_dark">Oscuro</string>
+    <string name="dynamic_color">Color Dinámico</string>
+    <string name="dynamic_color_desc">Activa el color dinámico basado en tu fondo de pantalla (Android 12+)</string>
+    <string name="language">Idioma</string>
+    <string name="language_system">Predefinido del sistema</string>
 </resources>
