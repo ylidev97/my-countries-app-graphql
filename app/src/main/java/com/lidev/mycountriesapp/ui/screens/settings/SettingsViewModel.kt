@@ -18,10 +18,10 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(
-    private val getThemeUseCase: GetThemeUseCase,
-    private val getPaletteUseCase: GetPaletteUseCase,
-    private val getDynamicColorUseCase: GetDynamicColorUseCase,
-    private val getLanguageUseCase: GetLanguageUseCase,
+    getThemeUseCase: GetThemeUseCase,
+    getPaletteUseCase: GetPaletteUseCase,
+    getDynamicColorUseCase: GetDynamicColorUseCase,
+    getLanguageUseCase: GetLanguageUseCase,
     private val setThemeUseCase: SetThemeUseCase,
     private val setPaletteUseCase: SetPaletteUseCase,
     private val setDynamicColorUseCase: SetDynamicColorUseCase,
