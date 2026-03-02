@@ -52,7 +52,7 @@ fun ThemeSettings(
             },
             onClick = { onThemeSelected(key) },
         )
-        if (index < options.size - 1) {
+        if (index < options.lastIndex) {
             HorizontalDivider(
                 modifier =
                     Modifier.padding(
