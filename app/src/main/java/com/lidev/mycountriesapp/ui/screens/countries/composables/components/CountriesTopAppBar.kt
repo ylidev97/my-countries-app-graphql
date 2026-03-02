@@ -8,6 +8,8 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -32,6 +34,7 @@ internal fun CountriesTopAppBar(
     onSearchBarToggle: (Boolean) -> Unit,
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
+    onSettingsClick: () -> Unit = {},
 ) {
     AnimatedContent(
         targetState = showSearchBar,
@@ -58,6 +61,7 @@ internal fun CountriesTopAppBar(
             RegularTopAppBar(
                 onOpenSearch = { onSearchBarToggle(true) },
                 searchIconEnable = isOnline,
+                onSettingsClick = onSettingsClick,
             )
         }
     }
@@ -68,9 +72,18 @@ internal fun CountriesTopAppBar(
 private fun RegularTopAppBar(
     searchIconEnable: Boolean,
     onOpenSearch: () -> Unit,
+    onSettingsClick: () -> Unit,
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = stringResource(R.string.countries)) },
+        navigationIcon = {
+            IconButton(onClick = onSettingsClick) {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = stringResource(R.string.settings),
+                )
+            }
+        },
         actions = {
             IconButton(onClick = onOpenSearch, enabled = searchIconEnable) {
                 SearchIcon()

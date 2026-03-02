@@ -47,7 +47,7 @@ import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-internal fun CountriesScreen() {
+internal fun CountriesScreen(onSettingsClick: () -> Unit = {}) {
     val viewModel: CountriesScreenViewModel = koinViewModel<CountriesScreenViewModel>()
     val state = viewModel.state.collectAsStateWithLifecycle()
 
@@ -64,6 +64,7 @@ internal fun CountriesScreen() {
         onSearchQueryChange = viewModel::onSearchQueryChange,
         searchQuery = state.value.searchQuery,
         onRetry = viewModel::onRetry,
+        onSettingsClick = onSettingsClick,
     )
 }
 
@@ -80,6 +81,7 @@ private fun Content(
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
     onRetry: () -> Unit,
+    onSettingsClick: () -> Unit = {},
 ) {
     var showLikeAnimation by remember { mutableStateOf(false) }
     var showSearchBar by remember { mutableStateOf(false) }
@@ -119,6 +121,7 @@ private fun Content(
                 searchQuery = searchQuery,
                 onSearchQueryChange = onSearchQueryChange,
                 isOnline = isOnline,
+                onSettingsClick = onSettingsClick,
             )
         },
     ) { innerPadding ->
