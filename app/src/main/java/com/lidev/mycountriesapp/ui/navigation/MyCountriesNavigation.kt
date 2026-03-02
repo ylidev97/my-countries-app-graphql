@@ -16,6 +16,7 @@ sealed class Screen(
     data object Settings : Screen("settings")
 }
 
+@Suppress("ParamsComparedByRef")
 @Composable
 fun MyCountriesNavHost(
     navController: NavHostController,
