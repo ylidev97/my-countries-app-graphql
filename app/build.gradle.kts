@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.apollo)
     alias(libs.plugins.kotzilla)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.roborazzi)
     id("jacoco")
 }
 
@@ -66,6 +67,9 @@ android {
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
+            all {
+                it.systemProperty("robolectric.pixelCopyRenderMode", "hardware")
+            }
         }
         suites {
             create("journeysTest") {
@@ -108,7 +112,14 @@ dependencies {
     // Storage
     implementation(libs.datastore.preferences)
 
+    // Test
     testImplementation(libs.junit)
+    testImplementation(libs.roborazzi)
+    testImplementation(libs.roborazzi.compose)
+    testImplementation(libs.roborazzi.junit)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.compose.ui.test.junit4)
+    
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -180,9 +191,6 @@ tasks.withType<Detekt>().configureEach {
         txt.required.set(false)
         sarif.required.set(false)
 
-//        html.outputLocation.set(file("$buildDir/reports/detekt/detekt.html"))
-//        xml.outputLocation.set(file("$buildDir/reports/detekt/detekt.xml"))
-        // New layout.buildDirectory for get the file
         html.outputLocation.set(layout.buildDirectory.file("reports/detekt/detekt.html"))
         xml.outputLocation.set(layout.buildDirectory.file("reports/detekt/detekt.xml"))
     }

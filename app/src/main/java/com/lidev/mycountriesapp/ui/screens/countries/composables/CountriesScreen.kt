@@ -46,7 +46,7 @@ internal fun CountriesScreen(onSettingsClick: () -> Unit = {}) {
     val viewModel: CountriesScreenViewModel = koinViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    Content(
+    CountriesScreenContent(
         countries = state.countries,
         countryDetail = state.selectedCountry,
         isOnline = state.isOnline,
@@ -65,7 +65,7 @@ internal fun CountriesScreen(onSettingsClick: () -> Unit = {}) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun Content(
+internal fun CountriesScreenContent(
     countries: ImmutableList<CountryUi> = persistentListOf(),
     isLoading: Boolean,
     isOnline: Boolean,
@@ -192,9 +192,9 @@ private fun Content(
 
 @Preview
 @Composable
-private fun ContentPreview() {
+private fun CountriesScreenContentPreview() {
     MyCountriesAppTheme {
-        Content(
+        CountriesScreenContent(
             countries =
                 persistentListOf(
                     CountryUi(
