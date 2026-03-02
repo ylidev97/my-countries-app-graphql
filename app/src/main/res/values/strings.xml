@@ -30,4 +30,6 @@
     <string name="dynamic_color_desc">Enable dynamic color based on your wallpaper (Android 12+)</string>
     <string name="language">Language</string>
     <string name="language_system">System Default</string>
+    <string name="language_en">English</string>
+    <string name="language_es">Spanish</string>
 </resources>

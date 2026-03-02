@@ -30,4 +30,6 @@
     <string name="dynamic_color_desc">Activa el color dinámico basado en tu fondo de pantalla (Android 12+)</string>
     <string name="language">Idioma</string>
     <string name="language_system">Predefinido del sistema</string>
+    <string name="language_en">Inglés</string>
+    <string name="language_es">Español</string>
 </resources>

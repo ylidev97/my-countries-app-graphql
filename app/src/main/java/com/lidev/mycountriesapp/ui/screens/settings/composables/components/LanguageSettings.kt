@@ -7,7 +7,6 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.lidev.mycountriesapp.R
 import com.lidev.mycountriesapp.domain.model.AppLanguage
 import com.lidev.mycountriesapp.ui.theme.MyIcons
@@ -25,8 +24,16 @@ fun LanguageSettings(
                 stringResource(R.string.language_system),
                 MyIcons.languageIcon,
             ),
-            Triple(AppLanguage.English, "English", MyIcons.languageIcon),
-            Triple(AppLanguage.Spanish, "Español", MyIcons.languageIcon),
+            Triple(
+                AppLanguage.English,
+                stringResource(R.string.language_en),
+                MyIcons.languageIcon,
+            ),
+            Triple(
+                AppLanguage.Spanish,
+                stringResource(R.string.language_es),
+                MyIcons.languageIcon,
+            ),
         )
 
     options.forEachIndexed { index, (language, label, icon) ->
@@ -60,7 +67,7 @@ fun LanguageSettings(
                         horizontal = MaterialTheme.dimens.extraExtraLarge,
                         vertical = MaterialTheme.dimens.extraSmall,
                     ),
-                thickness = 0.5.dp,
+                thickness = MaterialTheme.dimens.extraSmall / 8,
                 color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
             )
         }

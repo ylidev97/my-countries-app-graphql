@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
+import com.lidev.mycountriesapp.domain.model.AppLanguage
 import com.lidev.mycountriesapp.domain.model.AppTheme
 import com.lidev.mycountriesapp.ui.navigation.MyCountriesNavHost
 import com.lidev.mycountriesapp.ui.theme.MyCountriesAppTheme
@@ -44,7 +45,7 @@ private fun MyCountriesApp(viewModel: MainViewModel = koinViewModel()) {
             AppTheme.System -> isSystemInDarkTheme()
         }
 
-    val localizedContext = rememberLocalizedContext(language = state.language.tag)
+    val localizedContext = rememberLocalizedContext(language = state.language)
 
     CompositionLocalProvider(LocalContext provides localizedContext) {
         MyCountriesAppTheme(
@@ -60,14 +61,14 @@ private fun MyCountriesApp(viewModel: MainViewModel = koinViewModel()) {
 
 @SuppressLint("ObsoleteSdkInt", "LocalContextConfigurationRead")
 @Composable
-private fun rememberLocalizedContext(language: String): Context {
+private fun rememberLocalizedContext(language: AppLanguage): Context {
     val baseContext = LocalContext.current
 
     return remember(baseContext, language) {
         val locale =
             when (language) {
-                "system" -> Locale.getDefault()
-                else -> Locale.forLanguageTag(language)
+                AppLanguage.System -> Locale.getDefault()
+                else -> Locale.forLanguageTag(language.tag)
             }
 
         val config = Configuration(baseContext.resources.configuration)
