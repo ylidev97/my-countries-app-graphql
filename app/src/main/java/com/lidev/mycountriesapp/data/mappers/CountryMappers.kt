@@ -6,7 +6,13 @@ import com.lidev.mycountriesapp.domain.model.Country
 import com.lidev.mycountriesapp.domain.model.CountryDetail
 import com.lidev.mycountriesapp.domain.model.Language
 
-internal fun GetCountriesQuery.Country.toDomain(): Country = Country(code = code, name = name, emoji = emoji)
+internal fun GetCountriesQuery.Country.toDomain(): Country =
+    Country(
+        code = code,
+        name = name,
+        emoji = emoji,
+        continent = continent.name,
+    )
 
 internal fun GetCountryByCodeQuery.Country.toDomain(): CountryDetail =
     CountryDetail(

@@ -3,5 +3,8 @@ query GetCountries {
         code
         name
         emoji
+        continent {
+            name
+        }
     }
 }
