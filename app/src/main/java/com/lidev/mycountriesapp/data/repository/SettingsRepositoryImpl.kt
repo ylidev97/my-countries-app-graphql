@@ -8,10 +8,13 @@ class SettingsRepositoryImpl(
     private val settingsDataStore: SettingsDataStore,
 ) : SettingsRepository {
     override val themeFlow: Flow<String> = settingsDataStore.themeFlow
+    override val paletteFlow: Flow<String> = settingsDataStore.paletteFlow
     override val dynamicColorFlow: Flow<Boolean> = settingsDataStore.dynamicColorFlow
     override val languageFlow: Flow<String> = settingsDataStore.languageFlow
 
     override suspend fun setTheme(theme: String) = settingsDataStore.setTheme(theme)
+
+    override suspend fun setPalette(palette: String) = settingsDataStore.setPalette(palette)
 
     override suspend fun setDynamicColor(enabled: Boolean) = settingsDataStore.setDynamicColor(enabled)
 
