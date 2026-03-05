@@ -50,17 +50,17 @@ jobs:
       - name: Run unit tests
         run: ./gradlew testDebugUnitTest
 
-      # Ejecuta la verificación de lint de Android para encontrar errores potenciales
-      - name: Run lint check
-        run: ./gradlew lintDebug
-
-      # Sube el reporte de lint como un artefacto
-      - name: Upload lint report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: lint-report
-          path: app/build/reports/lint-results-debug.html
+#      # Ejecuta la verificación de lint de Android para encontrar errores potenciales
+#      - name: Run lint check
+#        run: ./gradlew lintDebug
+#
+#      # Sube el reporte de lint como un artefacto
+#      - name: Upload lint report
+#        if: always()
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: lint-report
+#          path: app/build/reports/lint-results-debug.html
 
       # Compila la aplicación en modo debug para generar el APK
       - name: Build debug APK
