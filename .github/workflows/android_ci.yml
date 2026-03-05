@@ -91,14 +91,17 @@ jobs:
 #        with:
 #          files: app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
 
-#  # Job para revisar las dependencias en los Pull Requests
-#  dependency-review:
-#    if: "${{ github.event_name == 'pull_request' }}"
-#    runs-on: ubuntu-latest
-#    steps:
-#      # Obtiene el código fuente
-#      - name: 'Checkout Repository'
-#        uses: actions/checkout@v4
-#      # Ejecuta la acción de revisión de vulnerabilidades en dependencias
-#      - name: 'Dependency Review'
-#        uses: actions/dependency-review-action@v4
+  # Job para revisar las dependencias en los Pull Requests buscando vulnerabilidades
+  dependency-review:
+    name: Dependency Review
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      # Obtiene el código fuente
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      # Ejecuta la acción de revisión de cambios en dependencias
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
