@@ -11,22 +11,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Obtiene el código fuente del repositorio
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
+      # Configura el entorno de Java 17 necesario para compilar el proyecto
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: 'gradle'
 
+      # Otorga permisos de ejecución al script de Gradle
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      # Extrae la versión de la aplicación desde el archivo build.gradle.kts
+      - name: Get version name
+        id: get_version
+        run: |
+          VERSION_NAME=$(grep "versionName =" app/build.gradle.kts | head -n 1 | awk -F'"' '{print $2}')
+          echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_OUTPUT
+
+      # Ejecuta el análisis estático de código con Detekt
       - name: Run Detekt
         run: ./gradlew detekt
 
+      # Sube el reporte generado por Detekt como un artefacto
       - name: Upload Detekt report
         if: always()
         uses: actions/upload-artifact@v4
@@ -34,12 +46,15 @@ jobs:
           name: detekt-report
           path: app/build/reports/detekt/detekt.html
 
+      # Ejecuta las pruebas unitarias del proyecto
       - name: Run unit tests
         run: ./gradlew testDebugUnitTest
 
+      # Ejecuta la verificación de lint de Android para encontrar errores potenciales
       - name: Run lint check
         run: ./gradlew lintDebug
 
+      # Sube el reporte de lint como un artefacto
       - name: Upload lint report
         if: always()
         uses: actions/upload-artifact@v4
@@ -47,15 +62,18 @@ jobs:
           name: lint-report
           path: app/build/reports/lint-results-debug.html
 
+      # Compila la aplicación en modo debug para generar el APK
       - name: Build debug APK
         run: ./gradlew assembleDebug
 
+      # Sube el APK generado como un artefacto de la ejecución, incluyendo la versión en el nombre
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: debug-apk
+          name: debug-apk-v${{ steps.get_version.outputs.VERSION_NAME }}
           path: app/build/outputs/apk/debug/*.apk
 
+      # Sube los reportes de las pruebas unitarias
       - name: Upload test reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -63,12 +81,24 @@ jobs:
           name: test-reports
           path: app/build/reports/tests/testDebugUnitTest
 
+#      # Genera el reporte de cobertura con Jacoco
+#      - name: Generate Coverage Report
+#        run: ./gradlew jacocoTestReport
+#
+#      # Sube el reporte de cobertura a Codecov
+#      - name: Upload Coverage to Codecov
+#        uses: codecov/codecov-action@v4
+#        with:
+#          files: app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
+
+#  # Job para revisar las dependencias en los Pull Requests
 #  dependency-review:
 #    if: "${{ github.event_name == 'pull_request' }}"
 #    runs-on: ubuntu-latest
 #    steps:
+#      # Obtiene el código fuente
 #      - name: 'Checkout Repository'
-#        uses: actions/checkout@v3
+#        uses: actions/checkout@v4
+#      # Ejecuta la acción de revisión de vulnerabilidades en dependencias
 #      - name: 'Dependency Review'
-#        uses: actions/dependency-review-action@v3
-
+#        uses: actions/dependency-review-action@v4
