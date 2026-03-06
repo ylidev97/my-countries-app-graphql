@@ -20,6 +20,7 @@ internal class SettingsDataStore(
         val PALETTE_KEY = stringPreferencesKey("palette")
         val DYNAMIC_COLOR_KEY = booleanPreferencesKey("dynamic_color")
         val LANGUAGE_KEY = stringPreferencesKey("language")
+        val NOTIFICATIONS_KEY = booleanPreferencesKey("notifications")
     }
 
     val themeFlow: Flow<String> =
@@ -40,6 +41,11 @@ internal class SettingsDataStore(
     val languageFlow: Flow<String> =
         context.dataStore.data.map { preferences ->
             preferences[LANGUAGE_KEY] ?: "system"
+        }
+
+    val notificationsEnabledFlow: Flow<Boolean> =
+        context.dataStore.data.map { preferences ->
+            preferences[NOTIFICATIONS_KEY] ?: false
         }
 
     suspend fun setTheme(theme: String) {
@@ -63,6 +69,12 @@ internal class SettingsDataStore(
     suspend fun setLanguage(language: String) {
         context.dataStore.edit { preferences ->
             preferences[LANGUAGE_KEY] = language
+        }
+    }
+
+    suspend fun setNotificationsEnabled(enabled: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[NOTIFICATIONS_KEY] = enabled
         }
     }
 }

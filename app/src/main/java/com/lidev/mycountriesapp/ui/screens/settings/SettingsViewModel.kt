@@ -7,10 +7,12 @@ import com.lidev.mycountriesapp.domain.model.AppPalette
 import com.lidev.mycountriesapp.domain.model.AppTheme
 import com.lidev.mycountriesapp.domain.usecases.GetDynamicColorUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetLanguageUseCase
+import com.lidev.mycountriesapp.domain.usecases.GetNotificationsEnabledUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetPaletteUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetThemeUseCase
 import com.lidev.mycountriesapp.domain.usecases.SetDynamicColorUseCase
 import com.lidev.mycountriesapp.domain.usecases.SetLanguageUseCase
+import com.lidev.mycountriesapp.domain.usecases.SetNotificationsEnabledUseCase
 import com.lidev.mycountriesapp.domain.usecases.SetPaletteUseCase
 import com.lidev.mycountriesapp.domain.usecases.SetThemeUseCase
 import com.lidev.mycountriesapp.ui.screens.settings.model.SettingsState
@@ -26,10 +28,12 @@ class SettingsViewModel(
     getPaletteUseCase: GetPaletteUseCase,
     getDynamicColorUseCase: GetDynamicColorUseCase,
     getLanguageUseCase: GetLanguageUseCase,
+    getNotificationsEnabledUseCase: GetNotificationsEnabledUseCase,
     private val setThemeUseCase: SetThemeUseCase,
     private val setPaletteUseCase: SetPaletteUseCase,
     private val setDynamicColorUseCase: SetDynamicColorUseCase,
     private val setLanguageUseCase: SetLanguageUseCase,
+    private val setNotificationsEnabledUseCase: SetNotificationsEnabledUseCase,
     private val widgetSyncManager: WidgetSyncManager,
 ) : ViewModel() {
     val state: StateFlow<SettingsState> =
@@ -38,8 +42,9 @@ class SettingsViewModel(
             getPaletteUseCase(),
             getDynamicColorUseCase(),
             getLanguageUseCase(),
-        ) { theme, palette, dynamicColor, language ->
-            SettingsState(theme, palette, dynamicColor, language)
+            getNotificationsEnabledUseCase(),
+        ) { theme, palette, dynamicColor, language, notificationsEnabled ->
+            SettingsState(theme, palette, dynamicColor, language, notificationsEnabled)
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
@@ -71,6 +76,12 @@ class SettingsViewModel(
         viewModelScope.launch {
             setLanguageUseCase(language)
             widgetSyncManager.updateWidgets()
+        }
+    }
+
+    fun setNotificationsEnabled(enabled: Boolean) {
+        viewModelScope.launch {
+            setNotificationsEnabledUseCase(enabled)
         }
     }
 }

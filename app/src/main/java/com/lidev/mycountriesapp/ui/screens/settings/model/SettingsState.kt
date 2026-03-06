@@ -9,4 +9,5 @@ data class SettingsState(
     val palette: AppPalette = AppPalette.Default,
     val dynamicColor: Boolean = true,
     val language: AppLanguage = AppLanguage.System,
+    val notificationsEnabled: Boolean = false,
 )

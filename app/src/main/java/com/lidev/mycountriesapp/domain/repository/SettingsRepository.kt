@@ -10,6 +10,7 @@ interface SettingsRepository {
     val paletteFlow: Flow<AppPalette>
     val dynamicColorFlow: Flow<Boolean>
     val languageFlow: Flow<AppLanguage>
+    val notificationsEnabledFlow: Flow<Boolean>
 
     suspend fun setTheme(theme: AppTheme)
 
@@ -18,4 +19,6 @@ interface SettingsRepository {
     suspend fun setDynamicColor(enabled: Boolean)
 
     suspend fun setLanguage(language: AppLanguage)
+
+    suspend fun setNotificationsEnabled(enabled: Boolean)
 }
