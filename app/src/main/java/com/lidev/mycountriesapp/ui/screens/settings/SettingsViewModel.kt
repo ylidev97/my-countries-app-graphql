@@ -14,6 +14,7 @@ import com.lidev.mycountriesapp.domain.usecases.SetLanguageUseCase
 import com.lidev.mycountriesapp.domain.usecases.SetPaletteUseCase
 import com.lidev.mycountriesapp.domain.usecases.SetThemeUseCase
 import com.lidev.mycountriesapp.ui.screens.settings.model.SettingsState
+import com.lidev.mycountriesapp.ui.widget.WidgetSyncManager
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -29,6 +30,7 @@ class SettingsViewModel(
     private val setPaletteUseCase: SetPaletteUseCase,
     private val setDynamicColorUseCase: SetDynamicColorUseCase,
     private val setLanguageUseCase: SetLanguageUseCase,
+    private val widgetSyncManager: WidgetSyncManager,
 ) : ViewModel() {
     val state: StateFlow<SettingsState> =
         combine(
@@ -47,24 +49,28 @@ class SettingsViewModel(
     fun setTheme(theme: AppTheme) {
         viewModelScope.launch {
             setThemeUseCase(theme)
+            widgetSyncManager.updateWidgets()
         }
     }
 
     fun setPalette(palette: AppPalette) {
         viewModelScope.launch {
             setPaletteUseCase(palette)
+            widgetSyncManager.updateWidgets()
         }
     }
 
     fun setDynamicColor(enabled: Boolean) {
         viewModelScope.launch {
             setDynamicColorUseCase(enabled)
+            widgetSyncManager.updateWidgets()
         }
     }
 
     fun setLanguage(language: AppLanguage) {
         viewModelScope.launch {
             setLanguageUseCase(language)
+            widgetSyncManager.updateWidgets()
         }
     }
 }
