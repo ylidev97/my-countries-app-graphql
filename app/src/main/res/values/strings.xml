@@ -32,4 +32,8 @@
     <string name="language_system">System Default</string>
     <string name="language_en">English</string>
     <string name="language_es">Spanish</string>
+    <string name="about">About</string>
+    <string name="about_desc">Version %s • Developed by Lidev</string>
+    <string name="version">Version</string>
+    <string name="developer">Developer</string>
 </resources>

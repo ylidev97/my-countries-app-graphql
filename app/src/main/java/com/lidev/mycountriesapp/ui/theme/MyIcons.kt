@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Palette
@@ -23,4 +24,5 @@ object MyIcons {
     val colorLensIcon = Icons.Default.ColorLens
     val starFilledIcon = Icons.Filled.Star
     val starBorderIcon = Icons.Filled.StarBorder
+    val infoIcon = Icons.Default.Info
 }

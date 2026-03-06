@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,6 +67,9 @@ private fun SettingsContent(
     onLanguageSelected: (AppLanguage) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    val context = LocalContext.current
+    val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+    val versionName = packageInfo.versionName
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -155,6 +159,21 @@ private fun SettingsContent(
                     LanguageSettings(
                         selectedLanguage = state.language,
                         onLanguageSelected = onLanguageSelected,
+                    )
+                }
+            }
+
+            item { Spacer(modifier = Modifier.height(MaterialTheme.dimens.large)) }
+
+            item {
+                SettingsSection(title = stringResource(R.string.about)) {
+                    SettingsListItem(
+                        title = stringResource(R.string.about),
+                        subtitle = stringResource(R.string.about_desc, versionName ?: "1.0"),
+                        icon = MyIcons.infoIcon,
+                        iconContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        iconContentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                        onClick = { /* TODO: Implementar acción de Acerca de */ },
                     )
                 }
             }
