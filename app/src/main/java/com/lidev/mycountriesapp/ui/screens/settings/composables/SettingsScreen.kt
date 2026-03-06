@@ -53,6 +53,7 @@ fun SettingsScreen(
         onPaletteSelected = viewModel::setPalette,
         onDynamicColorChanged = viewModel::setDynamicColor,
         onLanguageSelected = viewModel::setLanguage,
+        onNotificationsEnabledChanged = viewModel::setNotificationsEnabled,
     )
 }
 
@@ -65,6 +66,7 @@ private fun SettingsContent(
     onPaletteSelected: (AppPalette) -> Unit,
     onDynamicColorChanged: (Boolean) -> Unit,
     onLanguageSelected: (AppLanguage) -> Unit,
+    onNotificationsEnabledChanged: (Boolean) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val context = LocalContext.current
@@ -166,6 +168,27 @@ private fun SettingsContent(
             item { Spacer(modifier = Modifier.height(MaterialTheme.dimens.large)) }
 
             item {
+                SettingsSection(title = stringResource(R.string.notifications)) {
+                    SettingsListItem(
+                        title = stringResource(R.string.notifications),
+                        subtitle = stringResource(R.string.notifications_desc),
+                        icon = MyIcons.notificationsIcon,
+                        iconContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                        iconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        trailingContent = {
+                            Switch(
+                                checked = state.notificationsEnabled,
+                                onCheckedChange = onNotificationsEnabledChanged,
+                            )
+                        },
+                        onClick = { onNotificationsEnabledChanged(!state.notificationsEnabled) },
+                    )
+                }
+            }
+
+            item { Spacer(modifier = Modifier.height(MaterialTheme.dimens.large)) }
+
+            item {
                 SettingsSection(title = stringResource(R.string.about)) {
                     SettingsListItem(
                         title = stringResource(R.string.about),
@@ -194,6 +217,7 @@ private fun SettingsScreenPreview() {
             onPaletteSelected = {},
             onDynamicColorChanged = {},
             onLanguageSelected = {},
+            onNotificationsEnabledChanged = {},
         )
     }
 }

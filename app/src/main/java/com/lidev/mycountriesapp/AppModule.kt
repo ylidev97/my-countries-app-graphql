@@ -4,10 +4,12 @@ import com.lidev.mycountriesapp.domain.usecases.GetCountriesUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetCountryByCodeUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetDynamicColorUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetLanguageUseCase
+import com.lidev.mycountriesapp.domain.usecases.GetNotificationsEnabledUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetPaletteUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetThemeUseCase
 import com.lidev.mycountriesapp.domain.usecases.SetDynamicColorUseCase
 import com.lidev.mycountriesapp.domain.usecases.SetLanguageUseCase
+import com.lidev.mycountriesapp.domain.usecases.SetNotificationsEnabledUseCase
 import com.lidev.mycountriesapp.domain.usecases.SetPaletteUseCase
 import com.lidev.mycountriesapp.domain.usecases.SetThemeUseCase
 import com.lidev.mycountriesapp.ui.MainViewModel
@@ -32,10 +34,12 @@ val appModule =
         factoryOf(::GetPaletteUseCase)
         factoryOf(::GetDynamicColorUseCase)
         factoryOf(::GetLanguageUseCase)
+        factoryOf(::GetNotificationsEnabledUseCase)
         factoryOf(::SetThemeUseCase)
         factoryOf(::SetPaletteUseCase)
         factoryOf(::SetDynamicColorUseCase)
         factoryOf(::SetLanguageUseCase)
+        factoryOf(::SetNotificationsEnabledUseCase)
 
         viewModelOf(::CountriesScreenViewModel)
         viewModelOf(::SettingsViewModel)
