@@ -109,6 +109,9 @@ dependencies {
     // Navigation
     implementation(libs.androidx.navigation.compose)
 
+    // WorkManager
+    implementation(libs.androidx.work.runtime.ktx)
+
     // Storage
     implementation(libs.datastore.preferences)
 

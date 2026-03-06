@@ -11,6 +11,7 @@ coreKtx = "1.17.0"
 lifecycleRuntimeKtx = "2.10.0"
 navigationCompose = "2.9.7"
 window = "1.5.1"
+work = "2.10.0"
 
 # Network
 apollo = "4.4.1"
@@ -49,6 +50,7 @@ androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecyc
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
 # noinspection UnusedVersionCatalogEntry
 androidx-windows-windows = { group = "androidx.window", name = "window", version.ref = "window" }
+androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work" }
 
 # Compose
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }

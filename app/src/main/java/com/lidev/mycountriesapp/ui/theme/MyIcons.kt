@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SettingsSystemDaydream
@@ -25,4 +26,5 @@ object MyIcons {
     val starFilledIcon = Icons.Filled.Star
     val starBorderIcon = Icons.Filled.StarBorder
     val infoIcon = Icons.Default.Info
+    val notificationsIcon = Icons.Default.Notifications
 }
