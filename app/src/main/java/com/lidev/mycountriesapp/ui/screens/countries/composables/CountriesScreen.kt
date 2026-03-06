@@ -1,10 +1,6 @@
 package com.lidev.mycountriesapp.ui.screens.countries.composables
 
 import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeOut
@@ -27,10 +23,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberPermissionState
 import com.lidev.mycountriesapp.ui.components.LikeAnimation
 import com.lidev.mycountriesapp.ui.screens.countries.CountriesScreenViewModel
 import com.lidev.mycountriesapp.ui.screens.countries.composables.components.ContinentFilter
@@ -48,34 +44,18 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 internal fun CountriesScreen(onSettingsClick: () -> Unit = {}) {
     val viewModel: CountriesScreenViewModel = koinViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val context = LocalContext.current
+    val permissionState =
+        rememberPermissionState(
+            permission = Manifest.permission.POST_NOTIFICATIONS,
+        )
 
-    // Launcher for requesting permission
-    val permissionLauncher =
-        rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.RequestPermission(),
-        ) { isGranted ->
-            // Handle result if needed
-            viewModel.onNotificationsPermissionGranted(isGranted)
-        }
-
-    // Request permission on start (for Android 13+)
     LaunchedEffect(Unit) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            val isPermissionGranted =
-                ContextCompat.checkSelfPermission(
-                    context,
-                    Manifest.permission.POST_NOTIFICATIONS,
-                ) == PackageManager.PERMISSION_GRANTED
-
-            if (!isPermissionGranted) {
-                permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }
+        permissionState.launchPermissionRequest()
     }
 
     Content(
