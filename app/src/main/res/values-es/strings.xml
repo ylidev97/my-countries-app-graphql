@@ -42,4 +42,6 @@
     <string name="widget_language_info">Idioma: %s</string>
     <string name="version_1_0">Version !.0</string>
     <string name="idioma_espa_ol">Language: ES</string>
+    <string name="notifications">Notificaciones</string>
+    <string name="notifications_desc">Recibe una notificación diaria sobre un país aleatorio</string>
 </resources>
