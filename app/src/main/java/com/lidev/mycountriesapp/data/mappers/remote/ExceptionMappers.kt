@@ -1,4 +1,4 @@
-package com.lidev.mycountriesapp.data.mappers
+package com.lidev.mycountriesapp.data.mappers.remote
 
 import com.apollographql.apollo.exception.ApolloException
 import com.lidev.mycountriesapp.domain.error.MyAppError

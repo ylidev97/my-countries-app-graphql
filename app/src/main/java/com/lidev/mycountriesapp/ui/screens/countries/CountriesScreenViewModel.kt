@@ -6,7 +6,7 @@ import com.lidev.mycountriesapp.domain.usecases.GetCountriesUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetCountryByCodeUseCase
 import com.lidev.mycountriesapp.ui.screens.countries.model.CountriesScreenState
 import com.lidev.mycountriesapp.ui.screens.countries.model.toUi
-import com.lidev.mycountriesapp.util.NetworkMonitor
+import com.lidev.mycountriesapp.ui.util.NetworkMonitor
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow

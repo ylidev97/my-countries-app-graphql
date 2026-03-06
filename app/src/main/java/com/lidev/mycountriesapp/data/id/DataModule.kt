@@ -1,9 +1,14 @@
 package com.lidev.mycountriesapp.data.id
 
 import com.apollographql.apollo.ApolloClient
-import com.lidev.mycountriesapp.data.datasource.ApolloCountryClient
+import com.lidev.mycountriesapp.data.datasource.local.SettingsDataStore
+import com.lidev.mycountriesapp.data.datasource.remote.ApolloCountryClient
 import com.lidev.mycountriesapp.data.repository.CountryRepositoryImpl
+import com.lidev.mycountriesapp.data.repository.SettingsRepositoryImpl
 import com.lidev.mycountriesapp.domain.repository.CountryRepository
+import com.lidev.mycountriesapp.domain.repository.SettingsRepository
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val dataModule =
@@ -22,4 +27,8 @@ val dataModule =
         factory<CountryRepository> {
             CountryRepositoryImpl(get())
         }
+
+        singleOf(::SettingsDataStore)
+
+        singleOf(::SettingsRepositoryImpl) bind SettingsRepository::class
     }

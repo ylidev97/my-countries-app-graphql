@@ -1,14 +1,18 @@
 [versions]
 # Build & Core
-agp = "9.0.1"
+agp = "9.1.0"
 kotlin = "2.3.10"
 composeBom = "2026.02.01"
+glance = "1.1.1"
 
 # AndroidX
 activityCompose = "1.12.4"
 coreKtx = "1.17.0"
 lifecycleRuntimeKtx = "2.10.0"
+navigationCompose = "2.9.7"
 window = "1.5.1"
+work = "2.11.1"
+coreSplashScreen = "1.2.0"
 
 # Network
 apollo = "4.4.1"
@@ -19,7 +23,7 @@ room = "2.8.4"
 
 # DI & SDKs
 koin = "4.1.1"
-kotzilla = "2.0.6"
+kotzilla = "2.0.8"
 
 # Libraries
 coil = "3.4.0"
@@ -39,6 +43,7 @@ journeysJunitEngine = "0.2.2"
 detekt = "1.23.8"
 detektRulesKtlintWrapper = "2.0.0-alpha.2"
 jacoco = "0.8.14"
+accompanist = "0.37.3"
 
 [libraries]
 # AndroidX
@@ -47,18 +52,25 @@ androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecyc
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
 # noinspection UnusedVersionCatalogEntry
 androidx-windows-windows = { group = "androidx.window", name = "window", version.ref = "window" }
+androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work" }
+androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashScreen" }
 
 # Compose
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 # noinspection UnusedVersionCatalogEntry
 androidx-compose-material-windows-size = { group = "androidx.compose.material3", name = "material3-window-size-class" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+
+# Glance (Widgets with Compose)
+androidx-glance-appwidget = { group = "androidx.glance", name = "glance-appwidget", version.ref = "glance" }
+androidx-glance-material3 = { group = "androidx.glance", name = "glance-material3", version.ref = "glance" }
 
 # Kotlin & Coroutines
 coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
@@ -75,6 +87,8 @@ koin-androidx-navigation = { module = "io.insert-koin:koin-androidx-navigation",
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 koin-test-implementation = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 kotzilla-sdk = { group = "io.kotzilla", name = "kotzilla-sdk-compose", version.ref = "kotzilla" }
+
+com-google-accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
 
 # Coil
 io-coil-kt = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }

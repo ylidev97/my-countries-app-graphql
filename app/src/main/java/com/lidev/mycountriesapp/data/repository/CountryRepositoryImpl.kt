@@ -1,6 +1,6 @@
 package com.lidev.mycountriesapp.data.repository
 
-import com.lidev.mycountriesapp.data.datasource.ApolloCountryClient
+import com.lidev.mycountriesapp.data.datasource.remote.ApolloCountryClient
 import com.lidev.mycountriesapp.domain.model.Country
 import com.lidev.mycountriesapp.domain.model.CountryDetail
 import com.lidev.mycountriesapp.domain.repository.CountryRepository

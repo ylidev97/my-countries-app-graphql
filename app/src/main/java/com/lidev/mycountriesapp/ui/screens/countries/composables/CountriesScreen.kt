@@ -1,16 +1,19 @@
 package com.lidev.mycountriesapp.ui.screens.countries.composables
 
+import android.Manifest
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -19,12 +22,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberPermissionState
 import com.lidev.mycountriesapp.ui.components.LikeAnimation
-import com.lidev.mycountriesapp.ui.components.LoadingDialog
-import com.lidev.mycountriesapp.ui.components.ScrollBubble
 import com.lidev.mycountriesapp.ui.screens.countries.CountriesScreenViewModel
+import com.lidev.mycountriesapp.ui.screens.countries.composables.components.ContinentFilter
 import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountriesTopAppBar
 import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountryDetailSheet
 import com.lidev.mycountriesapp.ui.screens.countries.composables.components.CountryList
@@ -39,24 +44,34 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
-internal fun CountriesScreen() {
-    val viewModel: CountriesScreenViewModel = koinViewModel<CountriesScreenViewModel>()
-    val state = viewModel.state.collectAsStateWithLifecycle()
+internal fun CountriesScreen(onSettingsClick: () -> Unit = {}) {
+    val viewModel: CountriesScreenViewModel = koinViewModel()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val permissionState =
+        rememberPermissionState(
+            permission = Manifest.permission.POST_NOTIFICATIONS,
+        )
+
+    LaunchedEffect(Unit) {
+        permissionState.launchPermissionRequest()
+    }
 
     Content(
-        countries = state.value.countries,
-        countryDetail = state.value.selectedCountry,
-        isOnline = state.value.isOnline,
+        countries = state.countries,
+        countryDetail = state.selectedCountry,
+        isOnline = state.isOnline,
         onDismissSheet = {
             viewModel.selectCountry(null)
         },
-        isLoading = state.value.isLoading,
+        isLoading = state.isLoading,
         onItemClick = viewModel::selectCountry,
         onFavoriteClick = viewModel::toggleFavorite,
         onSearchQueryChange = viewModel::onSearchQueryChange,
-        searchQuery = state.value.searchQuery,
+        searchQuery = state.searchQuery,
         onRetry = viewModel::onRetry,
+        onSettingsClick = onSettingsClick,
     )
 }
 
@@ -73,21 +88,33 @@ private fun Content(
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
     onRetry: () -> Unit,
+    onSettingsClick: () -> Unit = {},
 ) {
     var showLikeAnimation by remember { mutableStateOf(false) }
     var showSearchBar by remember { mutableStateOf(false) }
     val lazyListState = rememberLazyListState()
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
+    val continents =
+        remember(countries) {
+            countries
+                .map { it.continent }
+                .distinct()
+                .sorted()
+                .toPersistentList()
+        }
+    var selectedContinent by remember { mutableStateOf<String?>(null) }
+
     val filteredCountries =
-        remember(countries, searchQuery) {
-            if (searchQuery.isBlank()) {
-                countries
-            } else {
-                countries
-                    .filter {
-                        it.name.contains(searchQuery, ignoreCase = true)
-                    }.sortedBy { it.name }
-                    .toPersistentList()
-            }
+        remember(countries, searchQuery, selectedContinent) {
+            countries
+                .filter {
+                    val matchesSearch = it.name.contains(searchQuery, ignoreCase = true)
+                    val matchesContinent =
+                        selectedContinent == null || it.continent == selectedContinent
+                    matchesSearch && matchesContinent
+                }.sortedBy { it.name }
+                .toPersistentList()
         }
 
     LaunchedEffect(showLikeAnimation) {
@@ -98,7 +125,11 @@ private fun Content(
     }
 
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .nestedScroll(scrollBehavior.nestedScrollConnection),
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             CountriesTopAppBar(
                 showSearchBar = showSearchBar,
@@ -106,58 +137,60 @@ private fun Content(
                 searchQuery = searchQuery,
                 onSearchQueryChange = onSearchQueryChange,
                 isOnline = isOnline,
+                onSettingsClick = onSettingsClick,
+                scrollBehavior = scrollBehavior,
             )
         },
     ) { innerPadding ->
-        Box(
+        Column(
             modifier =
                 Modifier
                     .fillMaxSize()
                     .padding(innerPadding),
         ) {
-            if (!isOnline) {
-                NoInternetComp(
-                    onRetry = onRetry,
-                )
-            } else {
-                CountryList(
-                    modifier = Modifier.fillMaxSize(),
-                    lazyListState = lazyListState,
-                    filteredCountries = filteredCountries,
-                    onItemClick = onItemClick,
-                    onFavoriteClick = {
-                        showLikeAnimation = !it.isFavorite
-                        onFavoriteClick(it.code)
-                    },
+            if (isOnline && continents.isNotEmpty()) {
+                ContinentFilter(
+                    continents = continents,
+                    selectedContinent = selectedContinent,
+                    onContinentSelected = { selectedContinent = it },
                 )
             }
 
-            if (!showSearchBar && isOnline) {
-                ScrollBubble(
-                    modifier =
-                        Modifier
-                            .align(Alignment.TopEnd)
-                            .padding(
-                                end = MaterialTheme.dimens.small,
-                                top = MaterialTheme.dimens.extraLarge,
-                            ),
-                    lazyListState = lazyListState,
-                    firstLetters = filteredCountries.map { it.name.first() }.toPersistentList(),
-                )
-            }
-
-            AnimatedVisibility(
-                modifier = Modifier.align(Alignment.Center),
-                visible = showLikeAnimation,
-                enter = scaleIn(spring()),
-                exit = fadeOut(),
+            Box(
+                modifier = Modifier.weight(1f),
             ) {
-                LikeAnimation()
+                if (!isOnline) {
+                    NoInternetComp(
+                        onRetry = onRetry,
+                    )
+                } else {
+                    CountryList(
+                        modifier =
+                            Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = MaterialTheme.dimens.medium),
+                        lazyListState = lazyListState,
+                        filteredCountries = filteredCountries,
+                        onItemClick = onItemClick,
+                        isLoading = isLoading,
+                        onFavoriteClick = {
+                            showLikeAnimation = !it.isFavorite
+                            onFavoriteClick(it.code)
+                        },
+                    )
+                }
+
+                this@Column.AnimatedVisibility(
+                    modifier = Modifier.align(Alignment.Center),
+                    visible = showLikeAnimation,
+                    enter = scaleIn(spring()),
+                    exit = fadeOut(),
+                ) {
+                    LikeAnimation()
+                }
             }
         }
     }
-
-    LoadingDialog(isLoading)
 
     CountryDetailSheet(
         countryDetail = countryDetail,
@@ -180,24 +213,28 @@ private fun ContentPreview() {
                         code = "US",
                         name = "United States",
                         emoji = "🇺🇸",
+                        continent = "North America",
                         isFavorite = false,
                     ),
                     CountryUi(
                         code = "CA",
                         name = "Canada",
                         emoji = "🇨🇦",
+                        continent = "North America",
                         isFavorite = true,
                     ),
                     CountryUi(
                         code = "FR",
                         name = "France",
                         emoji = "🇫🇷",
+                        continent = "Europe",
                         isFavorite = false,
                     ),
                     CountryUi(
                         code = "DE",
                         name = "Germany",
                         emoji = "🇩🇪",
+                        continent = "Europe",
                         isFavorite = false,
                     ),
                 ),

@@ -1,5 +1,6 @@
 package com.lidev.mycountriesapp.ui.theme
 
+import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -10,29 +11,37 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
 
-private val DarkColorScheme =
+internal val DarkColorScheme =
     darkColorScheme(
         primary = Purple80,
         secondary = PurpleGrey80,
         tertiary = Pink80,
     )
 
-private val LightColorScheme =
+internal val LightColorScheme =
     lightColorScheme(
         primary = Purple40,
         secondary = PurpleGrey40,
         tertiary = Pink40,
-        /* Other default colors to override
-        background = Color(0xFFFFFBFE),
-        surface = Color(0xFFFFFBFE),
-        onPrimary = Color.White,
-        onSecondary = Color.White,
-        onTertiary = Color.White,
-        onBackground = Color(0xFF1C1B1F),
-        onSurface = Color(0xFF1C1B1F),
-         */
+    )
+
+internal val NatureDarkColorScheme =
+    darkColorScheme(
+        primary = Green80,
+        secondary = GreenGrey80,
+        tertiary = Sage80,
+    )
+
+internal val NatureLightColorScheme =
+    lightColorScheme(
+        primary = Green40,
+        secondary = GreenGrey40,
+        tertiary = Sage40,
     )
 
 /**
@@ -58,6 +67,7 @@ val MaterialTheme.localColors: MyCountriesAppColors
 @Composable
 fun MyCountriesAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    palette: String = "default",
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit,
@@ -69,6 +79,10 @@ fun MyCountriesAppTheme(
                 if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
             }
 
+            palette == "nature" -> {
+                if (darkTheme) NatureDarkColorScheme else NatureLightColorScheme
+            }
+
             darkTheme -> {
                 DarkColorScheme
             }
@@ -77,6 +91,17 @@ fun MyCountriesAppTheme(
                 LightColorScheme
             }
         }
+
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val window = (view.context as Activity).window
+            // Since enableEdgeToEdge is used, we only care about icon contrast
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
+            WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars =
+                !darkTheme
+        }
+    }
 
     val dimensions = Dimensions()
     val myCountriesAppColors: MyCountriesAppColors = if (darkTheme) DarkColors else LightColors

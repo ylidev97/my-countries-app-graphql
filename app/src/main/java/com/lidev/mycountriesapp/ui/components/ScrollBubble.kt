@@ -25,7 +25,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
-fun ScrollBubble(
+internal fun ScrollBubble(
     modifier: Modifier = Modifier,
     lazyListState: LazyListState,
     firstLetters: ImmutableList<Char>,

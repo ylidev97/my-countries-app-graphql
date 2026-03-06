@@ -90,6 +90,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.core.splashscreen)
 
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
@@ -100,6 +101,21 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material.icons.extended)
+
+    // Glance (Widgets with Compose)
+    implementation(libs.androidx.glance.appwidget)
+    implementation(libs.androidx.glance.material3)
+
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
+
+    // WorkManager
+    implementation(libs.androidx.work.runtime.ktx)
+
+    // Storage
+    implementation(libs.datastore.preferences)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -117,7 +133,8 @@ dependencies {
     implementation(libs.io.coil.kt.network)
     implementation(libs.kotlinx.collections.immutable)
     implementation(libs.com.airbnb.lottie.compose)
-    implementation(libs.androidx.compose.material.icons.extended)
+
+    implementation(libs.com.google.accompanist.permissions)
 
     // Koin
     implementation(libs.koin.core)

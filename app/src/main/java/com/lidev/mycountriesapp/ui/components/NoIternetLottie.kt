@@ -11,7 +11,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.lidev.mycountriesapp.R
 
 @Composable
-fun NoInternetLottie(modifier: Modifier = Modifier) {
+internal fun NoInternetLottie(modifier: Modifier = Modifier) {
     val composition by rememberLottieComposition(
         LottieCompositionSpec.RawRes(R.raw.no_internet),
     )

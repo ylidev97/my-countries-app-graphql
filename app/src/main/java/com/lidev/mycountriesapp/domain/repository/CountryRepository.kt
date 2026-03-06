@@ -7,5 +7,4 @@ interface CountryRepository {
     suspend fun getCountries(): Result<List<Country>>
 
     suspend fun getCountryByCode(code: String): Result<CountryDetail?>
-
 }
