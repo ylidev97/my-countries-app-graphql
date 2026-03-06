@@ -36,4 +36,7 @@
     <string name="about_desc">Versión %s • Desarrollado por Lidev</string>
     <string name="version">Versión</string>
     <string name="developer">Desarrollador</string>
+    <string name="widget_version">Versión %s</string>
+    <string name="widget_developer">Desarrollado por Lidev</string>
+    <string name="widget_description">Explora información de países de todo el mundo.</string>
 </resources>
