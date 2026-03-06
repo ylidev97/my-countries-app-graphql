@@ -14,20 +14,25 @@
         android:fillColor="#FFFFFF"
         android:pathData="M54,54m-32,0a32,32 0,1 1,64 0a32,32 0,1 1,-64 0" />
 
-    <!-- Continents (Stylized) -->
-    <path
-        android:fillColor="#1A237E"
-        android:pathData="M45,35c-2,1 -4,4 -3,7s5,2 7,4s1,6 4,6s6,-2 8,-5s-1,-7 -4,-8s-10,-5 -12,-4z
-                          M65,55c-3,1 -4,5 -2,7s6,2 8,0s2,-6 -1,-8s-3,-1 -5,1z
-                          M40,65c-2,2 -1,6 2,7s7,-1 8,-4s-2,-5 -5,-5s-3,0 -5,2z" />
+    <group
+        android:name="globe_group"
+        android:pivotX="54"
+        android:pivotY="54">
+        <!-- Continents (Stylized) -->
+        <path
+            android:fillColor="#1A237E"
+            android:pathData="M45,35c-2,1 -4,4 -3,7s5,2 7,4s1,6 4,6s6,-2 8,-5s-1,-7 -4,-8s-10,-5 -12,-4z
+                              M65,55c-3,1 -4,5 -2,7s6,2 8,0s2,-6 -1,-8s-3,-1 -5,1z
+                              M40,65c-2,2 -1,6 2,7s7,-1 8,-4s-2,-5 -5,-5s-3,0 -5,2z" />
 
-    <!-- Lat/Long Lines -->
-    <path
-        android:strokeColor="#E0E0E0"
-        android:strokeWidth="1"
-        android:pathData="M32,54a22,22 0,1 0,44 0a22,22 0,1 0,-44 0
-                          M54,32v44
-                          M32,54h44
-                          M38,40c4,2 8,2 12,0
-                          M38,68c4,-2 8,-2 12,0" />
+        <!-- Lat/Long Lines -->
+        <path
+            android:strokeColor="#E0E0E0"
+            android:strokeWidth="1"
+            android:pathData="M32,54a22,22 0,1 0,44 0a22,22 0,1 0,-44 0
+                              M54,32v44
+                              M32,54h44
+                              M38,40c4,2 8,2 12,0
+                              M38,68c4,-2 8,-2 12,0" />
+    </group>
 </vector>
