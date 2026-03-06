@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.apollo)
     alias(libs.plugins.kotzilla)
     alias(libs.plugins.detekt)
+    id("jacoco")
 }
 
 android {
@@ -42,6 +43,8 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
         }
 
         release {
@@ -50,6 +53,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -60,6 +64,9 @@ android {
         compose = true
     }
     testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
         suites {
             create("journeysTest") {
                 assets {
@@ -119,6 +126,8 @@ dependencies {
     implementation(libs.koin.androidx.navigation)
     implementation(libs.koin.test.implementation)
     implementation(libs.kotzilla.sdk)
+
+    detektPlugins(libs.detekt.rules.ktlint.wrapper)
 }
 
 apollo {
@@ -162,8 +171,7 @@ tasks.withType<Detekt>().configureEach {
         html.required.set(true)
         xml.required.set(true)
         txt.required.set(false)
-        sarif.required.set(true)
-        // standardized SARIF format (https://sarifweb.azurewebsites.net/) to support integrations with GitHub Code Scanning
+        sarif.required.set(false)
 
 //        html.outputLocation.set(file("$buildDir/reports/detekt/detekt.html"))
 //        xml.outputLocation.set(file("$buildDir/reports/detekt/detekt.xml"))
@@ -180,3 +188,6 @@ tasks.withType<Detekt>().configureEach {
 tasks.withType<DetektCreateBaselineTask>().configureEach {
     jvmTarget = "1.8"
 }
+
+project.extra.set("jacocoVersion", libs.versions.jacoco.get())
+apply(from = "../gradle/jacoco.gradle.kts")

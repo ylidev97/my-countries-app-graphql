@@ -40,7 +40,7 @@ internal fun CountryItem(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(emoji, fontSize = 40.sp)
+            Text(emoji, fontSize = CountryItemDefault.EMOJI_FONT_SIZE)
             Spacer(
                 modifier =
                     Modifier.width(
@@ -93,4 +93,5 @@ private fun CountryItemPreview() {
 
 private object CountryItemDefault {
     const val MAX_LINES_NAME = 2
+    val EMOJI_FONT_SIZE = 40.sp
 }

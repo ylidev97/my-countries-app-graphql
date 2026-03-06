@@ -28,7 +28,7 @@ import kotlinx.collections.immutable.toPersistentList
 fun ScrollBubble(
     modifier: Modifier = Modifier,
     lazyListState: LazyListState,
-    firstLetters: ImmutableList<Char>
+    firstLetters: ImmutableList<Char>,
 ) {
     val isScrolling by remember {
         derivedStateOf {
@@ -56,7 +56,7 @@ fun ScrollBubble(
         modifier = modifier,
         visible = isScrolling,
         enter = fadeIn(),
-        exit = fadeOut()
+        exit = fadeOut(),
     ) {
         Bubble(letter = firstLetter.toString())
     }
@@ -65,33 +65,34 @@ fun ScrollBubble(
 @Composable
 private fun Bubble(
     modifier: Modifier = Modifier,
-    letter: String
+    letter: String,
 ) {
     Box(
-        modifier = modifier
-            .size(48.dp)
-            .clip(CircleShape)
-            .background(MaterialTheme.colorScheme.primary),
-        contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .size(48.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.primary),
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = letter,
             style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.inverseOnSurface
+            color = MaterialTheme.colorScheme.inverseOnSurface,
         )
     }
 }
-
 
 @Preview
 @Composable
 private fun ScrollBubblePreview() {
     MyCountriesAppTheme {
         ScrollBubble(
-            lazyListState = LazyListState(
-                firstVisibleItemIndex = 1
-            ),
-            firstLetters = listOf('A', 'B', 'C').toPersistentList()
+            lazyListState =
+                LazyListState(
+                    firstVisibleItemIndex = 1,
+                ),
+            firstLetters = listOf('A', 'B', 'C').toPersistentList(),
         )
     }
 }

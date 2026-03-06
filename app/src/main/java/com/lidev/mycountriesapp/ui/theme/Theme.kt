@@ -79,7 +79,7 @@ fun MyCountriesAppTheme(
         }
 
     val dimensions = Dimensions()
-    val myCountriesAppColors = MyCountriesAppColors()
+    val myCountriesAppColors: MyCountriesAppColors = if (darkTheme) DarkColors else LightColors
 
     // Providing our custom dimensions and colors into the Composition tree
     CompositionLocalProvider(

@@ -15,9 +15,8 @@ import com.lidev.mycountriesapp.R
 
 @Composable
 internal fun LoadingLottie() {
-
     val composition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(R.raw.loading)
+        LottieCompositionSpec.RawRes(R.raw.loading),
     )
 
     val progress by animateLottieCompositionAsState(
@@ -25,14 +24,14 @@ internal fun LoadingLottie() {
         composition,
         // Iterates Forever
         iterations = LottieConstants.IterateForever,
-
-        )
+    )
 
     LottieAnimation(
         composition = composition,
         progress = { progress },
-        modifier = Modifier
-            .size(120.dp),
+        modifier =
+            Modifier
+                .size(120.dp),
         contentScale = ContentScale.Crop,
     )
 }

@@ -13,18 +13,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.lidev.mycountriesapp.R
+import com.lidev.mycountriesapp.ui.theme.dimens
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun LanguagesList(
     modifier: Modifier = Modifier,
-    languages: ImmutableList<String> = persistentListOf()
+    languages: ImmutableList<String> = persistentListOf(),
 ) {
     Column(modifier = modifier) {
-        Text(stringResource(R.string.languages), style = MaterialTheme.typography.headlineSmall)
+        Text(
+            stringResource(R.string.languages),
+            style = MaterialTheme.typography.headlineSmall,
+        )
         languages.forEach { language ->
             LanguageItem(language = language)
         }
@@ -34,19 +37,21 @@ internal fun LanguagesList(
 @Composable
 private fun LanguageItem(
     modifier: Modifier = Modifier,
-    language: String
+    language: String,
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(text = "•", style = MaterialTheme.typography.bodyMedium)
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(MaterialTheme.dimens.small))
         Text(
-            text = language, style = MaterialTheme.typography.bodyMedium
-                .copy(
-                    fontWeight = FontWeight.Light
-                )
+            text = language,
+            style =
+                MaterialTheme.typography.bodyMedium
+                    .copy(
+                        fontWeight = FontWeight.Light,
+                    ),
         )
     }
 }
@@ -55,9 +60,10 @@ private fun LanguageItem(
 @Composable
 private fun LanguagesListPreview() {
     LanguagesList(
-        languages = persistentListOf(
-            "Spanish",
-            "Portuguese"
-        )
+        languages =
+            persistentListOf(
+                "Spanish",
+                "Portuguese",
+            ),
     )
 }
