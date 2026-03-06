@@ -13,7 +13,6 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -46,20 +45,17 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun SettingsScreen(onBackClick: () -> Unit) {
     val viewModel: SettingsViewModel = koinViewModel()
-    val currentState by viewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     val permissionState =
         rememberPermissionState(
             permission = Manifest.permission.POST_NOTIFICATIONS,
         )
-    val state =
-        remember(permissionState.status) {
-            currentState.copy(notificationsEnabled = permissionState.status.isGranted)
-        }
 
     SettingsContent(
         state = state,
+        isEnableNotification = permissionState.status.isGranted,
         onBackClick = onBackClick,
         onThemeSelected = viewModel::setTheme,
         onPaletteSelected = viewModel::setPalette,
@@ -98,6 +94,7 @@ fun SettingsScreen(onBackClick: () -> Unit) {
 @Composable
 private fun SettingsContent(
     state: SettingsState,
+    isEnableNotification: Boolean = false,
     onBackClick: () -> Unit,
     onThemeSelected: (AppTheme) -> Unit,
     onPaletteSelected: (AppPalette) -> Unit,
@@ -186,11 +183,11 @@ private fun SettingsContent(
                         icon = MyIcons.notificationsIcon,
                         trailingContent = {
                             Switch(
-                                checked = state.notificationsEnabled,
+                                checked = isEnableNotification,
                                 onCheckedChange = onNotificationsEnabledChanged,
                             )
                         },
-                        onClick = { onNotificationsEnabledChanged(!state.notificationsEnabled) },
+                        onClick = { onNotificationsEnabledChanged(!isEnableNotification) },
                     )
                 }
             }
