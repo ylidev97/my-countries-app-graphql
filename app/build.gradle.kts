@@ -133,6 +133,8 @@ dependencies {
     implementation(libs.kotlinx.collections.immutable)
     implementation(libs.com.airbnb.lottie.compose)
 
+    implementation(libs.com.google.accompanist.permissions)
+
     // Koin
     implementation(libs.koin.core)
     implementation(libs.koin.android)

@@ -42,6 +42,7 @@ journeysJunitEngine = "0.2.2"
 detekt = "1.23.8"
 detektRulesKtlintWrapper = "2.0.0-alpha.2"
 jacoco = "0.8.14"
+accompanist = "0.37.3"
 
 [libraries]
 # AndroidX
@@ -84,6 +85,8 @@ koin-androidx-navigation = { module = "io.insert-koin:koin-androidx-navigation",
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 koin-test-implementation = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 kotzilla-sdk = { group = "io.kotzilla", name = "kotzilla-sdk-compose", version.ref = "kotzilla" }
+
+com-google-accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
 
 # Coil
 io-coil-kt = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
