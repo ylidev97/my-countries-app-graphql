@@ -10,4 +10,5 @@ data class SettingsState(
     val dynamicColor: Boolean = true,
     val language: AppLanguage = AppLanguage.System,
     val notificationsEnabled: Boolean = false,
+    val versionName: String = "1.O",
 )

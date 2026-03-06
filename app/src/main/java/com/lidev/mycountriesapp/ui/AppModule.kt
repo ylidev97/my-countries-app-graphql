@@ -1,6 +1,7 @@
-package com.lidev.mycountriesapp
+package com.lidev.mycountriesapp.ui
 
-import com.lidev.mycountriesapp.domain.NotificationScheduler
+import com.lidev.mycountriesapp.domain.manager.NotificationScheduler
+import com.lidev.mycountriesapp.domain.usecases.GetAppInfoUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetCountriesUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetCountryByCodeUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetDynamicColorUseCase
@@ -13,12 +14,12 @@ import com.lidev.mycountriesapp.domain.usecases.SetLanguageUseCase
 import com.lidev.mycountriesapp.domain.usecases.SetNotificationsEnabledUseCase
 import com.lidev.mycountriesapp.domain.usecases.SetPaletteUseCase
 import com.lidev.mycountriesapp.domain.usecases.SetThemeUseCase
-import com.lidev.mycountriesapp.ui.MainViewModel
-import com.lidev.mycountriesapp.ui.WorkManagerNotificationScheduler
+import com.lidev.mycountriesapp.ui.manager.WorkManagerNotificationScheduler
 import com.lidev.mycountriesapp.ui.screens.countries.CountriesScreenViewModel
 import com.lidev.mycountriesapp.ui.screens.settings.SettingsViewModel
+import com.lidev.mycountriesapp.ui.usecase.GetAppInfoUseCaseImpl
+import com.lidev.mycountriesapp.ui.util.NetworkMonitor
 import com.lidev.mycountriesapp.ui.widget.WidgetSyncManager
-import com.lidev.mycountriesapp.util.NetworkMonitor
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -30,6 +31,7 @@ val appModule =
     module {
         single { NetworkMonitor(androidContext()) }
         single { WidgetSyncManager(androidContext()) }
+        singleOf(::GetAppInfoUseCaseImpl) bind GetAppInfoUseCase::class
         singleOf(::WorkManagerNotificationScheduler) bind NotificationScheduler::class
 
         factoryOf(::GetCountriesUseCase)

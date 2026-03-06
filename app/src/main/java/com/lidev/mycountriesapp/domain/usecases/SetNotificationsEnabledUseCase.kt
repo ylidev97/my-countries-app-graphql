@@ -1,6 +1,6 @@
 package com.lidev.mycountriesapp.domain.usecases
 
-import com.lidev.mycountriesapp.domain.NotificationScheduler
+import com.lidev.mycountriesapp.domain.manager.NotificationScheduler
 import com.lidev.mycountriesapp.domain.repository.SettingsRepository
 
 class SetNotificationsEnabledUseCase(

@@ -1,4 +1,4 @@
-package com.lidev.mycountriesapp.domain
+package com.lidev.mycountriesapp.domain.manager
 
 interface NotificationScheduler {
     fun schedule()

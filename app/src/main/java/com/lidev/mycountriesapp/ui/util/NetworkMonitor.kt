@@ -1,4 +1,4 @@
-package com.lidev.mycountriesapp.util
+package com.lidev.mycountriesapp.ui.util
 
 import android.content.Context
 import android.net.ConnectivityManager

@@ -2,6 +2,7 @@ package com.lidev.mycountriesapp.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
@@ -88,6 +89,11 @@ private fun rememberLocalizedContext(language: AppLanguage): Context {
             config.setLocale(locale)
         }
 
-        baseContext.createConfigurationContext(config)
+        val localizedContext = baseContext.createConfigurationContext(config)
+        // Accompanist permissions and other tools might need to find the original Activity context.
+        // We wrap the localized context to preserve the link to the baseContext (Activity).
+        object : ContextWrapper(localizedContext) {
+            override fun getBaseContext(): Context = baseContext
+        }
     }
 }

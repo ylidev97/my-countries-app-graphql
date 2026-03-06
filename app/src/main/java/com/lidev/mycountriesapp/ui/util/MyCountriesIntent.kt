@@ -1,4 +1,4 @@
-package com.lidev.mycountriesapp.ui
+package com.lidev.mycountriesapp.ui.util
 
 import android.content.Context
 import android.content.Intent
