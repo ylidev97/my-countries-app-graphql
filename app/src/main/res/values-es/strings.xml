@@ -39,4 +39,7 @@
     <string name="widget_version">Versión %s</string>
     <string name="widget_developer">Desarrollado por Lidev</string>
     <string name="widget_description">Explora información de países de todo el mundo.</string>
+    <string name="widget_language_info">Idioma: %s</string>
+    <string name="version_1_0">Version !.0</string>
+    <string name="idioma_espa_ol">Language: ES</string>
 </resources>
