@@ -20,7 +20,6 @@ internal class SettingsRepositoryImpl(
     override val dynamicColorFlow: Flow<Boolean> = settingsDataStore.dynamicColorFlow
     override val languageFlow: Flow<AppLanguage> =
         settingsDataStore.languageFlow.map { AppLanguage.fromTag(it) }
-    override val notificationsEnabledFlow: Flow<Boolean> = settingsDataStore.notificationsEnabledFlow
 
     override suspend fun setTheme(theme: AppTheme) =
         withContext(Dispatchers.IO) {
@@ -40,10 +39,5 @@ internal class SettingsRepositoryImpl(
     override suspend fun setLanguage(language: AppLanguage) =
         withContext(Dispatchers.IO) {
             settingsDataStore.setLanguage(language.tag)
-        }
-
-    override suspend fun setNotificationsEnabled(enabled: Boolean) =
-        withContext(Dispatchers.IO) {
-            settingsDataStore.setNotificationsEnabled(enabled)
         }
 }

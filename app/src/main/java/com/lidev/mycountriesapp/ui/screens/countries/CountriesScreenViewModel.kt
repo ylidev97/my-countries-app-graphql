@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lidev.mycountriesapp.domain.usecases.GetCountriesUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetCountryByCodeUseCase
-import com.lidev.mycountriesapp.domain.usecases.SetNotificationsEnabledUseCase
 import com.lidev.mycountriesapp.ui.screens.countries.model.CountriesScreenState
 import com.lidev.mycountriesapp.ui.screens.countries.model.toUi
 import com.lidev.mycountriesapp.ui.util.NetworkMonitor
@@ -20,7 +19,6 @@ import kotlinx.coroutines.launch
 class CountriesScreenViewModel(
     private val getCountriesUseCase: GetCountriesUseCase,
     private val getCountryByCodeUseCase: GetCountryByCodeUseCase,
-    private val setNotificationsEnabledUseCase: SetNotificationsEnabledUseCase,
     networkMonitor: NetworkMonitor,
 ) : ViewModel() {
     private val _state = MutableStateFlow(CountriesScreenState())
@@ -139,12 +137,6 @@ class CountriesScreenViewModel(
                         },
                 )
             }
-        }
-    }
-
-    fun onNotificationsPermissionGranted(enable: Boolean) {
-        viewModelScope.launch {
-            setNotificationsEnabledUseCase(enable)
         }
     }
 }
