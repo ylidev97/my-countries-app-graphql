@@ -11,7 +11,7 @@ coreKtx = "1.17.0"
 lifecycleRuntimeKtx = "2.10.0"
 navigationCompose = "2.9.7"
 window = "1.5.1"
-work = "2.10.0"
+work = "2.11.1"
 
 # Network
 apollo = "4.4.1"
