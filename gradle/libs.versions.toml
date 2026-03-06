@@ -1,6 +1,6 @@
 [versions]
 # Build & Core
-agp = "9.0.1"
+agp = "9.1.0"
 kotlin = "2.3.10"
 composeBom = "2026.02.01"
 glance = "1.1.1"
@@ -22,7 +22,7 @@ room = "2.8.4"
 
 # DI & SDKs
 koin = "4.1.1"
-kotzilla = "2.0.6"
+kotzilla = "2.0.8"
 
 # Libraries
 coil = "3.4.0"
