@@ -36,18 +36,21 @@ class DailyCountryWorker(
 
         fun schedule(context: Context) {
             val request =
-                PeriodicWorkRequestBuilder<DailyCountryWorker>(24, TimeUnit.HOURS)
+                PeriodicWorkRequestBuilder<DailyCountryWorker>(16, TimeUnit.HOURS)
                     .setInitialDelay(
                         1,
                         TimeUnit.HOURS,
-                    ) // Opcional: para que no suene justo al abrir la app la primera vez
-                    .build()
+                    ).build()
 
             WorkManager.getInstance(context).enqueueUniquePeriodicWork(
                 WORK_NAME,
                 ExistingPeriodicWorkPolicy.KEEP,
                 request,
             )
+        }
+
+        fun cancel(context: Context) {
+            WorkManager.getInstance(context).cancelUniqueWork(WORK_NAME)
         }
     }
 }

@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.LocaleList
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.LocalActivityResultRegistryOwner
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -29,13 +30,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MyCountriesApp()
+            MyCountriesApp(this)
         }
     }
 }
 
 @Composable
-private fun MyCountriesApp(viewModel: MainViewModel = koinViewModel()) {
+private fun MyCountriesApp(
+    activity: ComponentActivity,
+    viewModel: MainViewModel = koinViewModel()
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val darkTheme =
@@ -47,7 +51,10 @@ private fun MyCountriesApp(viewModel: MainViewModel = koinViewModel()) {
 
     val localizedContext = rememberLocalizedContext(language = state.language)
 
-    CompositionLocalProvider(LocalContext provides localizedContext) {
+    CompositionLocalProvider(
+        LocalContext provides localizedContext,
+        LocalActivityResultRegistryOwner provides activity
+    ) {
         MyCountriesAppTheme(
             darkTheme = darkTheme,
             palette = state.palette.key,
