@@ -44,6 +44,7 @@ detekt = "1.23.8"
 detektRulesKtlintWrapper = "2.0.0-alpha.2"
 jacoco = "0.8.14"
 accompanist = "0.37.3"
+ksp = "2.3.4"
 
 [libraries]
 # AndroidX
@@ -132,3 +133,4 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 kotzilla = { id = "io.kotzilla.kotzilla-plugin", version.ref = "kotzilla" }
 # noinspection UnusedVersionCatalogEntry
 room = { id = "androidx.room", version.ref = "room" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

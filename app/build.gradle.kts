@@ -9,6 +9,8 @@ plugins {
     alias(libs.plugins.apollo)
     alias(libs.plugins.kotzilla)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.room)
+    alias(libs.plugins.ksp)
     id("jacoco")
 }
 
@@ -88,6 +90,10 @@ android {
     }
 }
 
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.core.splashscreen)
@@ -115,6 +121,10 @@ dependencies {
 
     // Storage
     implementation(libs.datastore.preferences)
+    // Room
+    implementation(libs.androidx.room.runtime.database)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler.database)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

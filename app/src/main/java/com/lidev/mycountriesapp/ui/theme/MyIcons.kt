@@ -2,6 +2,7 @@ package com.lidev.mycountriesapp.ui.theme
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.CloudOff
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Info
@@ -27,4 +28,5 @@ object MyIcons {
     val starBorderIcon = Icons.Filled.StarBorder
     val infoIcon = Icons.Default.Info
     val notificationsIcon = Icons.Default.Notifications
+    val cloudOffIcon = Icons.Default.CloudOff
 }

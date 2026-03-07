@@ -44,4 +44,6 @@
     <string name="idioma_espa_ol">Language: ES</string>
     <string name="notifications">Notificaciones</string>
     <string name="notifications_desc">Recibe una notificación diaria sobre un país aleatorio</string>
+    <string name="offline_mode">Modo sin conexión</string>
+    <string name="offline_mode_desc">Activa para usar la aplicación sin conexión a internet (datos en caché)</string>
 </resources>

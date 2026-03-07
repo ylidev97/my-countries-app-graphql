@@ -44,4 +44,6 @@
     <string name="idioma_espa_ol">Language: ES</string>
     <string name="notifications">Notifications</string>
     <string name="notifications_desc">Receive a daily notification about a random country</string>
+    <string name="offline_mode">Offline Mode</string>
+    <string name="offline_mode_desc">Enable to use the app without an internet connection (cached data)</string>
 </resources>
