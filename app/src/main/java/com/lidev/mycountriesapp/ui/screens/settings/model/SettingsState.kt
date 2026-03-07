@@ -9,5 +9,6 @@ data class SettingsState(
     val palette: AppPalette = AppPalette.Default,
     val dynamicColor: Boolean = true,
     val language: AppLanguage = AppLanguage.System,
-    val versionName: String = "1.O",
+    val offlineMode: Boolean = false,
+    val versionName: String = "1.0",
 )

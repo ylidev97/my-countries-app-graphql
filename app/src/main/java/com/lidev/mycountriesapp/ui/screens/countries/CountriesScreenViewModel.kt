@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lidev.mycountriesapp.domain.usecases.GetCountriesUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetCountryByCodeUseCase
+import com.lidev.mycountriesapp.domain.usecases.GetOfflineModeUseCase
 import com.lidev.mycountriesapp.ui.screens.countries.model.CountriesScreenState
 import com.lidev.mycountriesapp.ui.screens.countries.model.toUi
 import com.lidev.mycountriesapp.ui.util.NetworkMonitor
@@ -11,6 +12,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -19,25 +21,36 @@ import kotlinx.coroutines.launch
 class CountriesScreenViewModel(
     private val getCountriesUseCase: GetCountriesUseCase,
     private val getCountryByCodeUseCase: GetCountryByCodeUseCase,
+    private val getOfflineModeUseCase: GetOfflineModeUseCase,
     networkMonitor: NetworkMonitor,
 ) : ViewModel() {
     private val _state = MutableStateFlow(CountriesScreenState())
     val state = _state.asStateFlow()
 
     init {
-        networkMonitor.isOnline
-            .onEach { isOnline ->
+        combine(
+            networkMonitor.isOnline,
+            getOfflineModeUseCase(),
+        ) { isOnline, isOfflineMode ->
+            _state.update {
+                it.copy(
+                    isOnline = isOnline,
+                    isOfflineMode = isOfflineMode,
+                )
+            }
+            isOnline || isOfflineMode
+        }.onEach { canFetch ->
+            if (canFetch) {
+                getCountries()
+            } else {
                 _state.update {
                     it.copy(
-                        isOnline = isOnline,
-                        countries = if (!isOnline) persistentListOf() else it.countries,
-                        selectedCountry = if (!isOnline) null else it.selectedCountry,
+                        countries = persistentListOf(),
+                        selectedCountry = null,
                     )
                 }
-                if (isOnline) {
-                    getCountries()
-                }
-            }.launchIn(viewModelScope)
+            }
+        }.launchIn(viewModelScope)
     }
 
     private suspend fun getCountries() {

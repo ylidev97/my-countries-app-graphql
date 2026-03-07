@@ -8,10 +8,12 @@ import com.lidev.mycountriesapp.domain.model.AppTheme
 import com.lidev.mycountriesapp.domain.usecases.GetAppInfoUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetDynamicColorUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetLanguageUseCase
+import com.lidev.mycountriesapp.domain.usecases.GetOfflineModeUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetPaletteUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetThemeUseCase
 import com.lidev.mycountriesapp.domain.usecases.SetDynamicColorUseCase
 import com.lidev.mycountriesapp.domain.usecases.SetLanguageUseCase
+import com.lidev.mycountriesapp.domain.usecases.SetOfflineModeUseCase
 import com.lidev.mycountriesapp.domain.usecases.SetPaletteUseCase
 import com.lidev.mycountriesapp.domain.usecases.SetThemeUseCase
 import com.lidev.mycountriesapp.ui.screens.settings.model.SettingsState
@@ -28,10 +30,12 @@ class SettingsViewModel(
     getDynamicColorUseCase: GetDynamicColorUseCase,
     getLanguageUseCase: GetLanguageUseCase,
     getAppInfoUseCase: GetAppInfoUseCase,
+    getOfflineModeUseCase: GetOfflineModeUseCase,
     private val setThemeUseCase: SetThemeUseCase,
     private val setPaletteUseCase: SetPaletteUseCase,
     private val setDynamicColorUseCase: SetDynamicColorUseCase,
     private val setLanguageUseCase: SetLanguageUseCase,
+    private val setOfflineModeUseCase: SetOfflineModeUseCase,
     private val widgetSyncManager: WidgetSyncManager,
 ) : ViewModel() {
     val state: StateFlow<SettingsState> =
@@ -40,13 +44,15 @@ class SettingsViewModel(
             getPaletteUseCase(),
             getDynamicColorUseCase(),
             getLanguageUseCase(),
-        ) { theme, palette, dynamicColor, language ->
+            getOfflineModeUseCase(),
+        ) { theme, palette, dynamicColor, language, offlineMode ->
             val versionName = getAppInfoUseCase()
             SettingsState(
                 theme = theme,
                 palette = palette,
                 dynamicColor = dynamicColor,
                 language = language,
+                offlineMode = offlineMode,
                 versionName = versionName,
             )
         }.stateIn(
@@ -80,6 +86,12 @@ class SettingsViewModel(
         viewModelScope.launch {
             setLanguageUseCase(language)
             widgetSyncManager.updateWidgets()
+        }
+    }
+
+    fun setOfflineMode(enabled: Boolean) {
+        viewModelScope.launch {
+            setOfflineModeUseCase(enabled)
         }
     }
 }

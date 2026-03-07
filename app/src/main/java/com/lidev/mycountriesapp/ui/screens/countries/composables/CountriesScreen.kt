@@ -14,6 +14,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -62,6 +63,7 @@ internal fun CountriesScreen(onSettingsClick: () -> Unit = {}) {
         countries = state.countries,
         countryDetail = state.selectedCountry,
         isOnline = state.isOnline,
+        isOfflineMode = state.isOfflineMode,
         onDismissSheet = {
             viewModel.selectCountry(null)
         },
@@ -81,6 +83,7 @@ private fun Content(
     countries: ImmutableList<CountryUi> = persistentListOf(),
     isLoading: Boolean,
     isOnline: Boolean,
+    isOfflineMode: Boolean,
     countryDetail: CountryDetailUi? = null,
     onDismissSheet: () -> Unit = {},
     onItemClick: (String) -> Unit,
@@ -94,6 +97,8 @@ private fun Content(
     var showSearchBar by remember { mutableStateOf(false) }
     val lazyListState = rememberLazyListState()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
+    val canShowContent = isOnline || isOfflineMode
 
     val continents =
         remember(countries) {
@@ -136,7 +141,7 @@ private fun Content(
                 onSearchBarToggle = { showSearchBar = it },
                 searchQuery = searchQuery,
                 onSearchQueryChange = onSearchQueryChange,
-                isOnline = isOnline,
+                isOnline = canShowContent,
                 onSettingsClick = onSettingsClick,
                 scrollBehavior = scrollBehavior,
             )
@@ -148,7 +153,7 @@ private fun Content(
                     .fillMaxSize()
                     .padding(innerPadding),
         ) {
-            if (isOnline && continents.isNotEmpty()) {
+            if (canShowContent && continents.isNotEmpty()) {
                 ContinentFilter(
                     continents = continents,
                     selectedContinent = selectedContinent,
@@ -159,25 +164,31 @@ private fun Content(
             Box(
                 modifier = Modifier.weight(1f),
             ) {
-                if (!isOnline) {
+                if (!canShowContent) {
                     NoInternetComp(
                         onRetry = onRetry,
                     )
                 } else {
-                    CountryList(
-                        modifier =
-                            Modifier
-                                .fillMaxSize()
-                                .padding(horizontal = MaterialTheme.dimens.medium),
-                        lazyListState = lazyListState,
-                        filteredCountries = filteredCountries,
-                        onItemClick = onItemClick,
-                        isLoading = isLoading,
-                        onFavoriteClick = {
-                            showLikeAnimation = !it.isFavorite
-                            onFavoriteClick(it.code)
-                        },
-                    )
+                    PullToRefreshBox(
+                        isRefreshing = isLoading,
+                        onRefresh = onRetry,
+                        modifier = Modifier.fillMaxSize(),
+                    ) {
+                        CountryList(
+                            modifier =
+                                Modifier
+                                    .fillMaxSize()
+                                    .padding(horizontal = MaterialTheme.dimens.medium),
+                            lazyListState = lazyListState,
+                            filteredCountries = filteredCountries,
+                            onItemClick = onItemClick,
+                            isLoading = isLoading,
+                            onFavoriteClick = {
+                                showLikeAnimation = !it.isFavorite
+                                onFavoriteClick(it.code)
+                            },
+                        )
+                    }
                 }
 
                 this@Column.AnimatedVisibility(
@@ -244,6 +255,7 @@ private fun ContentPreview() {
             searchQuery = "",
             onSearchQueryChange = {},
             isOnline = true,
+            isOfflineMode = false,
             onRetry = {},
         )
     }

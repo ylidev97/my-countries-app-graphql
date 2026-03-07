@@ -20,6 +20,7 @@ internal class SettingsRepositoryImpl(
     override val dynamicColorFlow: Flow<Boolean> = settingsDataStore.dynamicColorFlow
     override val languageFlow: Flow<AppLanguage> =
         settingsDataStore.languageFlow.map { AppLanguage.fromTag(it) }
+    override val offlineModeFlow: Flow<Boolean> = settingsDataStore.offlineModeFlow
 
     override suspend fun setTheme(theme: AppTheme) =
         withContext(Dispatchers.IO) {
@@ -39,5 +40,10 @@ internal class SettingsRepositoryImpl(
     override suspend fun setLanguage(language: AppLanguage) =
         withContext(Dispatchers.IO) {
             settingsDataStore.setLanguage(language.tag)
+        }
+
+    override suspend fun setOfflineMode(enabled: Boolean) =
+        withContext(Dispatchers.IO) {
+            settingsDataStore.setOfflineMode(enabled)
         }
 }

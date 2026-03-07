@@ -61,8 +61,8 @@ fun SettingsScreen(onBackClick: () -> Unit) {
         onPaletteSelected = viewModel::setPalette,
         onDynamicColorChanged = viewModel::setDynamicColor,
         onLanguageSelected = viewModel::setLanguage,
+        onOfflineModeChanged = viewModel::setOfflineMode,
         onNotificationsEnabledChanged = { enabled ->
-
             if (!enabled) {
                 MyCountriesIntent.openNotificationSettings(context)
             } else {
@@ -76,20 +76,6 @@ fun SettingsScreen(onBackClick: () -> Unit) {
     )
 }
 
-// private fun openNotificationSettings(context: Context) {
-//    val intent =
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
-//                putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
-//            }
-//        } else {
-//            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-//                data = Uri.fromParts("package", context.packageName, null)
-//            }
-//        }
-//    context.startActivity(intent)
-// }
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SettingsContent(
@@ -100,6 +86,7 @@ private fun SettingsContent(
     onPaletteSelected: (AppPalette) -> Unit,
     onDynamicColorChanged: (Boolean) -> Unit,
     onLanguageSelected: (AppLanguage) -> Unit,
+    onOfflineModeChanged: (Boolean) -> Unit,
     onNotificationsEnabledChanged: (Boolean) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
@@ -176,6 +163,25 @@ private fun SettingsContent(
             item { Spacer(modifier = Modifier.height(MaterialTheme.dimens.large)) }
 
             item {
+                SettingsSection(title = stringResource(R.string.offline_mode)) {
+                    SettingsListItem(
+                        title = stringResource(R.string.offline_mode),
+                        subtitle = stringResource(R.string.offline_mode_desc),
+                        icon = MyIcons.cloudOffIcon,
+                        trailingContent = {
+                            Switch(
+                                checked = state.offlineMode,
+                                onCheckedChange = onOfflineModeChanged,
+                            )
+                        },
+                        onClick = { onOfflineModeChanged(!state.offlineMode) },
+                    )
+                }
+            }
+
+            item { Spacer(modifier = Modifier.height(MaterialTheme.dimens.large)) }
+
+            item {
                 SettingsSection(title = stringResource(R.string.notifications)) {
                     SettingsListItem(
                         title = stringResource(R.string.notifications),
@@ -221,6 +227,7 @@ private fun SettingsScreenPreview() {
             onPaletteSelected = {},
             onDynamicColorChanged = {},
             onLanguageSelected = {},
+            onOfflineModeChanged = {},
             onNotificationsEnabledChanged = {},
         )
     }

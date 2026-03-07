@@ -10,5 +10,6 @@ data class CountriesScreenState(
     val favoriteCountryCodes: ImmutableList<String> = persistentListOf(),
     val selectedCountry: CountryDetailUi? = null,
     val searchQuery: String = "",
-    val isOnline: Boolean = false
+    val isOnline: Boolean = false,
+    val isOfflineMode: Boolean = false
 )
