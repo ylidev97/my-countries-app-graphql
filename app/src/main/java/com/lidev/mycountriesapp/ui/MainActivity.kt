@@ -38,11 +38,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Suppress("ParamsComparedByRef")
 @Composable
-private fun MyCountriesApp(
-    activity: ComponentActivity,
-    viewModel: MainViewModel = koinViewModel(),
-) {
+private fun MyCountriesApp(activity: ComponentActivity) {
+    val viewModel: MainViewModel = koinViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val darkTheme =

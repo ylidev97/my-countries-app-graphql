@@ -1,6 +1,8 @@
 package com.lidev.mycountriesapp.ui.screens.settings.composables
 
 import android.Manifest
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -41,6 +43,7 @@ import com.lidev.mycountriesapp.ui.theme.dimens
 import com.lidev.mycountriesapp.ui.util.MyCountriesIntent
 import org.koin.androidx.compose.koinViewModel
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun SettingsScreen(onBackClick: () -> Unit) {
