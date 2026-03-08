@@ -2,8 +2,6 @@ package com.lidev.mycountriesapp.data.id
 
 import androidx.room.Room
 import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.cache.normalized.api.MemoryCacheFactory
-import com.apollographql.apollo.cache.normalized.normalizedCache
 import com.lidev.mycountriesapp.data.database.CountryDatabase
 import com.lidev.mycountriesapp.data.datasource.local.SettingsDataStore
 import com.lidev.mycountriesapp.data.datasource.remote.ApolloCountryClient
@@ -19,11 +17,9 @@ import org.koin.dsl.module
 val dataModule =
     module {
         single {
-            val cacheFactory = MemoryCacheFactory(maxSizeBytes = 10 * 1024 * 1024)
             ApolloClient
                 .Builder()
                 .serverUrl("https://countries.trevorblades.com/graphql")
-                .normalizedCache(cacheFactory)
                 .build()
         }
 

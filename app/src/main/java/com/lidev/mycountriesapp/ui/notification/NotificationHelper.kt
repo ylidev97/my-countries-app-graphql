@@ -41,7 +41,7 @@ class NotificationHelper(
         val notification =
             NotificationCompat
                 .Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_search) // Reutilizando un icono existente
+                .setSmallIcon(R.drawable.ic_search)
                 .setContentTitle(context.getString(R.string.app_name))
                 .setContentText("${country.emoji} ${country.name} - ${country.continent}")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

@@ -15,9 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import com.lidev.mycountriesapp.R
+import com.lidev.mycountriesapp.ui.theme.MyCountriesAppTheme
 import com.lidev.mycountriesapp.ui.theme.dimens
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun ContinentFilter(
@@ -88,5 +91,17 @@ internal fun ContinentFilter(
                 border = null,
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ContinentFilterPreview() {
+    MyCountriesAppTheme {
+        ContinentFilter(
+            continents = persistentListOf("Africa", "Americas", "Asia", "Europe", "Oceania"),
+            selectedContinent = "Europe",
+            onContinentSelected = {},
+        )
     }
 }

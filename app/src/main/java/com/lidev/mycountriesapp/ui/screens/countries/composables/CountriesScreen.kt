@@ -27,6 +27,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.lidev.mycountriesapp.ui.components.LikeAnimation
 import com.lidev.mycountriesapp.ui.screens.countries.CountriesScreenViewModel
@@ -57,6 +58,10 @@ internal fun CountriesScreen(onSettingsClick: () -> Unit = {}) {
 
     LaunchedEffect(Unit) {
         permissionState.launchPermissionRequest()
+    }
+
+    LaunchedEffect(permissionState.status) {
+        viewModel.onNotificationEnable(permissionState.status.isGranted)
     }
 
     Content(

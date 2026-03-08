@@ -3,7 +3,6 @@ package com.lidev.mycountriesapp
 import android.app.Application
 import com.lidev.mycountriesapp.data.id.dataModule
 import com.lidev.mycountriesapp.ui.appModule
-import com.lidev.mycountriesapp.ui.notification.DailyCountryWorker
 import io.kotzilla.sdk.analytics.koin.analytics
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -21,8 +20,5 @@ class MyCountriesApp : Application() {
                 dataModule,
             )
         }
-        
-        // Programar la notificación diaria de "País del Día"
-        DailyCountryWorker.schedule(this)
     }
 }

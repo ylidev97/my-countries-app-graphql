@@ -8,10 +8,10 @@ class WorkManagerNotificationScheduler(
     private val context: Context,
 ) : NotificationScheduler {
     override fun schedule() {
-        DailyCountryWorker.Companion.schedule(context)
+        DailyCountryWorker.schedule(context)
     }
 
     override fun cancel() {
-        DailyCountryWorker.Companion.cancel(context)
+        DailyCountryWorker.cancel(context)
     }
 }

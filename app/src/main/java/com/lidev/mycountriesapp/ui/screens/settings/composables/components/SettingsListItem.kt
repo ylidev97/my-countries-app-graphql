@@ -16,7 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.lidev.mycountriesapp.ui.theme.MyCountriesAppTheme
+import com.lidev.mycountriesapp.ui.theme.MyIcons
 
 @Composable
 fun SettingsListItem(
@@ -65,4 +68,45 @@ fun SettingsListItem(
         modifier = Modifier.clickable { onClick() },
         colors = ListItemDefaults.colors(containerColor = Color.Transparent),
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SettingsListItemPreview() {
+    MyCountriesAppTheme {
+        SettingsListItem(
+            title = "Settings Item",
+            subtitle = "This is a subtitle",
+            icon = MyIcons.settingsIcon,
+            onClick = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SettingsListItemNoSubtitlePreview() {
+    MyCountriesAppTheme {
+        SettingsListItem(
+            title = "Settings Item",
+            icon = MyIcons.languageIcon,
+            onClick = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SettingsListItemWithTrailingPreview() {
+    MyCountriesAppTheme {
+        SettingsListItem(
+            title = "Notifications",
+            subtitle = "Enable or disable notifications",
+            icon = MyIcons.notificationsIcon,
+            trailingContent = {
+                Text("On")
+            },
+            onClick = {},
+        )
+    }
 }

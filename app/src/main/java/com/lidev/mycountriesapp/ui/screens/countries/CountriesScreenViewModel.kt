@@ -2,6 +2,7 @@ package com.lidev.mycountriesapp.ui.screens.countries
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lidev.mycountriesapp.domain.manager.NotificationScheduler
 import com.lidev.mycountriesapp.domain.usecases.GetCountriesUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetCountryByCodeUseCase
 import com.lidev.mycountriesapp.domain.usecases.GetOfflineModeUseCase
@@ -21,8 +22,9 @@ import kotlinx.coroutines.launch
 class CountriesScreenViewModel(
     private val getCountriesUseCase: GetCountriesUseCase,
     private val getCountryByCodeUseCase: GetCountryByCodeUseCase,
-    private val getOfflineModeUseCase: GetOfflineModeUseCase,
+    getOfflineModeUseCase: GetOfflineModeUseCase,
     networkMonitor: NetworkMonitor,
+    private val notificationScheduler: NotificationScheduler,
 ) : ViewModel() {
     private val _state = MutableStateFlow(CountriesScreenState())
     val state = _state.asStateFlow()
@@ -150,6 +152,14 @@ class CountriesScreenViewModel(
                         },
                 )
             }
+        }
+    }
+
+    fun onNotificationEnable(granted: Boolean) {
+        if (granted) {
+            notificationScheduler.schedule()
+        } else {
+            notificationScheduler.cancel()
         }
     }
 }

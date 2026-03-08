@@ -12,8 +12,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lidev.mycountriesapp.ui.theme.MyCountriesAppTheme
+import com.lidev.mycountriesapp.ui.theme.MyIcons
 import com.lidev.mycountriesapp.ui.theme.dimens
 
 @Composable
@@ -49,6 +52,26 @@ fun SettingsSection(
                         .animateContentSize(),
             ) {
                 content()
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SettingsSectionPreview() {
+    MyCountriesAppTheme {
+        Surface(
+            modifier = Modifier.padding(16.dp),
+            color = MaterialTheme.colorScheme.background,
+        ) {
+            SettingsSection(title = "Appearance") {
+                SettingsListItem(
+                    title = "Dark Mode",
+                    subtitle = "System default",
+                    icon = MyIcons.darkModeIcon,
+                    onClick = {},
+                )
             }
         }
     }

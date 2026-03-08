@@ -1,5 +1,6 @@
 package com.lidev.mycountriesapp.ui.screens.settings.composables.components
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -7,8 +8,10 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.lidev.mycountriesapp.R
 import com.lidev.mycountriesapp.domain.model.AppLanguage
+import com.lidev.mycountriesapp.ui.theme.MyCountriesAppTheme
 import com.lidev.mycountriesapp.ui.theme.MyIcons
 import com.lidev.mycountriesapp.ui.theme.dimens
 
@@ -36,40 +39,53 @@ fun LanguageSettings(
             ),
         )
 
-    options.forEachIndexed { index, (language, label, icon) ->
-        SettingsListItem(
-            title = label,
-            icon = icon,
-            iconContainerColor =
-                if (selectedLanguage == language) {
-                    MaterialTheme.colorScheme.secondary
-                } else {
-                    MaterialTheme.colorScheme.surfaceVariant
+    Column {
+        options.forEachIndexed { index, (language, label, icon) ->
+            SettingsListItem(
+                title = label,
+                icon = icon,
+                iconContainerColor =
+                    if (selectedLanguage == language) {
+                        MaterialTheme.colorScheme.secondary
+                    } else {
+                        MaterialTheme.colorScheme.surfaceVariant
+                    },
+                iconContentColor =
+                    if (selectedLanguage == language) {
+                        MaterialTheme.colorScheme.onSecondary
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    },
+                trailingContent = {
+                    RadioButton(
+                        selected = (selectedLanguage == language),
+                        onClick = null,
+                    )
                 },
-            iconContentColor =
-                if (selectedLanguage == language) {
-                    MaterialTheme.colorScheme.onSecondary
-                } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                },
-            trailingContent = {
-                RadioButton(
-                    selected = (selectedLanguage == language),
-                    onClick = null,
-                )
-            },
-            onClick = { onLanguageSelected(language) },
-        )
-        if (index < options.lastIndex) {
-            HorizontalDivider(
-                modifier =
-                    Modifier.padding(
-                        horizontal = MaterialTheme.dimens.extraExtraLarge,
-                        vertical = MaterialTheme.dimens.extraSmall,
-                    ),
-                thickness = MaterialTheme.dimens.extraSmall / 8,
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
+                onClick = { onLanguageSelected(language) },
             )
+            if (index < options.lastIndex) {
+                HorizontalDivider(
+                    modifier =
+                        Modifier.padding(
+                            horizontal = MaterialTheme.dimens.extraExtraLarge,
+                            vertical = MaterialTheme.dimens.extraSmall,
+                        ),
+                    thickness = MaterialTheme.dimens.extraSmall / 8,
+                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
+                )
+            }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun LanguageSettingsPreview() {
+    MyCountriesAppTheme {
+        LanguageSettings(
+            selectedLanguage = AppLanguage.English,
+            onLanguageSelected = {},
+        )
     }
 }

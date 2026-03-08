@@ -169,6 +169,11 @@ apollo {
 }
 kotzilla { autoAddDependencies = false }
 
+// Fix for KSP and Kotzilla configuration issue
+tasks.matching { it.name.startsWith("ksp") && it.name.endsWith("Kotlin") }.configureEach {
+    dependsOn("generateKotzillaConfig")
+}
+
 androidComponents {
     onVariants { variant ->
         variant.outputs.forEach { output ->

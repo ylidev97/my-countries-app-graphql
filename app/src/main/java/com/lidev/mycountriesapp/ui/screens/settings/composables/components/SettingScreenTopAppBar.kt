@@ -11,7 +11,9 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import com.lidev.mycountriesapp.R
+import com.lidev.mycountriesapp.ui.theme.MyCountriesAppTheme
 import com.lidev.mycountriesapp.ui.theme.MyIcons
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,4 +47,16 @@ internal fun SettingScreenTopAppBar(
                 scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
             ),
     )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
+@Composable
+private fun SettingScreenTopAppBarPreview() {
+    MyCountriesAppTheme {
+        SettingScreenTopAppBar(
+            onBackClick = {},
+            scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
+        )
+    }
 }

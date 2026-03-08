@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 private fun MyCountriesApp(
     activity: ComponentActivity,
-    viewModel: MainViewModel = koinViewModel()
+    viewModel: MainViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -56,7 +56,7 @@ private fun MyCountriesApp(
 
     CompositionLocalProvider(
         LocalContext provides localizedContext,
-        LocalActivityResultRegistryOwner provides activity
+        LocalActivityResultRegistryOwner provides activity,
     ) {
         MyCountriesAppTheme(
             darkTheme = darkTheme,
